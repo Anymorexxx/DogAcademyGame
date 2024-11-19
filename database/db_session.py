@@ -10,6 +10,7 @@ engine = create_engine(DATABASE_URL, echo=True)
 
 # Создание фабрики сессий
 Session = sessionmaker(bind=engine)
+session = Session()
 
 def init_db():
     """Инициализация базы данных: создание файла и таблиц."""

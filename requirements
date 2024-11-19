@@ -1,2 +1,3 @@
 sqlalchemy
 tk
+matplotlib>=3.7.0
