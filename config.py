@@ -23,3 +23,6 @@ DATABASE_URL = "sqlite:///database/DogAcademy.db"  # Обновлено на п�
 
 # Иконки
 SETTINGS_IMG = "assets/settings.png"
+
+# Уровни уведомлений (для дальнейшей настройки)
+NOTIFICATION_LEVEL = "info"  # Возможные значения: "info", "warning", "error"

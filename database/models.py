@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Text
+from sqlalchemy import Column, Integer, String, ForeignKey, Text, DateTime
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -26,6 +27,8 @@ class Users(Base):
     # Связи
     auth = relationship("Auth", back_populates="user")  # Обратная связь с Auth
     dog = relationship("Dogs", back_populates="users")  # Связь с таблицей Dogs
+    game_sessions = relationship("GameSession", back_populates="user")  # Связь с таблицей GameSession
+    notifications = relationship("Notifications", back_populates="user")  # Связь с уведомлениями
 
 
 class Dogs(Base):
@@ -47,9 +50,36 @@ class Questions(Base):
     __tablename__ = 'questions'
     question_id = Column(Integer, primary_key=True)
     dog_id = Column(Integer, ForeignKey('dogs.dog_id'))
-    question_text = Column(Text, nullable=False)
+    question_text = Column(Text, nullable=False)  # Исправлено поле
     image_url = Column(String)
     helpful_info = Column(Text)
+    incorrect_attempts = Column(Integer, default=0)
 
     # Связь с таблицей Dogs
     dog = relationship("Dogs", back_populates="questions")
+
+
+class GameSession(Base):
+    __tablename__ = 'game_sessions'
+    session_id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.user_id'))
+    level = Column(Integer, nullable=False)
+    score = Column(Integer, default=0)
+    duration = Column(Integer)  # Время игры в секундах
+    start_time = Column(DateTime, default=func.now())  # Исправлено
+    end_time = Column(DateTime, nullable=True)
+
+    # Связь с таблицей Users
+    user = relationship("Users", back_populates="game_sessions")
+
+class Notifications(Base):
+    __tablename__ = 'notifications'
+    notification_id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.user_id'))
+    message = Column(Text, nullable=False)
+    timestamp = Column(DateTime, default=func.now())
+    is_read = Column(Integer, default=0)  # 0 - не прочитано, 1 - прочитано
+
+    # Связь с таблицей Users
+    user = relationship("Users", back_populates="notifications")
+

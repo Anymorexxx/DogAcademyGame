@@ -1,0 +1,329 @@
+2024-11-20 12:59:15 - BEGIN (implicit)
+2024-11-20 12:59:15 - SELECT count(*) AS count_1 
+FROM (SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users) AS anon_1
+2024-11-20 12:59:15 - [generated in 0.00054s] ()
+2024-11-20 12:59:15 - SELECT game_sessions.level AS game_sessions_level, count(game_sessions.session_id) AS count_1 
+FROM game_sessions GROUP BY game_sessions.level
+2024-11-20 12:59:15 - [generated in 0.00030s] ()
+2024-11-20 13:00:56 - BEGIN (implicit)
+2024-11-20 13:00:56 - PRAGMA main.table_info("auth")
+2024-11-20 13:00:56 - [raw sql] ()
+2024-11-20 13:00:56 - PRAGMA temp.table_info("auth")
+2024-11-20 13:00:56 - [raw sql] ()
+2024-11-20 13:00:56 - PRAGMA main.table_info("users")
+2024-11-20 13:00:56 - [raw sql] ()
+2024-11-20 13:00:56 - PRAGMA temp.table_info("users")
+2024-11-20 13:00:56 - [raw sql] ()
+2024-11-20 13:00:56 - PRAGMA main.table_info("dogs")
+2024-11-20 13:00:56 - [raw sql] ()
+2024-11-20 13:00:56 - PRAGMA temp.table_info("dogs")
+2024-11-20 13:00:56 - [raw sql] ()
+2024-11-20 13:00:56 - PRAGMA main.table_info("questions")
+2024-11-20 13:00:56 - [raw sql] ()
+2024-11-20 13:00:56 - PRAGMA temp.table_info("questions")
+2024-11-20 13:00:56 - [raw sql] ()
+2024-11-20 13:00:56 - PRAGMA main.table_info("game_sessions")
+2024-11-20 13:00:56 - [raw sql] ()
+2024-11-20 13:00:56 - PRAGMA temp.table_info("game_sessions")
+2024-11-20 13:00:56 - [raw sql] ()
+2024-11-20 13:00:56 - 
+CREATE TABLE auth (
+	user_id INTEGER NOT NULL, 
+	login VARCHAR NOT NULL, 
+	password VARCHAR NOT NULL, 
+	PRIMARY KEY (user_id), 
+	UNIQUE (login)
+)
+
+
+2024-11-20 13:00:56 - [no key 0.00011s] ()
+2024-11-20 13:00:56 - 
+CREATE TABLE dogs (
+	dog_id INTEGER NOT NULL, 
+	breed VARCHAR, 
+	characteristics TEXT, 
+	behavior TEXT, 
+	care_info TEXT, 
+	admin_comments TEXT, 
+	PRIMARY KEY (dog_id)
+)
+
+
+2024-11-20 13:00:56 - [no key 0.00017s] ()
+2024-11-20 13:00:56 - 
+CREATE TABLE users (
+	user_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	username VARCHAR NOT NULL, 
+	level INTEGER, 
+	achievement TEXT, 
+	PRIMARY KEY (user_id), 
+	FOREIGN KEY(user_id) REFERENCES auth (user_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-20 13:00:56 - [no key 0.00019s] ()
+2024-11-20 13:00:56 - 
+CREATE TABLE questions (
+	question_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	question_text TEXT NOT NULL, 
+	image_url VARCHAR, 
+	helpful_info TEXT, 
+	incorrect_attempts INTEGER, 
+	PRIMARY KEY (question_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-20 13:00:56 - [no key 0.00017s] ()
+2024-11-20 13:00:57 - 
+CREATE TABLE game_sessions (
+	session_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	level INTEGER NOT NULL, 
+	score INTEGER, 
+	duration INTEGER, 
+	start_time DATETIME, 
+	end_time DATETIME, 
+	PRIMARY KEY (session_id), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-20 13:00:57 - [no key 0.00023s] ()
+2024-11-20 13:00:57 - COMMIT
+2024-11-20 13:01:13 - BEGIN (implicit)
+2024-11-20 13:01:13 - SELECT count(*) AS count_1 
+FROM (SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users) AS anon_1
+2024-11-20 13:01:13 - [generated in 0.00032s] ()
+2024-11-20 13:01:13 - SELECT game_sessions.level AS game_sessions_level, count(game_sessions.session_id) AS count_1 
+FROM game_sessions GROUP BY game_sessions.level
+2024-11-20 13:01:13 - [generated in 0.00025s] ()
+2024-11-20 13:01:13 - SELECT questions.question_text AS questions_question_text, questions.incorrect_attempts AS questions_incorrect_attempts 
+FROM questions ORDER BY questions.incorrect_attempts DESC
+2024-11-20 13:01:13 - [generated in 0.00028s] ()
+2024-11-20 13:01:13 - SELECT avg(game_sessions.duration) AS avg_1 
+FROM game_sessions
+2024-11-20 13:01:13 - [generated in 0.00023s] ()
+2024-11-20 13:01:13 - ROLLBACK
+2024-11-20 13:01:13 - BEGIN (implicit)
+2024-11-20 13:01:13 - SELECT game_sessions.start_time AS game_sessions_start_time 
+FROM game_sessions
+2024-11-20 13:01:13 - [generated in 0.00028s] ()
+2024-11-20 13:01:13 - ROLLBACK
+2024-11-20 13:40:04 - BEGIN (implicit)
+2024-11-20 13:40:04 - PRAGMA main.table_info("auth")
+2024-11-20 13:40:04 - [raw sql] ()
+2024-11-20 13:40:04 - PRAGMA temp.table_info("auth")
+2024-11-20 13:40:04 - [raw sql] ()
+2024-11-20 13:40:04 - PRAGMA main.table_info("users")
+2024-11-20 13:40:04 - [raw sql] ()
+2024-11-20 13:40:04 - PRAGMA temp.table_info("users")
+2024-11-20 13:40:04 - [raw sql] ()
+2024-11-20 13:40:04 - PRAGMA main.table_info("dogs")
+2024-11-20 13:40:04 - [raw sql] ()
+2024-11-20 13:40:04 - PRAGMA temp.table_info("dogs")
+2024-11-20 13:40:04 - [raw sql] ()
+2024-11-20 13:40:04 - PRAGMA main.table_info("questions")
+2024-11-20 13:40:04 - [raw sql] ()
+2024-11-20 13:40:04 - PRAGMA temp.table_info("questions")
+2024-11-20 13:40:04 - [raw sql] ()
+2024-11-20 13:40:04 - PRAGMA main.table_info("game_sessions")
+2024-11-20 13:40:04 - [raw sql] ()
+2024-11-20 13:40:04 - PRAGMA temp.table_info("game_sessions")
+2024-11-20 13:40:04 - [raw sql] ()
+2024-11-20 13:40:04 - PRAGMA main.table_info("notifications")
+2024-11-20 13:40:04 - [raw sql] ()
+2024-11-20 13:40:04 - PRAGMA temp.table_info("notifications")
+2024-11-20 13:40:04 - [raw sql] ()
+2024-11-20 13:40:04 - 
+CREATE TABLE auth (
+	user_id INTEGER NOT NULL, 
+	login VARCHAR NOT NULL, 
+	password VARCHAR NOT NULL, 
+	PRIMARY KEY (user_id), 
+	UNIQUE (login)
+)
+
+
+2024-11-20 13:40:04 - [no key 0.00011s] ()
+2024-11-20 13:40:04 - 
+CREATE TABLE dogs (
+	dog_id INTEGER NOT NULL, 
+	breed VARCHAR, 
+	characteristics TEXT, 
+	behavior TEXT, 
+	care_info TEXT, 
+	admin_comments TEXT, 
+	PRIMARY KEY (dog_id)
+)
+
+
+2024-11-20 13:40:04 - [no key 0.00019s] ()
+2024-11-20 13:40:04 - 
+CREATE TABLE users (
+	user_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	username VARCHAR NOT NULL, 
+	level INTEGER, 
+	achievement TEXT, 
+	PRIMARY KEY (user_id), 
+	FOREIGN KEY(user_id) REFERENCES auth (user_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-20 13:40:04 - [no key 0.00023s] ()
+2024-11-20 13:40:04 - 
+CREATE TABLE questions (
+	question_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	question_text TEXT NOT NULL, 
+	image_url VARCHAR, 
+	helpful_info TEXT, 
+	incorrect_attempts INTEGER, 
+	PRIMARY KEY (question_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-20 13:40:04 - [no key 0.00020s] ()
+2024-11-20 13:40:04 - 
+CREATE TABLE game_sessions (
+	session_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	level INTEGER NOT NULL, 
+	score INTEGER, 
+	duration INTEGER, 
+	start_time DATETIME, 
+	end_time DATETIME, 
+	PRIMARY KEY (session_id), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-20 13:40:04 - [no key 0.00020s] ()
+2024-11-20 13:40:05 - 
+CREATE TABLE notifications (
+	notification_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	message TEXT NOT NULL, 
+	timestamp DATETIME, 
+	is_read INTEGER, 
+	PRIMARY KEY (notification_id), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-20 13:40:05 - [no key 0.00017s] ()
+2024-11-20 13:40:05 - COMMIT
+2024-11-20 17:07:30 - BEGIN (implicit)
+2024-11-20 17:07:30 - PRAGMA main.table_info("auth")
+2024-11-20 17:07:30 - [raw sql] ()
+2024-11-20 17:07:30 - PRAGMA temp.table_info("auth")
+2024-11-20 17:07:30 - [raw sql] ()
+2024-11-20 17:07:30 - PRAGMA main.table_info("users")
+2024-11-20 17:07:30 - [raw sql] ()
+2024-11-20 17:07:30 - PRAGMA temp.table_info("users")
+2024-11-20 17:07:30 - [raw sql] ()
+2024-11-20 17:07:30 - PRAGMA main.table_info("dogs")
+2024-11-20 17:07:30 - [raw sql] ()
+2024-11-20 17:07:30 - PRAGMA temp.table_info("dogs")
+2024-11-20 17:07:30 - [raw sql] ()
+2024-11-20 17:07:30 - PRAGMA main.table_info("questions")
+2024-11-20 17:07:30 - [raw sql] ()
+2024-11-20 17:07:30 - PRAGMA temp.table_info("questions")
+2024-11-20 17:07:30 - [raw sql] ()
+2024-11-20 17:07:30 - PRAGMA main.table_info("game_sessions")
+2024-11-20 17:07:30 - [raw sql] ()
+2024-11-20 17:07:30 - PRAGMA temp.table_info("game_sessions")
+2024-11-20 17:07:30 - [raw sql] ()
+2024-11-20 17:07:30 - PRAGMA main.table_info("notifications")
+2024-11-20 17:07:30 - [raw sql] ()
+2024-11-20 17:07:30 - PRAGMA temp.table_info("notifications")
+2024-11-20 17:07:30 - [raw sql] ()
+2024-11-20 17:07:30 - 
+CREATE TABLE auth (
+	user_id INTEGER NOT NULL, 
+	login VARCHAR NOT NULL, 
+	password VARCHAR NOT NULL, 
+	PRIMARY KEY (user_id), 
+	UNIQUE (login)
+)
+
+
+2024-11-20 17:07:30 - [no key 0.00010s] ()
+2024-11-20 17:07:30 - 
+CREATE TABLE dogs (
+	dog_id INTEGER NOT NULL, 
+	breed VARCHAR, 
+	characteristics TEXT, 
+	behavior TEXT, 
+	care_info TEXT, 
+	admin_comments TEXT, 
+	PRIMARY KEY (dog_id)
+)
+
+
+2024-11-20 17:07:30 - [no key 0.00025s] ()
+2024-11-20 17:07:30 - 
+CREATE TABLE users (
+	user_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	username VARCHAR NOT NULL, 
+	level INTEGER, 
+	achievement TEXT, 
+	PRIMARY KEY (user_id), 
+	FOREIGN KEY(user_id) REFERENCES auth (user_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-20 17:07:30 - [no key 0.00023s] ()
+2024-11-20 17:07:30 - 
+CREATE TABLE questions (
+	question_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	question_text TEXT NOT NULL, 
+	image_url VARCHAR, 
+	helpful_info TEXT, 
+	incorrect_attempts INTEGER, 
+	PRIMARY KEY (question_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-20 17:07:30 - [no key 0.00019s] ()
+2024-11-20 17:07:30 - 
+CREATE TABLE game_sessions (
+	session_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	level INTEGER NOT NULL, 
+	score INTEGER, 
+	duration INTEGER, 
+	start_time DATETIME, 
+	end_time DATETIME, 
+	PRIMARY KEY (session_id), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-20 17:07:30 - [no key 0.00038s] ()
+2024-11-20 17:07:30 - 
+CREATE TABLE notifications (
+	notification_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	message TEXT NOT NULL, 
+	timestamp DATETIME, 
+	is_read INTEGER, 
+	PRIMARY KEY (notification_id), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-20 17:07:30 - [no key 0.00018s] ()
+2024-11-20 17:07:30 - COMMIT
