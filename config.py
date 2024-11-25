@@ -27,3 +27,19 @@ SETTINGS_IMG = "assets/settings.png"
 # Утилиты
 NOTIFICATION_LEVEL = "info"  # Возможные значения: "info", "warning", "error"
 USE_DATABASE_LOGS = True
+
+# ГЛАВНОЕ МЕНЮ
+BACKGROUND_COLOR_USER = "#bcabe5"  # Основной фон
+TOP_PANEL_COLOR_USER = "#aa9bcd"  # Цвет верхней панели
+BUTTON_COLOR_PROFILE_USER = "#a2c792"  # Цвет кнопок "Профиль", "Магазин", "База знаний"
+BUTTON_COLOR_PLAY_USER = "#b4e1a1"  # Цвет кнопки "Играть"
+BUTTON_COLOR_EXIT_USER = "#a2c792"  # Цвет кнопки "Выход"
+
+# Текст и шрифты
+BUTTON_TEXT_COLOR_USER = "white"  # Цвет текста на кнопках
+FONT_USER = ("Comic Sans MS", 20)  # Шрифт для текста кнопок
+BIG_FONT_USER = ("Comic Sans MS", 30)  # Большой шрифт (например, для заголовков)
+
+# Размеры кнопок
+BUTTON_RADIUS_USER = 50  # Радиус круглой кнопки
+EXIT_BUTTON_SIZE_USER = (80, 40)  # Размер кнопки "Выход"

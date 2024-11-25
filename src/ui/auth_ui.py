@@ -3,7 +3,7 @@ from tkinter import messagebox
 from config import BACKGROUND_COLOR, PRIMARY_COLOR, BUTTON_COLOR, BUTTON_TEXT_COLOR, FONT, BIG_FONT, ADMIN_LOGIN, ADMIN_PASSWORD
 from src.ui.admin_ui import AdminApp  # Импорт интерфейса администратора
 from database.db_events import create_user, check_user
-from src.ui.user_ui import UserApp
+from src.ui.user_ui.main_menu import UserApp
 
 class DogAcademyApp:
     def __init__(self, root):
@@ -217,5 +217,6 @@ class DogAcademyApp:
             messagebox.showerror("Ошибка", "Пожалуйста, заполните все поля.")
 
     def show_user_dashboard(self):
+        self.clear_frame()
         """Перейти к главному меню пользователя после авторизации."""
         UserApp(self.root, self)

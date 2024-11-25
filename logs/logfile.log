@@ -1250,3 +1250,96 @@ FROM game_sessions
 FROM game_sessions
 2024-11-25 19:32:52 - [generated in 0.00016s] ()
 2024-11-25 19:32:52 - ROLLBACK
+2024-11-25 20:45:57 - BEGIN (implicit)
+2024-11-25 20:45:57 - SELECT count(*) AS count_1 
+FROM (SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users) AS anon_1
+2024-11-25 20:45:57 - [generated in 0.00031s] ()
+2024-11-25 20:45:57 - SELECT game_sessions.level AS game_sessions_level, count(game_sessions.session_id) AS count_1 
+FROM game_sessions GROUP BY game_sessions.level
+2024-11-25 20:45:57 - [generated in 0.00021s] ()
+2024-11-25 20:45:57 - SELECT questions.question_text AS questions_question_text, questions.incorrect_attempts AS questions_incorrect_attempts 
+FROM questions ORDER BY questions.incorrect_attempts DESC
+2024-11-25 20:45:57 - [generated in 0.00024s] ()
+2024-11-25 20:45:57 - SELECT avg(game_sessions.duration) AS avg_1 
+FROM game_sessions
+2024-11-25 20:45:57 - [generated in 0.00016s] ()
+2024-11-25 20:45:57 - ROLLBACK
+2024-11-25 20:45:57 - BEGIN (implicit)
+2024-11-25 20:45:57 - SELECT game_sessions.start_time AS game_sessions_start_time 
+FROM game_sessions
+2024-11-25 20:45:57 - [generated in 0.00014s] ()
+2024-11-25 20:45:57 - ROLLBACK
+2024-11-25 20:55:11 - BEGIN (implicit)
+2024-11-25 20:55:11 - INSERT INTO auth (login, password) VALUES (?, ?)
+2024-11-25 20:55:11 - [generated in 0.00024s] ('lubluNikitu', 'meow123')
+2024-11-25 20:55:11 - COMMIT
+2024-11-25 20:55:36 - BEGIN (implicit)
+2024-11-25 20:55:36 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-25 20:55:36 - [generated in 0.00019s] ('lubluNikitu', 'meow123', 1, 0)
+2024-11-25 20:55:36 - ROLLBACK
+2024-11-25 20:59:37 - BEGIN (implicit)
+2024-11-25 20:59:37 - SELECT count(*) AS count_1 
+FROM (SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users) AS anon_1
+2024-11-25 20:59:37 - [generated in 0.00023s] ()
+2024-11-25 20:59:37 - SELECT game_sessions.level AS game_sessions_level, count(game_sessions.session_id) AS count_1 
+FROM game_sessions GROUP BY game_sessions.level
+2024-11-25 20:59:37 - [generated in 0.00014s] ()
+2024-11-25 20:59:37 - SELECT questions.question_text AS questions_question_text, questions.incorrect_attempts AS questions_incorrect_attempts 
+FROM questions ORDER BY questions.incorrect_attempts DESC
+2024-11-25 20:59:37 - [generated in 0.00021s] ()
+2024-11-25 20:59:37 - SELECT avg(game_sessions.duration) AS avg_1 
+FROM game_sessions
+2024-11-25 20:59:37 - [generated in 0.00012s] ()
+2024-11-25 20:59:37 - ROLLBACK
+2024-11-25 20:59:37 - BEGIN (implicit)
+2024-11-25 20:59:37 - SELECT game_sessions.start_time AS game_sessions_start_time 
+FROM game_sessions
+2024-11-25 20:59:37 - [generated in 0.00014s] ()
+2024-11-25 20:59:37 - ROLLBACK
+2024-11-25 21:00:06 - BEGIN (implicit)
+2024-11-25 21:00:06 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-25 21:00:06 - [generated in 0.00024s] ('lubluNikitu', 'meow123', 1, 0)
+2024-11-25 21:00:06 - ROLLBACK
+2024-11-25 21:07:39 - BEGIN (implicit)
+2024-11-25 21:07:39 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-25 21:07:39 - [generated in 0.00032s] ('lubluNikitu', 'meow123', 1, 0)
+2024-11-25 21:07:39 - ROLLBACK
+2024-11-25 22:18:38 - BEGIN (implicit)
+2024-11-25 22:18:38 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-25 22:18:38 - [generated in 0.00021s] ('lubluNikitu', 'meow123', 1, 0)
+2024-11-25 22:18:38 - ROLLBACK
+2024-11-25 22:29:25 - BEGIN (implicit)
+2024-11-25 22:29:25 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-25 22:29:25 - [generated in 0.00026s] ('lubluNikitu', 'meow123', 1, 0)
+2024-11-25 22:29:25 - ROLLBACK
+2024-11-25 22:31:57 - BEGIN (implicit)
+2024-11-25 22:31:57 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-25 22:31:57 - [generated in 0.00027s] ('lubluNikitu', 'meow123', 1, 0)
+2024-11-25 22:31:57 - ROLLBACK
+2024-11-25 22:36:09 - BEGIN (implicit)
+2024-11-25 22:36:09 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-25 22:36:09 - [generated in 0.00045s] ('lubluNikitu', 'meow123', 1, 0)
+2024-11-25 22:36:09 - ROLLBACK

@@ -16,7 +16,6 @@ def feature_in_development(frame):
         font=("Comic Sans MS", 16)
     ).pack(expand=True)
 
-
 def create_tooltip(widget, text):
     """Создание подсказки для виджета."""
     tooltip = tk.Toplevel()
