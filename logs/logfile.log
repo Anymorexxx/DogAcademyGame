@@ -327,3 +327,926 @@ CREATE TABLE notifications (
 
 2024-11-20 17:07:30 - [no key 0.00018s] ()
 2024-11-20 17:07:30 - COMMIT
+2024-11-21 20:18:15 - BEGIN (implicit)
+2024-11-21 20:18:15 - PRAGMA main.table_info("auth")
+2024-11-21 20:18:15 - [raw sql] ()
+2024-11-21 20:18:15 - PRAGMA temp.table_info("auth")
+2024-11-21 20:18:15 - [raw sql] ()
+2024-11-21 20:18:15 - PRAGMA main.table_info("users")
+2024-11-21 20:18:15 - [raw sql] ()
+2024-11-21 20:18:15 - PRAGMA temp.table_info("users")
+2024-11-21 20:18:15 - [raw sql] ()
+2024-11-21 20:18:15 - PRAGMA main.table_info("dogs")
+2024-11-21 20:18:15 - [raw sql] ()
+2024-11-21 20:18:15 - PRAGMA temp.table_info("dogs")
+2024-11-21 20:18:15 - [raw sql] ()
+2024-11-21 20:18:15 - PRAGMA main.table_info("questions")
+2024-11-21 20:18:15 - [raw sql] ()
+2024-11-21 20:18:15 - PRAGMA temp.table_info("questions")
+2024-11-21 20:18:15 - [raw sql] ()
+2024-11-21 20:18:15 - PRAGMA main.table_info("game_sessions")
+2024-11-21 20:18:15 - [raw sql] ()
+2024-11-21 20:18:15 - PRAGMA temp.table_info("game_sessions")
+2024-11-21 20:18:15 - [raw sql] ()
+2024-11-21 20:18:15 - PRAGMA main.table_info("notifications")
+2024-11-21 20:18:15 - [raw sql] ()
+2024-11-21 20:18:15 - PRAGMA temp.table_info("notifications")
+2024-11-21 20:18:15 - [raw sql] ()
+2024-11-21 20:18:15 - 
+CREATE TABLE auth (
+	user_id INTEGER NOT NULL, 
+	login VARCHAR NOT NULL, 
+	password VARCHAR NOT NULL, 
+	PRIMARY KEY (user_id), 
+	UNIQUE (login)
+)
+
+
+2024-11-21 20:18:15 - [no key 0.00009s] ()
+2024-11-21 20:18:15 - 
+CREATE TABLE dogs (
+	dog_id INTEGER NOT NULL, 
+	breed VARCHAR, 
+	characteristics TEXT, 
+	behavior TEXT, 
+	care_info TEXT, 
+	admin_comments TEXT, 
+	PRIMARY KEY (dog_id)
+)
+
+
+2024-11-21 20:18:15 - [no key 0.00016s] ()
+2024-11-21 20:18:15 - 
+CREATE TABLE users (
+	user_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	username VARCHAR NOT NULL, 
+	level INTEGER, 
+	achievement TEXT, 
+	PRIMARY KEY (user_id), 
+	FOREIGN KEY(user_id) REFERENCES auth (user_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-21 20:18:15 - [no key 0.00017s] ()
+2024-11-21 20:18:15 - 
+CREATE TABLE questions (
+	question_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	question_text TEXT NOT NULL, 
+	image_url VARCHAR, 
+	helpful_info TEXT, 
+	incorrect_attempts INTEGER, 
+	PRIMARY KEY (question_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-21 20:18:15 - [no key 0.00024s] ()
+2024-11-21 20:18:15 - 
+CREATE TABLE game_sessions (
+	session_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	level INTEGER NOT NULL, 
+	score INTEGER, 
+	duration INTEGER, 
+	start_time DATETIME, 
+	end_time DATETIME, 
+	PRIMARY KEY (session_id), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-21 20:18:15 - [no key 0.00018s] ()
+2024-11-21 20:18:15 - 
+CREATE TABLE notifications (
+	notification_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	message TEXT NOT NULL, 
+	timestamp DATETIME, 
+	is_read INTEGER, 
+	PRIMARY KEY (notification_id), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-21 20:18:15 - [no key 0.00017s] ()
+2024-11-21 20:18:15 - COMMIT
+2024-11-21 20:25:17 - BEGIN (implicit)
+2024-11-21 20:25:17 - SELECT count(*) AS count_1 
+FROM (SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users) AS anon_1
+2024-11-21 20:25:17 - [generated in 0.00022s] ()
+2024-11-21 20:25:17 - SELECT game_sessions.level AS game_sessions_level, count(game_sessions.session_id) AS count_1 
+FROM game_sessions GROUP BY game_sessions.level
+2024-11-21 20:25:17 - [generated in 0.00021s] ()
+2024-11-21 20:25:17 - SELECT questions.question_text AS questions_question_text, questions.incorrect_attempts AS questions_incorrect_attempts 
+FROM questions ORDER BY questions.incorrect_attempts DESC
+2024-11-21 20:25:17 - [generated in 0.00013s] ()
+2024-11-21 20:25:17 - SELECT avg(game_sessions.duration) AS avg_1 
+FROM game_sessions
+2024-11-21 20:25:17 - [generated in 0.00013s] ()
+2024-11-21 20:25:17 - ROLLBACK
+2024-11-21 20:25:17 - BEGIN (implicit)
+2024-11-21 20:25:17 - SELECT game_sessions.start_time AS game_sessions_start_time 
+FROM game_sessions
+2024-11-21 20:25:17 - [generated in 0.00014s] ()
+2024-11-21 20:25:17 - ROLLBACK
+2024-11-21 20:28:31 - BEGIN (implicit)
+2024-11-21 20:28:31 - SELECT count(*) AS count_1 
+FROM (SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users) AS anon_1
+2024-11-21 20:28:31 - [generated in 0.00024s] ()
+2024-11-21 20:28:31 - SELECT game_sessions.level AS game_sessions_level, count(game_sessions.session_id) AS count_1 
+FROM game_sessions GROUP BY game_sessions.level
+2024-11-21 20:28:31 - [generated in 0.00014s] ()
+2024-11-21 20:28:31 - SELECT questions.question_text AS questions_question_text, questions.incorrect_attempts AS questions_incorrect_attempts 
+FROM questions ORDER BY questions.incorrect_attempts DESC
+2024-11-21 20:28:31 - [generated in 0.00017s] ()
+2024-11-21 20:28:31 - SELECT avg(game_sessions.duration) AS avg_1 
+FROM game_sessions
+2024-11-21 20:28:31 - [generated in 0.00018s] ()
+2024-11-21 20:28:31 - ROLLBACK
+2024-11-21 20:28:31 - BEGIN (implicit)
+2024-11-21 20:28:31 - SELECT game_sessions.start_time AS game_sessions_start_time 
+FROM game_sessions
+2024-11-21 20:28:31 - [generated in 0.00015s] ()
+2024-11-21 20:28:31 - ROLLBACK
+2024-11-21 20:28:42 - BEGIN (implicit)
+2024-11-21 20:28:42 - SELECT count(*) AS count_1 
+FROM (SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users) AS anon_1
+2024-11-21 20:28:42 - [cached since 11.61s ago] ()
+2024-11-21 20:28:42 - SELECT game_sessions.level AS game_sessions_level, count(game_sessions.session_id) AS count_1 
+FROM game_sessions GROUP BY game_sessions.level
+2024-11-21 20:28:42 - [cached since 11.61s ago] ()
+2024-11-21 20:28:42 - SELECT questions.question_text AS questions_question_text, questions.incorrect_attempts AS questions_incorrect_attempts 
+FROM questions ORDER BY questions.incorrect_attempts DESC
+2024-11-21 20:28:42 - [cached since 11.61s ago] ()
+2024-11-21 20:28:42 - SELECT avg(game_sessions.duration) AS avg_1 
+FROM game_sessions
+2024-11-21 20:28:42 - [cached since 11.6s ago] ()
+2024-11-21 20:28:42 - ROLLBACK
+2024-11-21 20:28:42 - BEGIN (implicit)
+2024-11-21 20:28:42 - SELECT game_sessions.start_time AS game_sessions_start_time 
+FROM game_sessions
+2024-11-21 20:28:42 - [cached since 11.6s ago] ()
+2024-11-21 20:28:42 - ROLLBACK
+2024-11-23 04:13:13 - BEGIN (implicit)
+2024-11-23 04:13:13 - SELECT count(*) AS count_1 
+FROM (SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users) AS anon_1
+2024-11-23 04:13:13 - [generated in 0.00025s] ()
+2024-11-23 04:13:13 - SELECT game_sessions.level AS game_sessions_level, count(game_sessions.session_id) AS count_1 
+FROM game_sessions GROUP BY game_sessions.level
+2024-11-23 04:13:13 - [generated in 0.00021s] ()
+2024-11-23 04:13:13 - SELECT questions.question_text AS questions_question_text, questions.incorrect_attempts AS questions_incorrect_attempts 
+FROM questions ORDER BY questions.incorrect_attempts DESC
+2024-11-23 04:13:13 - [generated in 0.00012s] ()
+2024-11-23 04:13:13 - SELECT avg(game_sessions.duration) AS avg_1 
+FROM game_sessions
+2024-11-23 04:13:13 - [generated in 0.00013s] ()
+2024-11-23 04:13:13 - ROLLBACK
+2024-11-23 04:13:14 - BEGIN (implicit)
+2024-11-23 04:13:14 - SELECT game_sessions.start_time AS game_sessions_start_time 
+FROM game_sessions
+2024-11-23 04:13:14 - [generated in 0.00015s] ()
+2024-11-23 04:13:14 - ROLLBACK
+2024-11-25 12:53:49 - BEGIN (implicit)
+2024-11-25 12:53:49 - SELECT count(*) AS count_1 
+FROM (SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users) AS anon_1
+2024-11-25 12:53:49 - [generated in 0.00024s] ()
+2024-11-25 12:53:49 - SELECT game_sessions.level AS game_sessions_level, count(game_sessions.session_id) AS count_1 
+FROM game_sessions GROUP BY game_sessions.level
+2024-11-25 12:53:49 - [generated in 0.00020s] ()
+2024-11-25 12:53:49 - SELECT questions.question_text AS questions_question_text, questions.incorrect_attempts AS questions_incorrect_attempts 
+FROM questions ORDER BY questions.incorrect_attempts DESC
+2024-11-25 12:53:49 - [generated in 0.00013s] ()
+2024-11-25 12:53:49 - SELECT avg(game_sessions.duration) AS avg_1 
+FROM game_sessions
+2024-11-25 12:53:49 - [generated in 0.00012s] ()
+2024-11-25 12:53:49 - ROLLBACK
+2024-11-25 12:53:49 - BEGIN (implicit)
+2024-11-25 12:53:49 - SELECT game_sessions.start_time AS game_sessions_start_time 
+FROM game_sessions
+2024-11-25 12:53:49 - [generated in 0.00015s] ()
+2024-11-25 12:53:49 - ROLLBACK
+2024-11-25 12:53:54 - BEGIN (implicit)
+2024-11-25 12:53:54 - SELECT count(*) AS count_1 
+FROM (SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users) AS anon_1
+2024-11-25 12:53:54 - [cached since 4.772s ago] ()
+2024-11-25 12:53:54 - SELECT game_sessions.level AS game_sessions_level, count(game_sessions.session_id) AS count_1 
+FROM game_sessions GROUP BY game_sessions.level
+2024-11-25 12:53:54 - [cached since 4.767s ago] ()
+2024-11-25 12:53:54 - SELECT questions.question_text AS questions_question_text, questions.incorrect_attempts AS questions_incorrect_attempts 
+FROM questions ORDER BY questions.incorrect_attempts DESC
+2024-11-25 12:53:54 - [cached since 4.766s ago] ()
+2024-11-25 12:53:54 - SELECT avg(game_sessions.duration) AS avg_1 
+FROM game_sessions
+2024-11-25 12:53:54 - [cached since 4.765s ago] ()
+2024-11-25 12:53:54 - ROLLBACK
+2024-11-25 12:53:54 - BEGIN (implicit)
+2024-11-25 12:53:54 - SELECT game_sessions.start_time AS game_sessions_start_time 
+FROM game_sessions
+2024-11-25 12:53:54 - [cached since 4.687s ago] ()
+2024-11-25 12:53:54 - ROLLBACK
+2024-11-25 13:05:16 - BEGIN (implicit)
+2024-11-25 13:05:16 - SELECT logs.id AS logs_id, logs.date AS logs_date, logs.log_type AS logs_log_type, logs.message AS logs_message 
+FROM logs
+2024-11-25 13:05:16 - [generated in 0.00018s] ()
+2024-11-25 13:05:16 - ROLLBACK
+2024-11-25 13:08:00 - BEGIN (implicit)
+2024-11-25 13:08:00 - PRAGMA main.table_info("auth")
+2024-11-25 13:08:00 - [raw sql] ()
+2024-11-25 13:08:00 - PRAGMA temp.table_info("auth")
+2024-11-25 13:08:00 - [raw sql] ()
+2024-11-25 13:08:00 - PRAGMA main.table_info("users")
+2024-11-25 13:08:00 - [raw sql] ()
+2024-11-25 13:08:00 - PRAGMA temp.table_info("users")
+2024-11-25 13:08:00 - [raw sql] ()
+2024-11-25 13:08:00 - PRAGMA main.table_info("dogs")
+2024-11-25 13:08:00 - [raw sql] ()
+2024-11-25 13:08:00 - PRAGMA temp.table_info("dogs")
+2024-11-25 13:08:00 - [raw sql] ()
+2024-11-25 13:08:00 - PRAGMA main.table_info("questions")
+2024-11-25 13:08:00 - [raw sql] ()
+2024-11-25 13:08:00 - PRAGMA temp.table_info("questions")
+2024-11-25 13:08:00 - [raw sql] ()
+2024-11-25 13:08:00 - PRAGMA main.table_info("game_sessions")
+2024-11-25 13:08:00 - [raw sql] ()
+2024-11-25 13:08:00 - PRAGMA temp.table_info("game_sessions")
+2024-11-25 13:08:00 - [raw sql] ()
+2024-11-25 13:08:00 - PRAGMA main.table_info("notifications")
+2024-11-25 13:08:00 - [raw sql] ()
+2024-11-25 13:08:00 - PRAGMA temp.table_info("notifications")
+2024-11-25 13:08:00 - [raw sql] ()
+2024-11-25 13:08:00 - PRAGMA main.table_info("logs")
+2024-11-25 13:08:00 - [raw sql] ()
+2024-11-25 13:08:00 - PRAGMA temp.table_info("logs")
+2024-11-25 13:08:00 - [raw sql] ()
+2024-11-25 13:08:00 - 
+CREATE TABLE auth (
+	user_id INTEGER NOT NULL, 
+	login VARCHAR NOT NULL, 
+	password VARCHAR NOT NULL, 
+	PRIMARY KEY (user_id), 
+	UNIQUE (login)
+)
+
+
+2024-11-25 13:08:00 - [no key 0.00011s] ()
+2024-11-25 13:08:00 - 
+CREATE TABLE dogs (
+	dog_id INTEGER NOT NULL, 
+	breed VARCHAR, 
+	characteristics TEXT, 
+	behavior TEXT, 
+	care_info TEXT, 
+	admin_comments TEXT, 
+	PRIMARY KEY (dog_id)
+)
+
+
+2024-11-25 13:08:00 - [no key 0.00017s] ()
+2024-11-25 13:08:00 - 
+CREATE TABLE logs (
+	id INTEGER NOT NULL, 
+	date DATETIME, 
+	log_type VARCHAR NOT NULL, 
+	message VARCHAR NOT NULL, 
+	PRIMARY KEY (id)
+)
+
+
+2024-11-25 13:08:00 - [no key 0.00018s] ()
+2024-11-25 13:08:00 - 
+CREATE TABLE users (
+	user_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	username VARCHAR NOT NULL, 
+	level INTEGER, 
+	achievement TEXT, 
+	PRIMARY KEY (user_id), 
+	FOREIGN KEY(user_id) REFERENCES auth (user_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-25 13:08:00 - [no key 0.00017s] ()
+2024-11-25 13:08:00 - 
+CREATE TABLE questions (
+	question_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	question_text TEXT NOT NULL, 
+	image_url VARCHAR, 
+	helpful_info TEXT, 
+	incorrect_attempts INTEGER, 
+	PRIMARY KEY (question_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-25 13:08:00 - [no key 0.00018s] ()
+2024-11-25 13:08:00 - 
+CREATE TABLE game_sessions (
+	session_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	level INTEGER NOT NULL, 
+	score INTEGER, 
+	duration INTEGER, 
+	start_time DATETIME, 
+	end_time DATETIME, 
+	PRIMARY KEY (session_id), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-25 13:08:00 - [no key 0.00019s] ()
+2024-11-25 13:08:00 - 
+CREATE TABLE notifications (
+	notification_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	message TEXT NOT NULL, 
+	timestamp DATETIME, 
+	is_read INTEGER, 
+	PRIMARY KEY (notification_id), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-25 13:08:00 - [no key 0.00017s] ()
+2024-11-25 13:08:00 - COMMIT
+2024-11-25 13:08:31 - BEGIN (implicit)
+2024-11-25 13:08:31 - SELECT logs.id AS logs_id, logs.date AS logs_date, logs.log_type AS logs_log_type, logs.message AS logs_message 
+FROM logs
+2024-11-25 13:08:31 - [generated in 0.00017s] ()
+2024-11-25 13:08:31 - ROLLBACK
+2024-11-25 13:23:57 - INFO - BEGIN (implicit)
+2024-11-25 13:23:57 - INFO - PRAGMA main.table_info("auth")
+2024-11-25 13:23:57 - INFO - [raw sql] ()
+2024-11-25 13:23:57 - INFO - PRAGMA temp.table_info("auth")
+2024-11-25 13:23:57 - INFO - [raw sql] ()
+2024-11-25 13:23:57 - INFO - PRAGMA main.table_info("users")
+2024-11-25 13:23:57 - INFO - [raw sql] ()
+2024-11-25 13:23:57 - INFO - PRAGMA temp.table_info("users")
+2024-11-25 13:23:57 - INFO - [raw sql] ()
+2024-11-25 13:23:57 - INFO - PRAGMA main.table_info("dogs")
+2024-11-25 13:23:57 - INFO - [raw sql] ()
+2024-11-25 13:23:57 - INFO - PRAGMA temp.table_info("dogs")
+2024-11-25 13:23:57 - INFO - [raw sql] ()
+2024-11-25 13:23:57 - INFO - PRAGMA main.table_info("questions")
+2024-11-25 13:23:57 - INFO - [raw sql] ()
+2024-11-25 13:23:57 - INFO - PRAGMA temp.table_info("questions")
+2024-11-25 13:23:57 - INFO - [raw sql] ()
+2024-11-25 13:23:57 - INFO - PRAGMA main.table_info("game_sessions")
+2024-11-25 13:23:57 - INFO - [raw sql] ()
+2024-11-25 13:23:57 - INFO - PRAGMA temp.table_info("game_sessions")
+2024-11-25 13:23:57 - INFO - [raw sql] ()
+2024-11-25 13:23:57 - INFO - PRAGMA main.table_info("notifications")
+2024-11-25 13:23:57 - INFO - [raw sql] ()
+2024-11-25 13:23:57 - INFO - PRAGMA temp.table_info("notifications")
+2024-11-25 13:23:57 - INFO - [raw sql] ()
+2024-11-25 13:23:57 - INFO - PRAGMA main.table_info("logs")
+2024-11-25 13:23:57 - INFO - [raw sql] ()
+2024-11-25 13:23:57 - INFO - PRAGMA temp.table_info("logs")
+2024-11-25 13:23:57 - INFO - [raw sql] ()
+2024-11-25 13:23:57 - INFO - 
+CREATE TABLE auth (
+	user_id INTEGER NOT NULL, 
+	login VARCHAR NOT NULL, 
+	password VARCHAR NOT NULL, 
+	PRIMARY KEY (user_id), 
+	UNIQUE (login)
+)
+
+
+2024-11-25 13:23:57 - INFO - [no key 0.00010s] ()
+2024-11-25 13:23:57 - INFO - 
+CREATE TABLE dogs (
+	dog_id INTEGER NOT NULL, 
+	breed VARCHAR, 
+	characteristics TEXT, 
+	behavior TEXT, 
+	care_info TEXT, 
+	admin_comments TEXT, 
+	PRIMARY KEY (dog_id)
+)
+
+
+2024-11-25 13:23:57 - INFO - [no key 0.00017s] ()
+2024-11-25 13:23:57 - INFO - 
+CREATE TABLE logs (
+	id INTEGER NOT NULL, 
+	date DATETIME, 
+	log_type VARCHAR NOT NULL, 
+	message TEXT NOT NULL, 
+	PRIMARY KEY (id)
+)
+
+
+2024-11-25 13:23:57 - INFO - [no key 0.00016s] ()
+2024-11-25 13:23:57 - INFO - 
+CREATE TABLE users (
+	user_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	username VARCHAR NOT NULL, 
+	level INTEGER, 
+	achievement TEXT, 
+	PRIMARY KEY (user_id), 
+	FOREIGN KEY(user_id) REFERENCES auth (user_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-25 13:23:57 - INFO - [no key 0.00019s] ()
+2024-11-25 13:23:57 - INFO - 
+CREATE TABLE questions (
+	question_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	question_text TEXT NOT NULL, 
+	image_url VARCHAR, 
+	helpful_info TEXT, 
+	incorrect_attempts INTEGER, 
+	PRIMARY KEY (question_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-25 13:23:57 - INFO - [no key 0.00019s] ()
+2024-11-25 13:23:57 - INFO - 
+CREATE TABLE game_sessions (
+	session_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	level INTEGER NOT NULL, 
+	score INTEGER, 
+	duration INTEGER, 
+	start_time DATETIME, 
+	end_time DATETIME, 
+	PRIMARY KEY (session_id), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-25 13:23:57 - INFO - [no key 0.00026s] ()
+2024-11-25 13:23:57 - INFO - 
+CREATE TABLE notifications (
+	notification_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	message TEXT NOT NULL, 
+	timestamp DATETIME, 
+	is_read INTEGER, 
+	PRIMARY KEY (notification_id), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-25 13:23:57 - INFO - [no key 0.00022s] ()
+2024-11-25 13:23:57 - INFO - COMMIT
+2024-11-25 13:33:28 - INFO - BEGIN (implicit)
+2024-11-25 13:33:28 - INFO - SELECT logs.id AS logs_id, logs.date AS logs_date, logs.log_type AS logs_log_type, logs.message AS logs_message 
+FROM logs
+2024-11-25 13:33:28 - INFO - [generated in 0.00020s] ()
+2024-11-25 13:33:28 - INFO - ROLLBACK
+2024-11-25 13:33:31 - INFO - BEGIN (implicit)
+2024-11-25 13:33:31 - INFO - SELECT logs.id AS logs_id, logs.date AS logs_date, logs.log_type AS logs_log_type, logs.message AS logs_message 
+FROM logs
+2024-11-25 13:33:31 - INFO - [cached since 2.607s ago] ()
+2024-11-25 13:33:31 - INFO - ROLLBACK
+2024-11-25 13:33:31 - INFO - BEGIN (implicit)
+2024-11-25 13:33:31 - INFO - SELECT logs.id AS logs_id, logs.date AS logs_date, logs.log_type AS logs_log_type, logs.message AS logs_message 
+FROM logs 
+WHERE logs.log_type = ?
+2024-11-25 13:33:31 - INFO - [generated in 0.00035s] ('SYSTEM',)
+2024-11-25 13:33:31 - INFO - ROLLBACK
+2024-11-25 13:33:32 - INFO - BEGIN (implicit)
+2024-11-25 13:33:32 - INFO - SELECT logs.id AS logs_id, logs.date AS logs_date, logs.log_type AS logs_log_type, logs.message AS logs_message 
+FROM logs 
+WHERE logs.log_type = ?
+2024-11-25 13:33:32 - INFO - [cached since 0.5754s ago] ('INFO',)
+2024-11-25 13:33:32 - INFO - ROLLBACK
+2024-11-25 13:33:32 - INFO - BEGIN (implicit)
+2024-11-25 13:33:32 - INFO - SELECT logs.id AS logs_id, logs.date AS logs_date, logs.log_type AS logs_log_type, logs.message AS logs_message 
+FROM logs 
+WHERE logs.log_type = ?
+2024-11-25 13:33:32 - INFO - [cached since 1.054s ago] ('ERROR',)
+2024-11-25 13:33:32 - INFO - ROLLBACK
+2024-11-25 13:33:38 - INFO - BEGIN (implicit)
+2024-11-25 13:33:38 - INFO - SELECT logs.id AS logs_id, logs.date AS logs_date, logs.log_type AS logs_log_type, logs.message AS logs_message 
+FROM logs 
+WHERE logs.log_type = ?
+2024-11-25 13:33:38 - INFO - [cached since 6.751s ago] ('SYSTEM',)
+2024-11-25 13:33:38 - INFO - ROLLBACK
+2024-11-25 13:40:08 - INFO - BEGIN (implicit)
+2024-11-25 13:40:08 - INFO - SELECT logs.id AS logs_id, logs.date AS logs_date, logs.log_type AS logs_log_type, logs.message AS logs_message 
+FROM logs
+2024-11-25 13:40:08 - INFO - [generated in 0.00021s] ()
+2024-11-25 13:40:08 - INFO - ROLLBACK
+2024-11-25 13:40:25 - INFO - BEGIN (implicit)
+2024-11-25 13:40:25 - INFO - SELECT logs.id AS logs_id, logs.date AS logs_date, logs.log_type AS logs_log_type, logs.message AS logs_message 
+FROM logs 
+WHERE logs.log_type = ?
+2024-11-25 13:40:25 - INFO - [generated in 0.00017s] ('SYSTEM',)
+2024-11-25 13:40:25 - INFO - ROLLBACK
+2024-11-25 13:40:33 - INFO - BEGIN (implicit)
+2024-11-25 13:40:33 - INFO - SELECT logs.id AS logs_id, logs.date AS logs_date, logs.log_type AS logs_log_type, logs.message AS logs_message 
+FROM logs 
+WHERE logs.log_type = ?
+2024-11-25 13:40:33 - INFO - [cached since 7.706s ago] ('INFO',)
+2024-11-25 13:40:33 - INFO - ROLLBACK
+2024-11-25 13:40:35 - INFO - BEGIN (implicit)
+2024-11-25 13:40:35 - INFO - SELECT logs.id AS logs_id, logs.date AS logs_date, logs.log_type AS logs_log_type, logs.message AS logs_message 
+FROM logs
+2024-11-25 13:40:35 - INFO - [cached since 26.78s ago] ()
+2024-11-25 13:40:35 - INFO - ROLLBACK
+2024-11-25 13:40:44 - INFO - BEGIN (implicit)
+2024-11-25 13:40:44 - INFO - SELECT logs.id AS logs_id, logs.date AS logs_date, logs.log_type AS logs_log_type, logs.message AS logs_message 
+FROM logs 
+WHERE logs.log_type = ?
+2024-11-25 13:40:44 - INFO - [cached since 19.27s ago] ('SYSTEM',)
+2024-11-25 13:40:44 - INFO - ROLLBACK
+2024-11-25 13:40:45 - INFO - BEGIN (implicit)
+2024-11-25 13:40:45 - INFO - SELECT logs.id AS logs_id, logs.date AS logs_date, logs.log_type AS logs_log_type, logs.message AS logs_message 
+FROM logs 
+WHERE logs.log_type = ?
+2024-11-25 13:40:45 - INFO - [cached since 20.1s ago] ('INFO',)
+2024-11-25 13:40:45 - INFO - ROLLBACK
+2024-11-25 13:40:46 - INFO - BEGIN (implicit)
+2024-11-25 13:40:46 - INFO - SELECT logs.id AS logs_id, logs.date AS logs_date, logs.log_type AS logs_log_type, logs.message AS logs_message 
+FROM logs 
+WHERE logs.log_type = ?
+2024-11-25 13:40:46 - INFO - [cached since 21.3s ago] ('ERROR',)
+2024-11-25 13:40:46 - INFO - ROLLBACK
+2024-11-25 14:40:55 - INFO - BEGIN (implicit)
+2024-11-25 14:40:55 - INFO - SELECT notifications.notification_id AS notifications_notification_id, notifications.user_id AS notifications_user_id, notifications.message AS notifications_message, notifications.timestamp AS notifications_timestamp, notifications.is_read AS notifications_is_read 
+FROM notifications ORDER BY notifications.timestamp DESC
+2024-11-25 14:40:55 - INFO - [generated in 0.00027s] ()
+2024-11-25 14:40:55 - INFO - ROLLBACK
+2024-11-25 16:16:46 - INFO - BEGIN (implicit)
+2024-11-25 16:16:46 - INFO - SELECT logs.id AS logs_id, logs.date AS logs_date, logs.log_type AS logs_log_type, logs.message AS logs_message 
+FROM logs
+2024-11-25 16:16:46 - INFO - [generated in 0.00021s] ()
+2024-11-25 16:16:46 - INFO - ROLLBACK
+2024-11-25 16:16:50 - INFO - BEGIN (implicit)
+2024-11-25 16:16:50 - INFO - SELECT count(*) AS count_1 
+FROM (SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users) AS anon_1
+2024-11-25 16:16:50 - INFO - [generated in 0.00024s] ()
+2024-11-25 16:16:50 - INFO - SELECT game_sessions.level AS game_sessions_level, count(game_sessions.session_id) AS count_1 
+FROM game_sessions GROUP BY game_sessions.level
+2024-11-25 16:16:50 - INFO - [generated in 0.00019s] ()
+2024-11-25 16:16:50 - INFO - SELECT questions.question_text AS questions_question_text, questions.incorrect_attempts AS questions_incorrect_attempts 
+FROM questions ORDER BY questions.incorrect_attempts DESC
+2024-11-25 16:16:50 - INFO - [generated in 0.00016s] ()
+2024-11-25 16:16:50 - INFO - SELECT avg(game_sessions.duration) AS avg_1 
+FROM game_sessions
+2024-11-25 16:16:50 - INFO - [generated in 0.00013s] ()
+2024-11-25 16:16:50 - INFO - ROLLBACK
+2024-11-25 16:16:51 - INFO - BEGIN (implicit)
+2024-11-25 16:16:51 - INFO - SELECT game_sessions.start_time AS game_sessions_start_time 
+FROM game_sessions
+2024-11-25 16:16:51 - INFO - [generated in 0.00014s] ()
+2024-11-25 16:16:51 - INFO - ROLLBACK
+2024-11-25 16:20:02 - INFO - BEGIN (implicit)
+2024-11-25 16:20:02 - INFO - SELECT logs.id AS logs_id, logs.date AS logs_date, logs.log_type AS logs_log_type, logs.message AS logs_message 
+FROM logs
+2024-11-25 16:20:02 - INFO - [generated in 0.00020s] ()
+2024-11-25 16:20:02 - INFO - ROLLBACK
+2024-11-25 16:20:03 - INFO - BEGIN (implicit)
+2024-11-25 16:20:03 - INFO - SELECT count(*) AS count_1 
+FROM (SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users) AS anon_1
+2024-11-25 16:20:03 - INFO - [generated in 0.00025s] ()
+2024-11-25 16:20:03 - INFO - SELECT game_sessions.level AS game_sessions_level, count(game_sessions.session_id) AS count_1 
+FROM game_sessions GROUP BY game_sessions.level
+2024-11-25 16:20:03 - INFO - [generated in 0.00014s] ()
+2024-11-25 16:20:03 - INFO - SELECT questions.question_text AS questions_question_text, questions.incorrect_attempts AS questions_incorrect_attempts 
+FROM questions ORDER BY questions.incorrect_attempts DESC
+2024-11-25 16:20:03 - INFO - [generated in 0.00013s] ()
+2024-11-25 16:20:03 - INFO - SELECT avg(game_sessions.duration) AS avg_1 
+FROM game_sessions
+2024-11-25 16:20:03 - INFO - [generated in 0.00013s] ()
+2024-11-25 16:20:03 - INFO - ROLLBACK
+2024-11-25 16:20:03 - INFO - BEGIN (implicit)
+2024-11-25 16:20:03 - INFO - SELECT game_sessions.start_time AS game_sessions_start_time 
+FROM game_sessions
+2024-11-25 16:20:03 - INFO - [generated in 0.00015s] ()
+2024-11-25 16:20:03 - INFO - ROLLBACK
+2024-11-25 16:33:54 - INFO - BEGIN (implicit)
+2024-11-25 16:33:54 - INFO - SELECT logs.id AS logs_id, logs.date AS logs_date, logs.log_type AS logs_log_type, logs.message AS logs_message 
+FROM logs
+2024-11-25 16:33:54 - INFO - [generated in 0.00020s] ()
+2024-11-25 16:33:54 - INFO - ROLLBACK
+2024-11-25 16:33:55 - INFO - BEGIN (implicit)
+2024-11-25 16:33:55 - INFO - SELECT count(*) AS count_1 
+FROM (SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users) AS anon_1
+2024-11-25 16:33:55 - INFO - [generated in 0.00022s] ()
+2024-11-25 16:33:55 - INFO - SELECT game_sessions.level AS game_sessions_level, count(game_sessions.session_id) AS count_1 
+FROM game_sessions GROUP BY game_sessions.level
+2024-11-25 16:33:55 - INFO - [generated in 0.00019s] ()
+2024-11-25 16:33:55 - INFO - SELECT questions.question_text AS questions_question_text, questions.incorrect_attempts AS questions_incorrect_attempts 
+FROM questions ORDER BY questions.incorrect_attempts DESC
+2024-11-25 16:33:55 - INFO - [generated in 0.00012s] ()
+2024-11-25 16:33:55 - INFO - SELECT avg(game_sessions.duration) AS avg_1 
+FROM game_sessions
+2024-11-25 16:33:55 - INFO - [generated in 0.00012s] ()
+2024-11-25 16:33:55 - INFO - ROLLBACK
+2024-11-25 16:33:55 - INFO - BEGIN (implicit)
+2024-11-25 16:33:55 - INFO - SELECT game_sessions.start_time AS game_sessions_start_time 
+FROM game_sessions
+2024-11-25 16:33:55 - INFO - [generated in 0.00014s] ()
+2024-11-25 16:33:55 - INFO - ROLLBACK
+2024-11-25 16:37:51 - INFO - BEGIN (implicit)
+2024-11-25 16:37:51 - INFO - SELECT logs.id AS logs_id, logs.date AS logs_date, logs.log_type AS logs_log_type, logs.message AS logs_message 
+FROM logs
+2024-11-25 16:37:51 - INFO - [generated in 0.00027s] ()
+2024-11-25 16:37:51 - INFO - ROLLBACK
+2024-11-25 16:37:54 - INFO - BEGIN (implicit)
+2024-11-25 16:37:54 - INFO - SELECT count(*) AS count_1 
+FROM (SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users) AS anon_1
+2024-11-25 16:37:54 - INFO - [generated in 0.00021s] ()
+2024-11-25 16:37:54 - INFO - SELECT game_sessions.level AS game_sessions_level, count(game_sessions.session_id) AS count_1 
+FROM game_sessions GROUP BY game_sessions.level
+2024-11-25 16:37:54 - INFO - [generated in 0.00014s] ()
+2024-11-25 16:37:54 - INFO - SELECT questions.question_text AS questions_question_text, questions.incorrect_attempts AS questions_incorrect_attempts 
+FROM questions ORDER BY questions.incorrect_attempts DESC
+2024-11-25 16:37:54 - INFO - [generated in 0.00013s] ()
+2024-11-25 16:37:54 - INFO - SELECT avg(game_sessions.duration) AS avg_1 
+FROM game_sessions
+2024-11-25 16:37:54 - INFO - [generated in 0.00012s] ()
+2024-11-25 16:37:54 - INFO - ROLLBACK
+2024-11-25 16:37:54 - INFO - BEGIN (implicit)
+2024-11-25 16:37:54 - INFO - SELECT game_sessions.start_time AS game_sessions_start_time 
+FROM game_sessions
+2024-11-25 16:37:54 - INFO - [generated in 0.00017s] ()
+2024-11-25 16:37:54 - INFO - ROLLBACK
+2024-11-25 16:54:01 - BEGIN (implicit)
+2024-11-25 16:54:01 - PRAGMA main.table_info("auth")
+2024-11-25 16:54:01 - [raw sql] ()
+2024-11-25 16:54:01 - PRAGMA temp.table_info("auth")
+2024-11-25 16:54:01 - [raw sql] ()
+2024-11-25 16:54:01 - PRAGMA main.table_info("users")
+2024-11-25 16:54:01 - [raw sql] ()
+2024-11-25 16:54:01 - PRAGMA temp.table_info("users")
+2024-11-25 16:54:01 - [raw sql] ()
+2024-11-25 16:54:01 - PRAGMA main.table_info("dogs")
+2024-11-25 16:54:01 - [raw sql] ()
+2024-11-25 16:54:01 - PRAGMA temp.table_info("dogs")
+2024-11-25 16:54:01 - [raw sql] ()
+2024-11-25 16:54:01 - PRAGMA main.table_info("questions")
+2024-11-25 16:54:01 - [raw sql] ()
+2024-11-25 16:54:01 - PRAGMA temp.table_info("questions")
+2024-11-25 16:54:01 - [raw sql] ()
+2024-11-25 16:54:01 - PRAGMA main.table_info("game_sessions")
+2024-11-25 16:54:01 - [raw sql] ()
+2024-11-25 16:54:01 - PRAGMA temp.table_info("game_sessions")
+2024-11-25 16:54:01 - [raw sql] ()
+2024-11-25 16:54:01 - PRAGMA main.table_info("notifications")
+2024-11-25 16:54:01 - [raw sql] ()
+2024-11-25 16:54:01 - PRAGMA temp.table_info("notifications")
+2024-11-25 16:54:01 - [raw sql] ()
+2024-11-25 16:54:01 - 
+CREATE TABLE auth (
+	user_id INTEGER NOT NULL, 
+	login VARCHAR NOT NULL, 
+	password VARCHAR NOT NULL, 
+	PRIMARY KEY (user_id), 
+	UNIQUE (login)
+)
+
+
+2024-11-25 16:54:01 - [no key 0.00010s] ()
+2024-11-25 16:54:01 - 
+CREATE TABLE dogs (
+	dog_id INTEGER NOT NULL, 
+	breed VARCHAR, 
+	characteristics TEXT, 
+	behavior TEXT, 
+	care_info TEXT, 
+	admin_comments TEXT, 
+	PRIMARY KEY (dog_id)
+)
+
+
+2024-11-25 16:54:01 - [no key 0.00017s] ()
+2024-11-25 16:54:01 - 
+CREATE TABLE users (
+	user_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	username VARCHAR NOT NULL, 
+	level INTEGER, 
+	achievement TEXT, 
+	PRIMARY KEY (user_id), 
+	FOREIGN KEY(user_id) REFERENCES auth (user_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-25 16:54:01 - [no key 0.00018s] ()
+2024-11-25 16:54:01 - 
+CREATE TABLE questions (
+	question_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	question_text TEXT NOT NULL, 
+	image_url VARCHAR, 
+	helpful_info TEXT, 
+	incorrect_attempts INTEGER, 
+	PRIMARY KEY (question_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-25 16:54:01 - [no key 0.00017s] ()
+2024-11-25 16:54:02 - 
+CREATE TABLE game_sessions (
+	session_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	level INTEGER NOT NULL, 
+	score INTEGER, 
+	duration INTEGER, 
+	start_time DATETIME, 
+	end_time DATETIME, 
+	PRIMARY KEY (session_id), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-25 16:54:02 - [no key 0.00018s] ()
+2024-11-25 16:54:02 - 
+CREATE TABLE notifications (
+	notification_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	message TEXT NOT NULL, 
+	timestamp DATETIME, 
+	is_read INTEGER, 
+	PRIMARY KEY (notification_id), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-25 16:54:02 - [no key 0.00017s] ()
+2024-11-25 16:54:02 - COMMIT
+2024-11-25 16:57:03 - BEGIN (implicit)
+2024-11-25 16:57:03 - SELECT count(*) AS count_1 
+FROM (SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users) AS anon_1
+2024-11-25 16:57:03 - [generated in 0.00029s] ()
+2024-11-25 16:57:03 - SELECT game_sessions.level AS game_sessions_level, count(game_sessions.session_id) AS count_1 
+FROM game_sessions GROUP BY game_sessions.level
+2024-11-25 16:57:03 - [generated in 0.00014s] ()
+2024-11-25 16:57:03 - SELECT questions.question_text AS questions_question_text, questions.incorrect_attempts AS questions_incorrect_attempts 
+FROM questions ORDER BY questions.incorrect_attempts DESC
+2024-11-25 16:57:03 - [generated in 0.00013s] ()
+2024-11-25 16:57:03 - SELECT avg(game_sessions.duration) AS avg_1 
+FROM game_sessions
+2024-11-25 16:57:03 - [generated in 0.00012s] ()
+2024-11-25 16:57:03 - ROLLBACK
+2024-11-25 16:57:03 - BEGIN (implicit)
+2024-11-25 16:57:03 - SELECT game_sessions.start_time AS game_sessions_start_time 
+FROM game_sessions
+2024-11-25 16:57:03 - [generated in 0.00014s] ()
+2024-11-25 16:57:03 - ROLLBACK
+2024-11-25 17:04:27 - BEGIN (implicit)
+2024-11-25 17:04:27 - SELECT count(*) AS count_1 
+FROM (SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users) AS anon_1
+2024-11-25 17:04:27 - [generated in 0.00024s] ()
+2024-11-25 17:04:27 - SELECT game_sessions.level AS game_sessions_level, count(game_sessions.session_id) AS count_1 
+FROM game_sessions GROUP BY game_sessions.level
+2024-11-25 17:04:27 - [generated in 0.00014s] ()
+2024-11-25 17:04:27 - SELECT questions.question_text AS questions_question_text, questions.incorrect_attempts AS questions_incorrect_attempts 
+FROM questions ORDER BY questions.incorrect_attempts DESC
+2024-11-25 17:04:27 - [generated in 0.00013s] ()
+2024-11-25 17:04:27 - SELECT avg(game_sessions.duration) AS avg_1 
+FROM game_sessions
+2024-11-25 17:04:27 - [generated in 0.00012s] ()
+2024-11-25 17:04:27 - ROLLBACK
+2024-11-25 17:04:27 - BEGIN (implicit)
+2024-11-25 17:04:27 - SELECT game_sessions.start_time AS game_sessions_start_time 
+FROM game_sessions
+2024-11-25 17:04:27 - [generated in 0.00014s] ()
+2024-11-25 17:04:27 - ROLLBACK
+2024-11-25 19:09:00 - BEGIN (implicit)
+2024-11-25 19:09:00 - SELECT count(*) AS count_1 
+FROM (SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users) AS anon_1
+2024-11-25 19:09:00 - [generated in 0.00042s] ()
+2024-11-25 19:09:00 - SELECT game_sessions.level AS game_sessions_level, count(game_sessions.session_id) AS count_1 
+FROM game_sessions GROUP BY game_sessions.level
+2024-11-25 19:09:00 - [generated in 0.00037s] ()
+2024-11-25 19:09:00 - SELECT questions.question_text AS questions_question_text, questions.incorrect_attempts AS questions_incorrect_attempts 
+FROM questions ORDER BY questions.incorrect_attempts DESC
+2024-11-25 19:09:00 - [generated in 0.00028s] ()
+2024-11-25 19:09:00 - SELECT avg(game_sessions.duration) AS avg_1 
+FROM game_sessions
+2024-11-25 19:09:00 - [generated in 0.00018s] ()
+2024-11-25 19:09:00 - ROLLBACK
+2024-11-25 19:09:00 - BEGIN (implicit)
+2024-11-25 19:09:00 - SELECT game_sessions.start_time AS game_sessions_start_time 
+FROM game_sessions
+2024-11-25 19:09:00 - [generated in 0.00018s] ()
+2024-11-25 19:09:00 - ROLLBACK
+2024-11-25 19:10:40 - BEGIN (implicit)
+2024-11-25 19:10:40 - SELECT count(*) AS count_1 
+FROM (SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users) AS anon_1
+2024-11-25 19:10:40 - [generated in 0.00032s] ()
+2024-11-25 19:10:40 - SELECT game_sessions.level AS game_sessions_level, count(game_sessions.session_id) AS count_1 
+FROM game_sessions GROUP BY game_sessions.level
+2024-11-25 19:10:40 - [generated in 0.00016s] ()
+2024-11-25 19:10:40 - SELECT questions.question_text AS questions_question_text, questions.incorrect_attempts AS questions_incorrect_attempts 
+FROM questions ORDER BY questions.incorrect_attempts DESC
+2024-11-25 19:10:40 - [generated in 0.00013s] ()
+2024-11-25 19:10:40 - SELECT avg(game_sessions.duration) AS avg_1 
+FROM game_sessions
+2024-11-25 19:10:40 - [generated in 0.00021s] ()
+2024-11-25 19:10:40 - ROLLBACK
+2024-11-25 19:10:40 - BEGIN (implicit)
+2024-11-25 19:10:40 - SELECT game_sessions.start_time AS game_sessions_start_time 
+FROM game_sessions
+2024-11-25 19:10:40 - [generated in 0.00018s] ()
+2024-11-25 19:10:40 - ROLLBACK
+2024-11-25 19:17:48 - BEGIN (implicit)
+2024-11-25 19:17:48 - SELECT count(*) AS count_1 
+FROM (SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users) AS anon_1
+2024-11-25 19:17:48 - [generated in 0.00031s] ()
+2024-11-25 19:17:48 - SELECT game_sessions.level AS game_sessions_level, count(game_sessions.session_id) AS count_1 
+FROM game_sessions GROUP BY game_sessions.level
+2024-11-25 19:17:48 - [generated in 0.00021s] ()
+2024-11-25 19:17:48 - SELECT questions.question_text AS questions_question_text, questions.incorrect_attempts AS questions_incorrect_attempts 
+FROM questions ORDER BY questions.incorrect_attempts DESC
+2024-11-25 19:17:48 - [generated in 0.00018s] ()
+2024-11-25 19:17:48 - SELECT avg(game_sessions.duration) AS avg_1 
+FROM game_sessions
+2024-11-25 19:17:48 - [generated in 0.00023s] ()
+2024-11-25 19:17:48 - ROLLBACK
+2024-11-25 19:17:48 - BEGIN (implicit)
+2024-11-25 19:17:48 - SELECT game_sessions.start_time AS game_sessions_start_time 
+FROM game_sessions
+2024-11-25 19:17:48 - [generated in 0.00020s] ()
+2024-11-25 19:17:48 - ROLLBACK
+2024-11-25 19:20:49 - BEGIN (implicit)
+2024-11-25 19:20:49 - SELECT count(*) AS count_1 
+FROM (SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users) AS anon_1
+2024-11-25 19:20:49 - [generated in 0.00032s] ()
+2024-11-25 19:20:49 - SELECT game_sessions.level AS game_sessions_level, count(game_sessions.session_id) AS count_1 
+FROM game_sessions GROUP BY game_sessions.level
+2024-11-25 19:20:49 - [generated in 0.00033s] ()
+2024-11-25 19:20:49 - SELECT questions.question_text AS questions_question_text, questions.incorrect_attempts AS questions_incorrect_attempts 
+FROM questions ORDER BY questions.incorrect_attempts DESC
+2024-11-25 19:20:49 - [generated in 0.00020s] ()
+2024-11-25 19:20:49 - SELECT avg(game_sessions.duration) AS avg_1 
+FROM game_sessions
+2024-11-25 19:20:49 - [generated in 0.00018s] ()
+2024-11-25 19:20:49 - ROLLBACK
+2024-11-25 19:20:50 - BEGIN (implicit)
+2024-11-25 19:20:50 - SELECT game_sessions.start_time AS game_sessions_start_time 
+FROM game_sessions
+2024-11-25 19:20:50 - [generated in 0.00015s] ()
+2024-11-25 19:20:50 - ROLLBACK
+2024-11-25 19:21:14 - BEGIN (implicit)
+2024-11-25 19:21:14 - SELECT count(*) AS count_1 
+FROM (SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users) AS anon_1
+2024-11-25 19:21:14 - [generated in 0.00029s] ()
+2024-11-25 19:21:14 - SELECT game_sessions.level AS game_sessions_level, count(game_sessions.session_id) AS count_1 
+FROM game_sessions GROUP BY game_sessions.level
+2024-11-25 19:21:14 - [generated in 0.00020s] ()
+2024-11-25 19:21:14 - SELECT questions.question_text AS questions_question_text, questions.incorrect_attempts AS questions_incorrect_attempts 
+FROM questions ORDER BY questions.incorrect_attempts DESC
+2024-11-25 19:21:14 - [generated in 0.00013s] ()
+2024-11-25 19:21:14 - SELECT avg(game_sessions.duration) AS avg_1 
+FROM game_sessions
+2024-11-25 19:21:14 - [generated in 0.00026s] ()
+2024-11-25 19:21:14 - ROLLBACK
+2024-11-25 19:21:14 - BEGIN (implicit)
+2024-11-25 19:21:14 - SELECT game_sessions.start_time AS game_sessions_start_time 
+FROM game_sessions
+2024-11-25 19:21:14 - [generated in 0.00026s] ()
+2024-11-25 19:21:14 - ROLLBACK
+2024-11-25 19:32:52 - BEGIN (implicit)
+2024-11-25 19:32:52 - SELECT count(*) AS count_1 
+FROM (SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users) AS anon_1
+2024-11-25 19:32:52 - [generated in 0.00030s] ()
+2024-11-25 19:32:52 - SELECT game_sessions.level AS game_sessions_level, count(game_sessions.session_id) AS count_1 
+FROM game_sessions GROUP BY game_sessions.level
+2024-11-25 19:32:52 - [generated in 0.00017s] ()
+2024-11-25 19:32:52 - SELECT questions.question_text AS questions_question_text, questions.incorrect_attempts AS questions_incorrect_attempts 
+FROM questions ORDER BY questions.incorrect_attempts DESC
+2024-11-25 19:32:52 - [generated in 0.00013s] ()
+2024-11-25 19:32:52 - SELECT avg(game_sessions.duration) AS avg_1 
+FROM game_sessions
+2024-11-25 19:32:52 - [generated in 0.00020s] ()
+2024-11-25 19:32:52 - ROLLBACK
+2024-11-25 19:32:52 - BEGIN (implicit)
+2024-11-25 19:32:52 - SELECT game_sessions.start_time AS game_sessions_start_time 
+FROM game_sessions
+2024-11-25 19:32:52 - [generated in 0.00016s] ()
+2024-11-25 19:32:52 - ROLLBACK

@@ -42,6 +42,7 @@ def view_knowledge_base(frame):
 
 
 def generate_questions(frame):
+    print("Я по приколу вызвался")
     """Генерация вопросов на основе текстов."""
     clear_frame(frame)
     tk.Label(frame, text="Генерация вопросов", font=("Comic Sans MS", 16)).pack()

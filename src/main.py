@@ -1,24 +1,26 @@
-from tkinter import Tk
-from tkinter import messagebox
-from src.ui.auth_ui import DogAcademyApp  # Изменил на правильный путь
-from database.db_session import init_db
+from tkinter import Tk, messagebox
+from src.ui.auth_ui import DogAcademyApp  # Путь к приложению
+from database.db_session import init_db, close_sessions  # Функция для закрытия сессий
 
 def on_close():
     """Обработчик закрытия окна."""
     if messagebox.askokcancel("Выход", "Вы действительно хотите выйти?"):
-        root.destroy()
+        print("Закрытие игры...")
+        close_sessions()  # Закрытие всех сессий перед выходом
+        root.quit()  # Завершаем главный цикл приложения
+        root.destroy()  # Закрытие окна
 
 def main():
     """Основной запуск приложения."""
     global root
-    # Инициализируем базу данных
+    # Инициализация базы данных
     init_db()
 
-    # Запускаем графический интерфейс
-    root = Tk()
-    root.protocol("WM_DELETE_WINDOW", on_close)
+    # Создаем экземпляр приложения
     app = DogAcademyApp(root)
-    root.mainloop()
+    root.protocol("WM_DELETE_WINDOW", on_close)  # Перехват события закрытия окна
+    root.mainloop()  # Запуск основного цикла обработки событий
 
 if __name__ == "__main__":
+    root = Tk()  # Создание корневого окна
     main()

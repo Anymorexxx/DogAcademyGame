@@ -52,4 +52,3 @@ def export_logs():
         writer.writerow(["Время", "Действие", "Пользователь"])
         writer.writerows(data)
     print("Логи успешно экспортированы в logs.csv")
-

@@ -219,4 +219,3 @@ class DogAcademyApp:
     def show_user_dashboard(self):
         """Перейти к главному меню пользователя после авторизации."""
         UserApp(self.root, self)
-

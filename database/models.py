@@ -82,4 +82,3 @@ class Notifications(Base):
 
     # Связь с таблицей Users
     user = relationship("Users", back_populates="notifications")
-

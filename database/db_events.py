@@ -26,20 +26,3 @@ def check_user(login, password):
         return False
     finally:
         session.close()
-
-
-def log_db_event(event_message, root):
-    # Логирование события с базы данных
-    try:
-        # Пример добавления события в лог
-        with open('logs/database_logs.txt', 'a') as log_file:
-            log_file.write(event_message + "\n")
-
-        # Уведомление для администратора
-        notification = Notifications(root)
-        notification.show_info("Событие", f"Событие успешно записано: {event_message}")
-
-    except Exception as e:
-        # Если ошибка при записи в лог
-        notification = Notifications(root)
-        notification.show_error("Ошибка", f"Ошибка при записи в лог: {str(e)}")
