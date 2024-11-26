@@ -13,7 +13,6 @@ Session = sessionmaker(bind=engine)
 # Переменная для хранения текущей сессии
 current_session = None
 
-
 def init_db(refresh=False):
     """
     Инициализация базы данных: создание файла и таблиц.
@@ -33,18 +32,14 @@ def init_db(refresh=False):
     # Инициализация сессии при запуске
     current_session = get_session()
 
-
 def get_session():
     """Возвращает сессию для работы с базой данных."""
     return Session()
 
-
 def close_sessions():
     """Закрытие всех сессий перед выходом из программы."""
-    global current_session
-    if current_session is not None:
+    if current_session:
         print("Закрытие сессии...")
-        current_session.close()  # Закрываем текущую сессию базы данных
-        current_session = None
+        current_session.close()
     else:
         print("Нет активной сессии для закрытия.")

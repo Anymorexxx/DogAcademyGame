@@ -1,10 +1,9 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Text, DateTime
+from sqlalchemy import Column, Integer, String, ForeignKey, Text, DateTime, UniqueConstraint, Boolean
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
-
 
 class Auth(Base):
     __tablename__ = 'auth'
@@ -50,7 +49,7 @@ class Questions(Base):
     __tablename__ = 'questions'
     question_id = Column(Integer, primary_key=True)
     dog_id = Column(Integer, ForeignKey('dogs.dog_id'))
-    question_text = Column(Text, nullable=False)  # Исправлено поле
+    question_text = Column(Text, nullable=False)
     image_url = Column(String)
     helpful_info = Column(Text)
     incorrect_attempts = Column(Integer, default=0)
@@ -61,16 +60,23 @@ class Questions(Base):
 
 class GameSession(Base):
     __tablename__ = 'game_sessions'
+    __table_args__ = (
+        UniqueConstraint('user_id', 'level', name='uix_user_level'),
+    )
     session_id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('users.user_id'))
     level = Column(Integer, nullable=False)
     score = Column(Integer, default=0)
     duration = Column(Integer)  # Время игры в секундах
-    start_time = Column(DateTime, default=func.now())  # Исправлено
+    start_time = Column(DateTime, default=func.now())
     end_time = Column(DateTime, nullable=True)
+    health = Column(Integer, default=100)  # Здоровье
+    hunger = Column(Integer, default=0)  # Голод
+    sleepiness = Column(Integer, default=0)  # Сонливость
 
     # Связь с таблицей Users
     user = relationship("Users", back_populates="game_sessions")
+
 
 class Notifications(Base):
     __tablename__ = 'notifications'
@@ -78,7 +84,7 @@ class Notifications(Base):
     user_id = Column(Integer, ForeignKey('users.user_id'))
     message = Column(Text, nullable=False)
     timestamp = Column(DateTime, default=func.now())
-    is_read = Column(Integer, default=0)  # 0 - не прочитано, 1 - прочитано
+    is_read = Column(Boolean, default=False)  # Булевый тип для read
 
     # Связь с таблицей Users
     user = relationship("Users", back_populates="notifications")

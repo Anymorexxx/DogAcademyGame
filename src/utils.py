@@ -1,4 +1,6 @@
 import tkinter as tk
+from tkinter import messagebox
+
 
 def clear_frame(frame):
     """Удаление всех виджетов из фрейма."""
@@ -16,16 +18,10 @@ def feature_in_development(frame):
         font=("Comic Sans MS", 16)
     ).pack(expand=True)
 
-def create_tooltip(widget, text):
-    """Создание подсказки для виджета."""
-    tooltip = tk.Toplevel()
-    tooltip.wm_overrideredirect(True)  # Отключаем рамки окна
-    tooltip.wm_geometry(f"+{widget.winfo_rootx() + 20}+{widget.winfo_rooty() + 20}")
-    label = tk.Label(tooltip, text=text, bg="#333", fg="#fff", font=("Comic Sans MS", 10), padx=5, pady=5)
-    label.pack()
-
-    def hide_tooltip(event):
-        tooltip.destroy()
-
-    widget.bind("<Enter>", lambda event: tooltip.deiconify())
-    widget.bind("<Leave>", hide_tooltip)
+def show_message(message):
+    """Показать сообщение пользователю"""
+    message_window = tk.Toplevel()
+    message_label = tk.Label(message_window, text=message, font=("Comic Sans MS", 16))
+    message_label.pack(pady=20)
+    ok_button = tk.Button(message_window, text="OK", command=message_window.destroy)
+    ok_button.pack(pady=10)

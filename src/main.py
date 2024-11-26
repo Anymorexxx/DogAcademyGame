@@ -1,3 +1,7 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+
 from tkinter import Tk, messagebox
 from src.ui.auth_ui import DogAcademyApp  # Путь к приложению
 from database.db_session import init_db, close_sessions  # Функция для закрытия сессий
