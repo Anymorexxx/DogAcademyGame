@@ -1468,3 +1468,139 @@ WHERE auth.login = ? AND auth.password = ?
  LIMIT ? OFFSET ?
 2024-11-26 22:41:31 - [generated in 0.00027s] ('lubluNikitu', 'meow123', 1, 0)
 2024-11-26 22:41:31 - ROLLBACK
+2024-11-27 03:17:42 - Логирование игры начато.
+2024-11-27 03:18:02 - BEGIN (implicit)
+2024-11-27 03:18:02 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-27 03:18:02 - [generated in 0.00025s] ('lubluNikitu', 'meow123', 1, 0)
+2024-11-27 03:18:02 - ROLLBACK
+2024-11-27 03:18:05 - Ошибка загрузки фона: [Errno 2] No such file or directory: 'F:\\Projects\\Dog_Academy\\assets\\backgrounds\\game_bg.jpg'
+2024-11-27 03:18:06 - Ошибка загрузки фона: [Errno 2] No such file or directory: 'F:\\Projects\\Dog_Academy\\assets\\backgrounds\\game_bg.jpg'
+2024-11-27 03:18:56 - Логирование игры начато.
+2024-11-27 03:19:13 - BEGIN (implicit)
+2024-11-27 03:19:13 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-27 03:19:13 - [generated in 0.00020s] ('lubluNikitu', 'meow123', 1, 0)
+2024-11-27 03:19:13 - ROLLBACK
+2024-11-27 03:21:30 - Логирование игры начато.
+2024-11-27 03:22:34 - Логирование игры начато.
+2024-11-27 03:22:52 - BEGIN (implicit)
+2024-11-27 03:22:52 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-27 03:22:52 - [generated in 0.00020s] ('lubluNikitu', 'meow123', 1, 0)
+2024-11-27 03:22:52 - ROLLBACK
+2024-11-27 03:29:42 - Логирование игры начато.
+2024-11-27 03:30:02 - BEGIN (implicit)
+2024-11-27 03:30:02 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-27 03:30:02 - [generated in 0.00021s] ('lubluNikitu', 'meow123', 1, 0)
+2024-11-27 03:30:02 - ROLLBACK
+2024-11-27 04:32:20 - Логирование игры начато.
+2024-11-27 04:32:41 - BEGIN (implicit)
+2024-11-27 04:32:41 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-27 04:32:41 - [generated in 0.00026s] ('lubluNikitu', 'meow123', 1, 0)
+2024-11-27 04:32:41 - ROLLBACK
+2024-11-27 04:45:10 - Логирование игры начато.
+2024-11-27 04:45:31 - BEGIN (implicit)
+2024-11-27 04:45:31 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-27 04:45:31 - [generated in 0.00021s] ('lubluNikitu', 'meow123', 1, 0)
+2024-11-27 04:45:31 - ROLLBACK
+2024-11-27 04:45:46 - Игровой прогресс сохранен. Выход из игры.
+2024-11-27 04:49:27 - Логирование игры начато.
+2024-11-27 04:49:45 - BEGIN (implicit)
+2024-11-27 04:49:45 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-27 04:49:45 - [generated in 0.00027s] ('lubluNikitu', 'meow123', 1, 0)
+2024-11-27 04:49:45 - ROLLBACK
+2024-11-27 04:50:15 - Игровой прогресс сохранен. Возврат в главное меню.
+2024-11-27 04:50:17 - Игровой прогресс сохранен. Возврат в главное меню.
+2024-11-27 04:56:11 - Логирование игры начато.
+2024-11-27 04:56:26 - BEGIN (implicit)
+2024-11-27 04:56:26 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-27 04:56:26 - [generated in 0.00019s] ('lubluNikitu', 'meow123', 1, 0)
+2024-11-27 04:56:26 - ROLLBACK
+2024-11-27 04:58:30 - Игровой прогресс сохранен. Возврат в главное меню.
+2024-11-27 04:58:36 - Игровой прогресс сохранен. Возврат в главное меню.
+2024-11-27 05:07:30 - Логирование игры начато.
+2024-11-27 05:07:45 - BEGIN (implicit)
+2024-11-27 05:07:45 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-27 05:07:45 - [generated in 0.00020s] ('lubluNikitu', 'meow123', 1, 0)
+2024-11-27 05:07:45 - ROLLBACK
+2024-11-27 05:08:40 - Игровой прогресс сохранен. Возврат в главное меню.
+2024-11-27 05:18:36 - Логирование игры начато.
+2024-11-27 05:18:51 - BEGIN (implicit)
+2024-11-27 05:18:51 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-27 05:18:51 - [generated in 0.00021s] ('lubluNikitu', 'meow123', 1, 0)
+2024-11-27 05:18:51 - ROLLBACK
+2024-11-27 05:20:47 - Логирование игры начато.
+2024-11-27 05:21:04 - BEGIN (implicit)
+2024-11-27 05:21:04 - SELECT count(*) AS count_1 
+FROM (SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users) AS anon_1
+2024-11-27 05:21:04 - [generated in 0.00024s] ()
+2024-11-27 05:21:04 - SELECT game_sessions.level AS game_sessions_level, count(game_sessions.session_id) AS count_1 
+FROM game_sessions GROUP BY game_sessions.level
+2024-11-27 05:21:04 - [generated in 0.00021s] ()
+2024-11-27 05:21:04 - SELECT questions.question_text AS questions_question_text, questions.incorrect_attempts AS questions_incorrect_attempts 
+FROM questions ORDER BY questions.incorrect_attempts DESC
+2024-11-27 05:21:04 - [generated in 0.00017s] ()
+2024-11-27 05:21:04 - SELECT avg(game_sessions.duration) AS avg_1 
+FROM game_sessions
+2024-11-27 05:21:04 - [generated in 0.00012s] ()
+2024-11-27 05:21:04 - ROLLBACK
+2024-11-27 05:21:04 - BEGIN (implicit)
+2024-11-27 05:21:04 - SELECT game_sessions.start_time AS game_sessions_start_time 
+FROM game_sessions
+2024-11-27 05:21:04 - [generated in 0.00017s] ()
+2024-11-27 05:21:04 - ROLLBACK
+2024-11-27 05:22:02 - Логирование игры начато.
+2024-11-27 05:22:20 - BEGIN (implicit)
+2024-11-27 05:22:20 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-27 05:22:20 - [generated in 0.00031s] ('lubluNikitu', 'meow123', 1, 0)
+2024-11-27 05:22:20 - ROLLBACK
+2024-11-27 05:31:47 - Логирование игры начато.
+2024-11-27 05:32:05 - BEGIN (implicit)
+2024-11-27 05:32:05 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-27 05:32:05 - [generated in 0.00020s] ('lubluNikitu', 'meow123', 1, 0)
+2024-11-27 05:32:05 - ROLLBACK
+2024-11-27 05:34:43 - Логирование игры начато.
+2024-11-27 05:34:58 - BEGIN (implicit)
+2024-11-27 05:34:58 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-27 05:34:58 - [generated in 0.00022s] ('lubluNikitu', 'meow123', 1, 0)
+2024-11-27 05:34:58 - ROLLBACK
+2024-11-27 05:35:32 - Сохранение прогресса: уровень 2, собрано косточек 0.
+2024-11-27 05:35:41 - Сохранение прогресса: уровень 1, собрано косточек 0.

@@ -39,13 +39,16 @@ ADMIN_LOGIN = "admin"
 ADMIN_PASSWORD = "admin123"
 
 # База данных
-DATABASE_URL = "sqlite:///database/DogAcademy.db"  # Обновлено на правильный путь
+DATABASE_URL = "sqlite:///F:/Projects/Dog_Academy/database/DogAcademy.db"  # Абсолютный путь
 
 # Иконки
 SETTINGS_IMG = "assets/settings.png"
 LOGO = "F:/Projects/Dog_Academy/assets/logo.png"
 BACKGROUND_GAME = "F:/Projects/Dog_Academy/assets/background.png"
 BONE = "F:/Projects/Dog_Academy/assets/bone.png"
+LOCK = "F:/Projects/Dog_Academy/assets/lock.png"
+UNLOCK = "F:/Projects/Dog_Academy/assets/unlock.png"
+DONE = "F:/Projects/Dog_Academy/assets/done.png"
 
 # Собаки
 CHIHUAHUA = "F:/Projects/Dog_Academy/assets/dogs/Chihuahua.png"

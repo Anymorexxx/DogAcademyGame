@@ -1,5 +1,7 @@
+import os
+import logging
 import tkinter as tk
-from tkinter import Canvas
+from tkinter import messagebox, Canvas
 from PIL import Image, ImageTk
 import math
 
@@ -116,6 +118,17 @@ class UserApp:
         )
         play_button_canvas.tag_bind("all", "<Button-1>", lambda e: self.play_game())
 
+        # Кнопка выхода
+        exit_button = tk.Button(
+            self.root,
+            text="Выйти",
+            bg=BUTTON_COLOR_EXIT,
+            fg="white",
+            font=FONT,
+            command=self.exit_app
+        )
+        exit_button.place(relx=0.9, rely=0.95, anchor=tk.CENTER)
+
     def place_dog_images(self, center_x, center_y, radius, num_dogs):
         """Размещает изображения собак по кругу."""
         angle_step = 2 * math.pi / num_dogs  # Шаг угла для размещения собак
@@ -160,18 +173,15 @@ class UserApp:
 
     def play_game(self):
         """Переход к игровому интерфейсу."""
-        clear_frame(self.root)  # Очищаем главное меню
-        GameUI(self.root, self.user_id)  # Открываем игровой интерфейс
         print("Запуск игры...")
 
+        def return_to_main_menu():
+            clear_frame(self.root)
+            self.show_user_dashboard()  # Возврат в главное меню
+
+        GameUI(self.root, self.user_id, return_to_main_menu)  # Передаём колбэк для возврата
+
     def exit_app(self):
-        """Заглушка для выхода."""
-        print("Приложение закрыто")
-        self.root.quit()
-
-# Запуск главного окна
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = UserApp(root, user_id=123)  # Передаем user_id (это может быть получено после авторизации)
-    root.mainloop()
-
+        """Подтверждение выхода из приложения."""
+        if messagebox.askyesno("Выход", "Вы уверены, что хотите выйти?"):
+            self.root.quit()

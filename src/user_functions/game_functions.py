@@ -13,45 +13,49 @@ def start_game(root, user_id, dog_id):
         clear_frame(root)
         tk.Label(root, text=f"{i}...", font=("Comic Sans MS", 30)).pack(expand=True)
         root.update()
-        time.sleep(1)
+        time.sleep(1)  # Пауза между отсчетами
 
     # Начало уровня
+    print("Начало уровня")  # Для отладки
+
     # Здесь подключается логика работы с картой и вопросами
     pass
 
 
-def handle_obstacle(obstacle, current_score, root):
+def handle_checkpoint(obstacle, current_score, root):
     """
-    Обработка препятствия (вопроса) с использованием окна.
-    Возвращает новый счёт игрока.
+    Обрабатывает чек-поинт (косточку).
+    obstacle - данные о текущем препятствии
+    current_score - текущий счёт
+    root - корневой элемент
     """
-    result = {"new_score": current_score}
+    # Пример вопроса
+    question = "Как ухаживать за собакой?"
+    correct_answer = "Кормить и гулять"
 
-    def submit_answer():
-        user_answer = answer_var.get().strip().lower()
-        if user_answer == "правильно":  # Условие для правильного ответа
-            result["new_score"] += 1
-        else:
-            result["new_score"] -= 1
-        question_window.destroy()  # Закрываем окно вопроса
-
-    # Создаём новое окно для вопроса
+    # Окно для вопроса
     question_window = tk.Toplevel(root)
     question_window.title("Вопрос")
-    question_window.geometry("400x200")
 
-    # Отображение текста вопроса
-    tk.Label(question_window, text=f"Вопрос сложности {obstacle['difficulty']}:", font=("Arial", 14)).pack(pady=10)
+    question_label = tk.Label(question_window, text=question, font=("Comic Sans MS", 14))
+    question_label.pack(pady=10)
 
-    # Поле ввода ответа
     answer_var = tk.StringVar()
-    tk.Entry(question_window, textvariable=answer_var, font=("Arial", 12)).pack(pady=10)
+    answer_entry = tk.Entry(question_window, textvariable=answer_var, font=("Comic Sans MS", 14))
+    answer_entry.pack(pady=10)
 
-    # Кнопка подтверждения ответа
-    tk.Button(question_window, text="Ответить", command=submit_answer).pack(pady=10)
+    def submit_answer():
+        nonlocal current_score  # Используем nonlocal для изменения current_score в замыканиях
+        answer = answer_var.get().strip().lower()
+        if answer == correct_answer.lower():
+            current_score += 1  # За правильный ответ добавляется 1 косточка
+        else:
+            current_score -= 1  # Штраф за неправильный ответ
 
-    # Ожидаем закрытия окна
-    question_window.grab_set()  # Блокируем основное окно
-    root.wait_window(question_window)  # Ждём завершения окна вопроса
+        question_window.destroy()
+        return current_score  # Возвращаем обновленный счёт
 
-    return result
+    submit_button = tk.Button(question_window, text="Ответить", command=submit_answer, font=("Comic Sans MS", 14))
+    submit_button.pack(pady=10)
+
+    return current_score

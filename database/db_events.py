@@ -27,7 +27,7 @@ def check_user(login, password):
     try:
         user = session.query(Auth).filter_by(login=login, password=password).first()
         if user:
-            return user.user_id
+            return user.user_id  # Получаем user_id из Auth
         return None
     except SQLAlchemyError as e:
         print(f"Ошибка при проверке пользователя: {e}")

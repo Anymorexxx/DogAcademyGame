@@ -13,6 +13,10 @@ Session = sessionmaker(bind=engine)
 # Переменная для хранения текущей сессии
 current_session = None
 
+def create_session():
+    """Создаёт сессию для работы с базой данных."""
+    return Session()
+
 def init_db(refresh=False):
     """
     Инициализация базы данных: создание файла и таблиц.

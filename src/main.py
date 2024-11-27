@@ -27,4 +27,6 @@ def main():
 
 if __name__ == "__main__":
     root = Tk()  # Создание корневого окна
+    root.overrideredirect(True)  # Убираем рамки окна
+    root.geometry("1920x1080")  # Устанавливаем размер окна
     main()
