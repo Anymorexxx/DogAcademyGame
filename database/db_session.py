@@ -8,7 +8,7 @@ import os
 engine = create_engine(DATABASE_URL, echo=True)
 
 # Создание фабрики сессий
-Session = sessionmaker(bind=engine)
+Session = sessionmaker(bind=engine, autoflush=True)
 
 # Переменная для хранения текущей сессии
 current_session = None
@@ -38,7 +38,7 @@ def init_db(refresh=False):
 
 def get_session():
     """Возвращает сессию для работы с базой данных."""
-    return Session()
+    return Session()  # Просто возвращаем объект сессии
 
 def close_sessions():
     """Закрытие всех сессий перед выходом из программы."""

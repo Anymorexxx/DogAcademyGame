@@ -4,11 +4,9 @@ import os
 
 def setup_logging():
     """Настройка логирования в файл."""
-    log_dir = "DogAcademy/logs"
-    if not os.path.exists(log_dir):
-        os.makedirs(log_dir)
-
-    log_file = os.path.join(log_dir, "game.log")
+    log_file = "logs/game.log"
+    if not os.path.exists(log_file):
+        os.makedirs(log_file)
 
     logging.basicConfig(
         filename=log_file,

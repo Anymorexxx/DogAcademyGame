@@ -14,8 +14,8 @@ def profile_ui(root, user_id):
 
     # Статистика пользователя
     progress = get_user_progress(user_id)
-    levels_completed = len(progress)
-    bones_collected = sum([session.score for session in progress])
+    levels_completed = len(progress)  # Считаем количество уровней
+    bones_collected = sum([session.score for session in progress])  # Суммируем все собранные косточки
 
     stats_text = f"Пройдено уровней: {levels_completed}\nСобрано косточек: {bones_collected}"
     tk.Label(frame, text=stats_text, font=("Comic Sans MS", 20), bg="#f8e1e1").pack(pady=10)

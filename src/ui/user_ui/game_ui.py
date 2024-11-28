@@ -2,6 +2,8 @@ import tkinter as tk
 from PIL import Image, ImageTk
 import random
 import logging
+
+from database.db_events import get_user_by_id
 from src.user_functions.game_logs import setup_logging
 from config import DOG_CHARACTERS, DONE, BONE, BACKGROUND_GAME
 from src.utils import clear_frame
@@ -180,6 +182,11 @@ class GameUI:
         self.map_canvas.create_image(1650, 50, image=self.bones_photo, tags="rect")
         self.bones_label = tk.Label(self.root, text=f"{self.total_bones}", font=("Comic Sans MS", 16), bg="#CCCCCC")
         self.bones_label.place(x=1700, y=30)
+
+        # В методе update_map (не удаляем прямоугольник):
+        self.map_canvas.delete("all")  # Удаляем только динамичные объекты карты (косточки, собаку)
+        self.draw_grid()
+        self.collect_bones()
 
         self.update_map()  # Начальное обновление карты
 
@@ -367,15 +374,45 @@ class GameUI:
         )
         info_label.place(x=300, y=100)
 
+        # Собрано косточек
+        target_bones = 10 * (2 ** (self.current_level - 1))  # Геометрическая прогрессия для косточек
+        collected_info = f"Собрано: {self.total_bones} из {target_bones}"
+        score_label = tk.Label(
+            victory_window, text=collected_info, font=("Comic Sans MS", 16), bg="#E5E5E5"
+        )
+        score_label.place(x=300, y=150)
+
         # Кнопка перехода на следующий уровень
         next_level_button = tk.Button(
             victory_window, text="Следующий уровень", font=("Comic Sans MS", 16), bg="#4CAF50",
             command=lambda: [victory_window.destroy(), self.start_next_level()]
         )
-        next_level_button.pack(pady=20)
+        next_level_button.place(relx=0.5, rely=0.75, anchor=tk.CENTER)
 
     def start_next_level(self):
-        """Переход на следующий уровень."""
+        """Переход на следующий уровень и сохранение прогресса."""
+        # Сохранение прогресса
+        self.save_progress()
+
+        # Переход на следующий уровень
         self.current_level += 1
         self.total_bones = 0  # Сбрасываем счётчик косточек
         self.start_level(self.current_level)
+
+    def save_progress(self):
+        """Сохранение прогресса в базе данных."""
+        from database.db_events import save_progress, update_user_dog
+        from database.db_events import get_user_by_id
+
+        # Получаем информацию о пользователе
+        user = get_user_by_id(self.user_id)
+        if not user:
+            logging.error(f"Пользователь с ID {self.user_id} не найден в базе данных.")
+            return  # Прерываем выполнение, если пользователь не найден
+
+        # Сохраняем прогресс текущего уровня
+        save_progress(self.user_id, self.current_level, self.total_bones, 0, 100, 0, 0)
+
+        # Получаем уровень и собаку
+        dog_id = user.dog_id  # Получаем id собаки пользователя
+        update_user_dog(self.user_id, dog_id)  # Сохраняем собаку в профиль

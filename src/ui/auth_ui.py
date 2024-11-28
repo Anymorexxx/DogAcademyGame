@@ -74,10 +74,14 @@ class DogAcademyApp:
         title.pack(pady=50)
 
         # Логин
+        login_label = tk.Label(self.current_frame, text="Логин:", bg=BACKGROUND_COLOR, fg=PRIMARY_COLOR, font=FONT)
+        login_label.pack()
         self.login_entry = tk.Entry(self.current_frame, font=FONT)
         self.login_entry.pack(pady=10)
 
         # Пароль
+        password_label = tk.Label(self.current_frame, text="Пароль:", bg=BACKGROUND_COLOR, fg=PRIMARY_COLOR, font=FONT)
+        password_label.pack()
         self.password_entry = tk.Entry(self.current_frame, show="*", font=FONT)
         self.password_entry.pack(pady=10)
 
@@ -157,23 +161,22 @@ class DogAcademyApp:
         title.pack(pady=50)
 
         # Логин
+        login_label = tk.Label(self.current_frame, text="Логин:", bg=BACKGROUND_COLOR, fg=PRIMARY_COLOR, font=FONT)
+        login_label.pack()
         self.reg_login_entry = tk.Entry(self.current_frame, font=FONT)
         self.reg_login_entry.pack(pady=10)
 
         # Пароль
+        password_label = tk.Label(self.current_frame, text="Пароль:", bg=BACKGROUND_COLOR, fg=PRIMARY_COLOR, font=FONT)
+        password_label.pack()
         self.reg_password_entry = tk.Entry(self.current_frame, show="*", font=FONT)
         self.reg_password_entry.pack(pady=10)
 
-        # Кнопка "Показать пароль"
-        show_password_button = tk.Button(
-            self.current_frame,
-            text="Показать пароль",
-            bg=BUTTON_COLOR,
-            fg=BUTTON_TEXT_COLOR,
-            font=FONT,
-            command=self.toggle_registration_password,
-        )
-        show_password_button.pack(pady=10)
+        # Никнейм
+        username_label = tk.Label(self.current_frame, text="Никнейм:", bg=BACKGROUND_COLOR, fg=PRIMARY_COLOR, font=FONT)
+        username_label.pack()
+        self.username_entry = tk.Entry(self.current_frame, font=FONT)
+        self.username_entry.pack(pady=10)
 
         # Кнопка "Зарегистрироваться"
         register_button = tk.Button(
@@ -208,11 +211,15 @@ class DogAcademyApp:
         """Регистрация нового пользователя."""
         login = self.reg_login_entry.get()
         password = self.reg_password_entry.get()
+        username = self.username_entry.get()  # Получаем имя пользователя
 
-        if login and password:
-            create_user(login, password)
-            messagebox.showinfo("Успех", "Вы успешно зарегистрированы!")
-            self.show_login_screen()
+        if login and password and username:
+            success, message = create_user(login, password, username)  # Передаем имя пользователя
+            if success:
+                messagebox.showinfo("Успех", message)
+                self.show_login_screen()
+            else:
+                messagebox.showerror("Ошибка", message)
         else:
             messagebox.showerror("Ошибка", "Пожалуйста, заполните все поля.")
 
