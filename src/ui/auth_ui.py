@@ -172,6 +172,17 @@ class DogAcademyApp:
         self.reg_password_entry = tk.Entry(self.current_frame, show="*", font=FONT)
         self.reg_password_entry.pack(pady=10)
 
+        # Кнопка "Показать пароль"
+        show_password_button = tk.Button(
+            self.current_frame,
+            text="Показать пароль",
+            bg=BUTTON_COLOR,
+            fg=BUTTON_TEXT_COLOR,
+            font=FONT,
+            command=self.toggle_registration_password,
+        )
+        show_password_button.pack(pady=10)
+
         # Никнейм
         username_label = tk.Label(self.current_frame, text="Никнейм:", bg=BACKGROUND_COLOR, fg=PRIMARY_COLOR, font=FONT)
         username_label.pack()

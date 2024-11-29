@@ -4,6 +4,7 @@ import random
 import logging
 
 from database.db_events import get_user_by_id
+from database.info.GameSessions_table import save_game_session
 from src.user_functions.game_logs import setup_logging
 from config import DOG_CHARACTERS, DONE, BONE, BACKGROUND_GAME
 from src.utils import clear_frame
@@ -40,6 +41,11 @@ class GameUI:
         # Настройки окна
         self.root.geometry("1920x1080")
         self.root.configure(bg="#E5E5E5")
+
+        # Флаги
+        self.is_pause_menu_open = False
+        self.is_victory_screen_open = False
+        self.is_game_active = False  # Для контроля состояния игры
 
         # Привязка клавиш
         self.root.bind("<KeyPress-w>", self.move_up)
@@ -248,64 +254,51 @@ class GameUI:
         self.update_map()
 
     def on_escape(self, event):
-        """Обработчик для нажатия клавиши ESC."""
-        self.show_pause_menu()
-
-        def show_pause_menu(self):
-            """Создание окна паузы."""
-            pause_window = tk.Toplevel(self.root)
-            pause_window.title("Пауза")
-            pause_window.geometry("400x200")
-            pause_window.configure(bg="#E5E5E5")
-            pause_window.grab_set()  # Блокируем взаимодействие с основным окном
-
-            # Кнопка "Сохранить и выйти"
-            save_exit_button = tk.Button(
-                pause_window,
-                text="Сохранить и выйти",
-                font=("Comic Sans MS", 16),
-                bg="#FF6347",
-                command=self.save_and_exit
-            )
-            save_exit_button.pack(pady=20)
-
-            # Кнопка "Продолжить"
-            continue_button = tk.Button(
-                pause_window,
-                text="Продолжить",
-                font=("Comic Sans MS", 16),
-                bg="#4CAF50",
-                command=pause_window.destroy
-            )
-            continue_button.pack(pady=20)
+        """Обработчик для клавиши ESC."""
+        if self.map_canvas:  # Проверяем, что игрок находится на карте
+            if self.is_pause_menu_open:
+                self.resume_game()  # Закрываем окно паузы и продолжаем игру
+            else:
+                self.show_pause_menu()  # Открываем окно паузы
 
     def show_pause_menu(self):
         """Создание окна паузы."""
-        pause_window = tk.Toplevel(self.root)
-        pause_window.title("Пауза")
-        pause_window.geometry("400x200")
-        pause_window.configure(bg="#E5E5E5")
-        pause_window.grab_set()  # Блокируем взаимодействие с основным окном
+        if self.is_pause_menu_open:
+            return  # Если окно паузы уже открыто, ничего не делаем
+
+        self.is_pause_menu_open = True  # Устанавливаем флаг
+
+        self.pause_window = tk.Toplevel(self.root)
+        self.pause_window.title("Пауза")
+        self.pause_window.geometry("400x200")
+        self.pause_window.configure(bg="#E5E5E5")
+        self.pause_window.grab_set()  # Блокируем взаимодействие с основным окном
 
         # Кнопка "Сохранить и выйти"
         save_exit_button = tk.Button(
-            pause_window,
+            self.pause_window,
             text="Сохранить и выйти",
             font=("Comic Sans MS", 16),
             bg="#FF6347",
-            command=self.save_and_exit  # Этот метод теперь определён
+            command=self.save_and_exit
         )
         save_exit_button.pack(pady=20)
 
         # Кнопка "Продолжить"
         continue_button = tk.Button(
-            pause_window,
+            self.pause_window,
             text="Продолжить",
             font=("Comic Sans MS", 16),
             bg="#4CAF50",
-            command=pause_window.destroy
+            command=self.resume_game
         )
         continue_button.pack(pady=20)
+
+    def resume_game(self):
+        """Закрытие окна паузы и продолжение игры."""
+        if self.is_pause_menu_open:
+            self.pause_window.destroy()  # Закрываем окно паузы
+            self.is_pause_menu_open = False  # Сбрасываем флаг
 
     def save_and_exit(self):
         """Сохранение данных и выход в главное меню."""
@@ -317,6 +310,9 @@ class GameUI:
 
     def update_map(self):
         """Обновление карты."""
+        if self.is_victory_screen_open:  # Отключаем обновления, если окно победы открыто
+            return
+
         self.map_canvas.delete("all")
         self.draw_grid()
 
@@ -343,16 +339,22 @@ class GameUI:
 
         # Условие перехода на следующий уровень
         target_bones = 10 * (2 ** (self.current_level - 1))  # Геометрическая прогрессия
-        if self.total_bones >= target_bones:
+        if self.total_bones >= target_bones and not self.is_victory_screen_open:
             self.show_victory_screen()
 
     def show_victory_screen(self):
         """Экран победы."""
+        if self.is_victory_screen_open:  # Проверяем, чтобы не было второго окна
+            return
+
+        self.is_victory_screen_open = True  # Устанавливаем флаг
+        self.is_game_active = False  # Останавливаем движение
+
         victory_window = tk.Toplevel(self.root)
         victory_window.title("Ура, победа!")
         victory_window.geometry("800x600")
         victory_window.configure(bg="#E5E5E5")
-        victory_window.grab_set()
+        victory_window.grab_set()  # Блокируем взаимодействие с основным окном
 
         # Изображение собаки
         dog_image = Image.open(DOG_CHARACTERS[self.selected_dog]["image"]).resize((200, 200), Image.Resampling.LANCZOS)
@@ -384,15 +386,32 @@ class GameUI:
 
         # Кнопка перехода на следующий уровень
         next_level_button = tk.Button(
-            victory_window, text="Следующий уровень", font=("Comic Sans MS", 16), bg="#4CAF50",
+            victory_window,
+            text="Следующий уровень",
+            font=("Comic Sans MS", 16),
+            bg="#4CAF50",
             command=lambda: [victory_window.destroy(), self.start_next_level()]
         )
-        next_level_button.place(relx=0.5, rely=0.75, anchor=tk.CENTER)
+        next_level_button.place(relx=0.5, rely=0.65, anchor=tk.CENTER)
+
+        # Кнопка выхода в главное меню
+        exit_button = tk.Button(
+            victory_window,
+            text="Выйти в главное меню",
+            font=("Comic Sans MS", 16),
+            bg="#FF6347",
+            command=lambda: [victory_window.destroy(), self.return_to_main_menu()]
+        )
+        exit_button.place(relx=0.5, rely=0.8, anchor=tk.CENTER)
+
+    def return_to_main_menu(self):
+        """Возврат в главное меню."""
+        self.is_victory_screen_open = False  # Сбрасываем флаг окна победы
+        self.return_to_main_menu_callback()  # Вызываем колбэк для возврата
 
     def start_next_level(self):
-        """Переход на следующий уровень и сохранение прогресса."""
-        # Сохранение прогресса
-        self.save_progress()
+        """Переход на следующий уровень."""
+        self.save_progress()  # Сохраняем прогресс перед переходом на следующий уровень
 
         # Переход на следующий уровень
         self.current_level += 1
@@ -400,19 +419,14 @@ class GameUI:
         self.start_level(self.current_level)
 
     def save_progress(self):
-        """Сохранение прогресса в базе данных."""
-        from database.db_events import save_progress, update_user_dog
-        from database.db_events import get_user_by_id
+        """Сохранение игрового процесса в таблицу GameSessions."""
+        from datetime import datetime
 
-        # Получаем информацию о пользователе
-        user = get_user_by_id(self.user_id)
-        if not user:
-            logging.error(f"Пользователь с ID {self.user_id} не найден в базе данных.")
-            return  # Прерываем выполнение, если пользователь не найден
+        # Получаем время начала и окончания уровня
+        duration = self.steps_taken  # Время можно рассчитать по шагам или в реальном времени
+        score = self.total_bones  # Количество собранных косточек
 
-        # Сохраняем прогресс текущего уровня
-        save_progress(self.user_id, self.current_level, self.total_bones, 0, 100, 0, 0)
+        # Сохранение прогресса в базу данных
+        save_game_session(self.user_id, self.current_level, score, duration, 100, 0, 0)
 
-        # Получаем уровень и собаку
-        dog_id = user.dog_id  # Получаем id собаки пользователя
-        update_user_dog(self.user_id, dog_id)  # Сохраняем собаку в профиль
+        # Также можно сохранять дополнительные параметры, если необходимо (например, здоровье, голод, усталость)

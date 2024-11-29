@@ -8,8 +8,6 @@ import math
 from config import EXIT_BUTTON_WIDTH, EXIT_BUTTON_HEIGHT, BUTTON_COLOR_EXIT
 from src.ui.user_ui.game_ui import GameUI
 from src.ui.user_ui.profile_ui import profile_ui
-from src.ui.user_ui.shop_ui import shop_ui
-from src.ui.user_ui.knowledge_ui import knowledge_ui
 from src.utils import clear_frame
 
 # Пути к изображениям собак
@@ -74,7 +72,7 @@ class UserApp:
             relief=tk.FLAT,
             padx=20,
             pady=10,
-            command=self.show_shop
+            state=tk.DISABLED  # Делаем кнопку некликабельной
         )
         shop_button.pack(side=tk.LEFT, padx=20)
 
@@ -87,7 +85,7 @@ class UserApp:
             relief=tk.FLAT,
             padx=20,
             pady=10,
-            command=self.show_knowledge
+            state=tk.DISABLED  # Делаем кнопку некликабельной
         )
         knowledge_button.pack(side=tk.LEFT, padx=20)
 
@@ -154,17 +152,7 @@ class UserApp:
     def show_profile(self):
         """Показать экран профиля пользователя."""
         self.clear_frame()
-        profile_ui(self.root, self.user_id)  # Передаем user_id в profile_ui
-
-    def show_shop(self):
-        """Показать экран магазина."""
-        self.clear_frame()
-        shop_ui(self.root)
-
-    def show_knowledge(self):
-        """Показать базу знаний."""
-        self.clear_frame()
-        knowledge_ui(self.root)
+        profile_ui(self.root, self.user_id, self)  # Передаем сам объект self для доступа к show_user_dashboard
 
     def clear_frame(self):
         """Очистить текущий экран."""

@@ -7,7 +7,7 @@ from config import SETTINGS_IMG
 from database.db_session import get_session
 from database.models import Dogs, Questions, Users
 from src.admin_functions import admin_logging, statistics
-from src.utils import clear_frame, feature_in_development  # Импортируем общую функцию для очистки фрейма
+from src.utils import clear_frame, feature_in_development_admin  # Импортируем общую функцию для очистки фрейма
 from database.db_events import check_user, get_all_users, get_all_questions, get_all_dogs
 
 # Конфигурация цветов из config.py
@@ -99,18 +99,18 @@ class AdminApp:
                 ("Просмотр таблиц", self.view_tables),
             ]),
             ("Управление игровым контентом", [
-                ("Создание и настройка уровней", feature_in_development),
-                ("Настройка параметров собаки", feature_in_development),
+                ("Создание и настройка уровней", feature_in_development_admin),
+                ("Настройка параметров собаки", feature_in_development_admin),
             ]),
             ("Управление интерфейсом пользователя", [
-                ("Добавление подсказок в интерфейс", feature_in_development),
+                ("Добавление подсказок в интерфейс", feature_in_development_admin),
             ]),
             ("Работа с базой знаний", [
-                ("Добавление информации", feature_in_development),
-                ("Редактирование записей", feature_in_development),
-                ("Удаление записей", feature_in_development),
-                ("Просмотр базы знаний", feature_in_development),
-                ("Генерация вопросов", feature_in_development),
+                ("Добавление информации", feature_in_development_admin),
+                ("Редактирование записей", feature_in_development_admin),
+                ("Удаление записей", feature_in_development_admin),
+                ("Просмотр базы знаний", feature_in_development_admin),
+                ("Генерация вопросов", feature_in_development_admin),
             ]),
         ]
 

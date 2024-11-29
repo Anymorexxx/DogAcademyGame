@@ -2234,3 +2234,2736 @@ WHERE auth.login = ?
 FROM users LEFT OUTER JOIN auth AS auth_1 ON auth_1.user_id = users.user_id
 2024-11-28 16:39:51 - [generated in 0.00017s] ()
 2024-11-28 16:39:51 - ROLLBACK
+2024-11-28 20:09:56 - Логирование игры начато.
+2024-11-28 20:10:14 - BEGIN (implicit)
+2024-11-28 20:10:14 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-28 20:10:14 - [generated in 0.00023s] ('lubluNikitu', 'meow123', 1, 0)
+2024-11-28 20:10:14 - ROLLBACK
+2024-11-28 20:35:42 - Логирование игры начато.
+2024-11-28 20:35:58 - BEGIN (implicit)
+2024-11-28 20:35:58 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-28 20:35:58 - [generated in 0.00024s] ('lubluNikitu', 'meow_123', 1, 0)
+2024-11-28 20:35:58 - ROLLBACK
+2024-11-28 20:36:04 - BEGIN (implicit)
+2024-11-28 20:36:04 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-28 20:36:04 - [cached since 5.986s ago] ('lubluNikitu', 'meow123', 1, 0)
+2024-11-28 20:36:04 - ROLLBACK
+2024-11-28 20:39:35 - Сохранение прогресса: уровень 1, собрано косточек 8.
+2024-11-28 21:05:47 - Логирование игры начато.
+2024-11-28 21:06:22 - BEGIN (implicit)
+2024-11-28 21:06:22 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-28 21:06:22 - [generated in 0.00024s] ('lubluNikitu', 'meow123', 1, 0)
+2024-11-28 21:06:22 - ROLLBACK
+2024-11-28 21:06:54 - BEGIN (implicit)
+2024-11-28 21:06:54 - SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users 
+WHERE users.user_id IS NULL
+ LIMIT ? OFFSET ?
+2024-11-28 21:06:54 - [generated in 0.00034s] (1, 0)
+2024-11-28 21:06:54 - ROLLBACK
+2024-11-28 21:07:51 - Логирование игры начато.
+2024-11-28 21:07:52 - BEGIN (implicit)
+2024-11-28 21:07:52 - PRAGMA main.table_info("auth")
+2024-11-28 21:07:52 - [raw sql] ()
+2024-11-28 21:07:52 - PRAGMA temp.table_info("auth")
+2024-11-28 21:07:52 - [raw sql] ()
+2024-11-28 21:07:52 - PRAGMA main.table_info("users")
+2024-11-28 21:07:52 - [raw sql] ()
+2024-11-28 21:07:52 - PRAGMA temp.table_info("users")
+2024-11-28 21:07:52 - [raw sql] ()
+2024-11-28 21:07:52 - PRAGMA main.table_info("dogs")
+2024-11-28 21:07:52 - [raw sql] ()
+2024-11-28 21:07:52 - PRAGMA temp.table_info("dogs")
+2024-11-28 21:07:52 - [raw sql] ()
+2024-11-28 21:07:52 - PRAGMA main.table_info("questions")
+2024-11-28 21:07:52 - [raw sql] ()
+2024-11-28 21:07:52 - PRAGMA temp.table_info("questions")
+2024-11-28 21:07:52 - [raw sql] ()
+2024-11-28 21:07:52 - PRAGMA main.table_info("game_sessions")
+2024-11-28 21:07:52 - [raw sql] ()
+2024-11-28 21:07:52 - PRAGMA temp.table_info("game_sessions")
+2024-11-28 21:07:52 - [raw sql] ()
+2024-11-28 21:07:52 - PRAGMA main.table_info("notifications")
+2024-11-28 21:07:52 - [raw sql] ()
+2024-11-28 21:07:52 - PRAGMA temp.table_info("notifications")
+2024-11-28 21:07:52 - [raw sql] ()
+2024-11-28 21:07:52 - 
+CREATE TABLE auth (
+	user_id INTEGER NOT NULL, 
+	login VARCHAR NOT NULL, 
+	password VARCHAR NOT NULL, 
+	PRIMARY KEY (user_id), 
+	UNIQUE (login)
+)
+
+
+2024-11-28 21:07:52 - [no key 0.00011s] ()
+2024-11-28 21:07:52 - 
+CREATE TABLE dogs (
+	dog_id INTEGER NOT NULL, 
+	breed VARCHAR, 
+	characteristics TEXT, 
+	behavior TEXT, 
+	care_info TEXT, 
+	admin_comments TEXT, 
+	PRIMARY KEY (dog_id)
+)
+
+
+2024-11-28 21:07:52 - [no key 0.00022s] ()
+2024-11-28 21:07:52 - 
+CREATE TABLE users (
+	user_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	username VARCHAR NOT NULL, 
+	level INTEGER, 
+	achievement TEXT, 
+	PRIMARY KEY (user_id), 
+	FOREIGN KEY(user_id) REFERENCES auth (user_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-28 21:07:52 - [no key 0.00018s] ()
+2024-11-28 21:07:52 - 
+CREATE TABLE questions (
+	question_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	question_text TEXT NOT NULL, 
+	image_url VARCHAR, 
+	helpful_info TEXT, 
+	incorrect_attempts INTEGER, 
+	PRIMARY KEY (question_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-28 21:07:52 - [no key 0.00019s] ()
+2024-11-28 21:07:52 - 
+CREATE TABLE game_sessions (
+	session_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	level INTEGER NOT NULL, 
+	score INTEGER, 
+	duration INTEGER, 
+	start_time DATETIME, 
+	end_time DATETIME, 
+	health INTEGER, 
+	hunger INTEGER, 
+	sleepiness INTEGER, 
+	PRIMARY KEY (session_id), 
+	CONSTRAINT uix_user_level UNIQUE (user_id, level), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-28 21:07:52 - [no key 0.00021s] ()
+2024-11-28 21:07:52 - 
+CREATE TABLE notifications (
+	notification_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	message TEXT NOT NULL, 
+	timestamp DATETIME, 
+	is_read BOOLEAN, 
+	PRIMARY KEY (notification_id), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-28 21:07:52 - [no key 0.00046s] ()
+2024-11-28 21:07:52 - COMMIT
+2024-11-28 21:08:15 - BEGIN (implicit)
+2024-11-28 21:08:15 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ?
+ LIMIT ? OFFSET ?
+2024-11-28 21:08:15 - [generated in 0.00027s] ('lubluNikitu', 1, 0)
+2024-11-28 21:08:15 - INSERT INTO auth (login, password) VALUES (?, ?)
+2024-11-28 21:08:15 - [generated in 0.00016s] ('lubluNikitu', 'meow123')
+2024-11-28 21:08:15 - COMMIT
+2024-11-28 21:08:15 - BEGIN (implicit)
+2024-11-28 21:08:15 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.user_id = ?
+2024-11-28 21:08:15 - [generated in 0.00015s] (1,)
+2024-11-28 21:08:15 - INSERT INTO users (user_id, dog_id, username, level, achievement) VALUES (?, ?, ?, ?, ?)
+2024-11-28 21:08:15 - [generated in 0.00017s] (1, None, 'qwe', 1, None)
+2024-11-28 21:08:15 - COMMIT
+2024-11-28 21:08:39 - BEGIN (implicit)
+2024-11-28 21:08:39 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-28 21:08:39 - [generated in 0.00017s] ('lubluNikitu', 'meow123', 1, 0)
+2024-11-28 21:08:39 - ROLLBACK
+2024-11-28 21:09:33 - Сохранение прогресса: уровень 1, собрано косточек 0.
+2024-11-28 21:09:38 - Сохранение прогресса: уровень 1, собрано косточек 0.
+2024-11-28 21:09:46 - BEGIN (implicit)
+2024-11-28 21:09:46 - SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users 
+WHERE users.user_id IS NULL
+ LIMIT ? OFFSET ?
+2024-11-28 21:09:46 - [generated in 0.00018s] (1, 0)
+2024-11-28 21:09:46 - ROLLBACK
+2024-11-28 21:10:03 - BEGIN (implicit)
+2024-11-28 21:10:03 - SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users 
+WHERE users.user_id IS NULL
+ LIMIT ? OFFSET ?
+2024-11-28 21:10:03 - [cached since 17.46s ago] (1, 0)
+2024-11-28 21:10:03 - ROLLBACK
+2024-11-28 21:10:11 - BEGIN (implicit)
+2024-11-28 21:10:11 - SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users 
+WHERE users.user_id IS NULL
+ LIMIT ? OFFSET ?
+2024-11-28 21:10:11 - [cached since 25.68s ago] (1, 0)
+2024-11-28 21:10:11 - ROLLBACK
+2024-11-28 21:10:17 - Сохранение прогресса: уровень 1, собрано косточек 0.
+2024-11-28 21:10:19 - BEGIN (implicit)
+2024-11-28 21:10:19 - SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users 
+WHERE users.user_id IS NULL
+ LIMIT ? OFFSET ?
+2024-11-28 21:10:19 - [cached since 33.37s ago] (1, 0)
+2024-11-28 21:10:19 - ROLLBACK
+2024-11-28 21:10:53 - BEGIN (implicit)
+2024-11-28 21:10:53 - SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users 
+WHERE users.user_id IS NULL
+ LIMIT ? OFFSET ?
+2024-11-28 21:10:53 - [cached since 67.69s ago] (1, 0)
+2024-11-28 21:10:53 - ROLLBACK
+2024-11-28 21:10:53 - Пользователь с ID None не найден в базе данных.
+2024-11-28 21:27:35 - Логирование игры начато.
+2024-11-28 21:27:59 - BEGIN (implicit)
+2024-11-28 21:27:59 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-28 21:27:59 - [generated in 0.00024s] ('lubluNikitu', 'meow123', 1, 0)
+2024-11-28 21:27:59 - ROLLBACK
+2024-11-28 21:28:03 - Не найден идентификатор пользователя. Игра не может быть запущена.
+2024-11-28 21:28:06 - BEGIN (implicit)
+2024-11-28 21:28:06 - SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users 
+WHERE users.user_id IS NULL
+ LIMIT ? OFFSET ?
+2024-11-28 21:28:06 - [generated in 0.00026s] (1, 0)
+2024-11-28 21:28:06 - ROLLBACK
+2024-11-28 21:30:30 - Сохранение прогресса: уровень 1, собрано косточек 0.
+2024-11-28 21:41:56 - Логирование игры начато.
+2024-11-28 21:42:25 - BEGIN (implicit)
+2024-11-28 21:42:25 - SELECT count(*) AS count_1 
+FROM (SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users) AS anon_1
+2024-11-28 21:42:25 - [generated in 0.00026s] ()
+2024-11-28 21:42:25 - SELECT game_sessions.level AS game_sessions_level, count(game_sessions.session_id) AS count_1 
+FROM game_sessions GROUP BY game_sessions.level
+2024-11-28 21:42:25 - [generated in 0.00018s] ()
+2024-11-28 21:42:25 - SELECT questions.question_text AS questions_question_text, questions.incorrect_attempts AS questions_incorrect_attempts 
+FROM questions ORDER BY questions.incorrect_attempts DESC
+2024-11-28 21:42:25 - [generated in 0.00016s] ()
+2024-11-28 21:42:25 - SELECT avg(game_sessions.duration) AS avg_1 
+FROM game_sessions
+2024-11-28 21:42:25 - [generated in 0.00013s] ()
+2024-11-28 21:42:25 - ROLLBACK
+2024-11-28 21:42:25 - BEGIN (implicit)
+2024-11-28 21:42:25 - SELECT game_sessions.start_time AS game_sessions_start_time 
+FROM game_sessions
+2024-11-28 21:42:25 - [generated in 0.00014s] ()
+2024-11-28 21:42:25 - ROLLBACK
+2024-11-28 21:42:47 - BEGIN (implicit)
+2024-11-28 21:42:47 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ?
+ LIMIT ? OFFSET ?
+2024-11-28 21:42:47 - [generated in 0.00018s] ('lubluNikitu', 1, 0)
+2024-11-28 21:42:47 - ROLLBACK
+2024-11-28 21:43:05 - Сохранение прогресса: уровень 1, собрано косточек 0.
+2024-11-28 21:44:12 - Сохранение прогресса: уровень 1, собрано косточек 0.
+2024-11-28 21:44:24 - BEGIN (implicit)
+2024-11-28 21:44:24 - SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement, auth_1.user_id AS auth_1_user_id, auth_1.login AS auth_1_login, auth_1.password AS auth_1_password 
+FROM users LEFT OUTER JOIN auth AS auth_1 ON auth_1.user_id = users.user_id
+2024-11-28 21:44:24 - [generated in 0.00016s] ()
+2024-11-28 21:44:24 - ROLLBACK
+2024-11-28 21:44:26 - BEGIN (implicit)
+2024-11-28 21:44:26 - SELECT questions.question_id AS questions_question_id, questions.dog_id AS questions_dog_id, questions.question_text AS questions_question_text, questions.image_url AS questions_image_url, questions.helpful_info AS questions_helpful_info, questions.incorrect_attempts AS questions_incorrect_attempts 
+FROM questions
+2024-11-28 21:44:26 - [generated in 0.00014s] ()
+2024-11-28 21:44:26 - ROLLBACK
+2024-11-28 21:44:27 - BEGIN (implicit)
+2024-11-28 21:44:27 - SELECT dogs.dog_id AS dogs_dog_id, dogs.breed AS dogs_breed, dogs.characteristics AS dogs_characteristics, dogs.behavior AS dogs_behavior, dogs.care_info AS dogs_care_info, dogs.admin_comments AS dogs_admin_comments 
+FROM dogs
+2024-11-28 21:44:27 - [generated in 0.00017s] ()
+2024-11-28 21:44:27 - ROLLBACK
+2024-11-28 21:44:31 - BEGIN (implicit)
+2024-11-28 21:44:31 - SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement, auth_1.user_id AS auth_1_user_id, auth_1.login AS auth_1_login, auth_1.password AS auth_1_password 
+FROM users LEFT OUTER JOIN auth AS auth_1 ON auth_1.user_id = users.user_id
+2024-11-28 21:44:31 - [cached since 6.631s ago] ()
+2024-11-28 21:44:31 - ROLLBACK
+2024-11-28 21:44:31 - BEGIN (implicit)
+2024-11-28 21:44:31 - SELECT questions.question_id AS questions_question_id, questions.dog_id AS questions_dog_id, questions.question_text AS questions_question_text, questions.image_url AS questions_image_url, questions.helpful_info AS questions_helpful_info, questions.incorrect_attempts AS questions_incorrect_attempts 
+FROM questions
+2024-11-28 21:44:31 - [cached since 4.702s ago] ()
+2024-11-28 21:44:31 - ROLLBACK
+2024-11-28 21:44:31 - BEGIN (implicit)
+2024-11-28 21:44:31 - SELECT dogs.dog_id AS dogs_dog_id, dogs.breed AS dogs_breed, dogs.characteristics AS dogs_characteristics, dogs.behavior AS dogs_behavior, dogs.care_info AS dogs_care_info, dogs.admin_comments AS dogs_admin_comments 
+FROM dogs
+2024-11-28 21:44:31 - [cached since 3.321s ago] ()
+2024-11-28 21:44:31 - ROLLBACK
+2024-11-28 21:44:33 - BEGIN (implicit)
+2024-11-28 21:44:33 - SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement, auth_1.user_id AS auth_1_user_id, auth_1.login AS auth_1_login, auth_1.password AS auth_1_password 
+FROM users LEFT OUTER JOIN auth AS auth_1 ON auth_1.user_id = users.user_id
+2024-11-28 21:44:33 - [cached since 9.007s ago] ()
+2024-11-28 21:44:33 - ROLLBACK
+2024-11-28 21:44:34 - BEGIN (implicit)
+2024-11-28 21:44:34 - SELECT questions.question_id AS questions_question_id, questions.dog_id AS questions_dog_id, questions.question_text AS questions_question_text, questions.image_url AS questions_image_url, questions.helpful_info AS questions_helpful_info, questions.incorrect_attempts AS questions_incorrect_attempts 
+FROM questions
+2024-11-28 21:44:34 - [cached since 7.599s ago] ()
+2024-11-28 21:44:34 - ROLLBACK
+2024-11-28 21:44:34 - BEGIN (implicit)
+2024-11-28 21:44:34 - SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement, auth_1.user_id AS auth_1_user_id, auth_1.login AS auth_1_login, auth_1.password AS auth_1_password 
+FROM users LEFT OUTER JOIN auth AS auth_1 ON auth_1.user_id = users.user_id
+2024-11-28 21:44:34 - [cached since 10.18s ago] ()
+2024-11-28 21:44:34 - ROLLBACK
+2024-11-28 21:47:39 - Логирование игры начато.
+2024-11-28 21:47:57 - BEGIN (implicit)
+2024-11-28 21:47:57 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-28 21:47:57 - [generated in 0.00035s] ('lubluNikitu', 'meow123', 1, 0)
+2024-11-28 21:47:57 - ROLLBACK
+2024-11-28 21:48:00 - Не найден идентификатор пользователя. Игра не может быть запущена.
+2024-11-28 21:55:15 - Логирование игры начато.
+2024-11-28 21:55:15 - BEGIN (implicit)
+2024-11-28 21:55:15 - INSERT INTO dogs (dog_id, breed, speed, endurance, special_ability, image, characteristics, behavior, care_info, admin_comments) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2024-11-28 21:55:15 - [generated in 0.00025s] [(1, 'Chihuahua', 8, 5, 'Fast Dodge', 'F:/Projects/Dog_Academy/assets/dogs/Chihuahua.png', None, None, None, None), (2, 'Corgi', 6, 7, 'Extra Jump', 'F:/Projects/Dog_Academy/assets/dogs/Corgi.png', None, None, None, None), (3, 'Golden Retriever', 7, 8, 'Bonus Points', 'F:/Projects/Dog_Academy/assets/dogs/Golden_Retriever.png', None, None, None, None), (4, 'Husky', 9, 6, 'Speed Boost', 'F:/Projects/Dog_Academy/assets/dogs/Husky.png', None, None, None, None), (5, 'Pomeranian', 7, 4, 'Charm', 'F:/Projects/Dog_Academy/assets/dogs/Pomeranian.png', None, None, None, None), (6, 'Pug', 5, 9, 'Resilience', 'F:/Projects/Dog_Academy/assets/dogs/Pug.png', None, None, None, None), (7, 'Yorkshire Terrier', 6, 5, 'Quick Recovery', 'F:/Projects/Dog_Academy/assets/dogs/Yorkshire_Terrier.png', None, None, None, None)]
+2024-11-28 21:55:15 - ROLLBACK
+2024-11-28 21:55:15 - BEGIN (implicit)
+2024-11-28 21:55:15 - PRAGMA main.table_info("auth")
+2024-11-28 21:55:15 - [raw sql] ()
+2024-11-28 21:55:15 - PRAGMA main.table_info("users")
+2024-11-28 21:55:15 - [raw sql] ()
+2024-11-28 21:55:15 - PRAGMA main.table_info("dogs")
+2024-11-28 21:55:15 - [raw sql] ()
+2024-11-28 21:55:15 - PRAGMA main.table_info("questions")
+2024-11-28 21:55:15 - [raw sql] ()
+2024-11-28 21:55:15 - PRAGMA main.table_info("game_sessions")
+2024-11-28 21:55:15 - [raw sql] ()
+2024-11-28 21:55:15 - PRAGMA main.table_info("notifications")
+2024-11-28 21:55:15 - [raw sql] ()
+2024-11-28 21:55:15 - 
+DROP TABLE notifications
+2024-11-28 21:55:15 - [no key 0.00010s] ()
+2024-11-28 21:55:15 - 
+DROP TABLE game_sessions
+2024-11-28 21:55:15 - [no key 0.00017s] ()
+2024-11-28 21:55:15 - 
+DROP TABLE questions
+2024-11-28 21:55:15 - [no key 0.00017s] ()
+2024-11-28 21:55:15 - 
+DROP TABLE users
+2024-11-28 21:55:15 - [no key 0.00018s] ()
+2024-11-28 21:55:15 - 
+DROP TABLE dogs
+2024-11-28 21:55:15 - [no key 0.00019s] ()
+2024-11-28 21:55:16 - 
+DROP TABLE auth
+2024-11-28 21:55:16 - [no key 0.00018s] ()
+2024-11-28 21:55:16 - COMMIT
+2024-11-28 21:55:16 - BEGIN (implicit)
+2024-11-28 21:55:16 - PRAGMA main.table_info("auth")
+2024-11-28 21:55:16 - [raw sql] ()
+2024-11-28 21:55:16 - PRAGMA temp.table_info("auth")
+2024-11-28 21:55:16 - [raw sql] ()
+2024-11-28 21:55:16 - PRAGMA main.table_info("users")
+2024-11-28 21:55:16 - [raw sql] ()
+2024-11-28 21:55:16 - PRAGMA temp.table_info("users")
+2024-11-28 21:55:16 - [raw sql] ()
+2024-11-28 21:55:16 - PRAGMA main.table_info("dogs")
+2024-11-28 21:55:16 - [raw sql] ()
+2024-11-28 21:55:16 - PRAGMA temp.table_info("dogs")
+2024-11-28 21:55:16 - [raw sql] ()
+2024-11-28 21:55:16 - PRAGMA main.table_info("questions")
+2024-11-28 21:55:16 - [raw sql] ()
+2024-11-28 21:55:16 - PRAGMA temp.table_info("questions")
+2024-11-28 21:55:16 - [raw sql] ()
+2024-11-28 21:55:16 - PRAGMA main.table_info("game_sessions")
+2024-11-28 21:55:16 - [raw sql] ()
+2024-11-28 21:55:16 - PRAGMA temp.table_info("game_sessions")
+2024-11-28 21:55:16 - [raw sql] ()
+2024-11-28 21:55:16 - PRAGMA main.table_info("notifications")
+2024-11-28 21:55:16 - [raw sql] ()
+2024-11-28 21:55:16 - PRAGMA temp.table_info("notifications")
+2024-11-28 21:55:16 - [raw sql] ()
+2024-11-28 21:55:16 - 
+CREATE TABLE auth (
+	user_id INTEGER NOT NULL, 
+	login VARCHAR NOT NULL, 
+	password VARCHAR NOT NULL, 
+	PRIMARY KEY (user_id), 
+	UNIQUE (login)
+)
+
+
+2024-11-28 21:55:16 - [no key 0.00010s] ()
+2024-11-28 21:55:16 - 
+CREATE TABLE dogs (
+	dog_id INTEGER NOT NULL, 
+	breed VARCHAR NOT NULL, 
+	speed INTEGER NOT NULL, 
+	endurance INTEGER NOT NULL, 
+	special_ability VARCHAR NOT NULL, 
+	image VARCHAR NOT NULL, 
+	characteristics TEXT, 
+	behavior TEXT, 
+	care_info TEXT, 
+	admin_comments TEXT, 
+	PRIMARY KEY (dog_id)
+)
+
+
+2024-11-28 21:55:16 - [no key 0.00018s] ()
+2024-11-28 21:55:16 - 
+CREATE TABLE users (
+	user_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	username VARCHAR NOT NULL, 
+	level INTEGER, 
+	achievement TEXT, 
+	PRIMARY KEY (user_id), 
+	FOREIGN KEY(user_id) REFERENCES auth (user_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-28 21:55:16 - [no key 0.00020s] ()
+2024-11-28 21:55:16 - 
+CREATE TABLE questions (
+	question_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	question_text TEXT NOT NULL, 
+	image_url VARCHAR, 
+	helpful_info TEXT, 
+	incorrect_attempts INTEGER, 
+	PRIMARY KEY (question_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-28 21:55:16 - [no key 0.00020s] ()
+2024-11-28 21:55:16 - 
+CREATE TABLE game_sessions (
+	session_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	level INTEGER NOT NULL, 
+	score INTEGER, 
+	duration INTEGER, 
+	start_time DATETIME, 
+	end_time DATETIME, 
+	health INTEGER, 
+	hunger INTEGER, 
+	sleepiness INTEGER, 
+	PRIMARY KEY (session_id), 
+	CONSTRAINT uix_user_level UNIQUE (user_id, level), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-28 21:55:16 - [no key 0.00019s] ()
+2024-11-28 21:55:16 - 
+CREATE TABLE notifications (
+	notification_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	message TEXT NOT NULL, 
+	timestamp DATETIME, 
+	is_read BOOLEAN, 
+	PRIMARY KEY (notification_id), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-28 21:55:16 - [no key 0.00023s] ()
+2024-11-28 21:55:16 - COMMIT
+2024-11-28 21:55:40 - BEGIN (implicit)
+2024-11-28 21:55:40 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ?
+ LIMIT ? OFFSET ?
+2024-11-28 21:55:40 - [generated in 0.00020s] ('meow', 1, 0)
+2024-11-28 21:55:40 - INSERT INTO auth (login, password) VALUES (?, ?)
+2024-11-28 21:55:40 - [generated in 0.00015s] ('meow', 'mwoe')
+2024-11-28 21:55:40 - COMMIT
+2024-11-28 21:55:40 - BEGIN (implicit)
+2024-11-28 21:55:40 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.user_id = ?
+2024-11-28 21:55:40 - [generated in 0.00015s] (1,)
+2024-11-28 21:55:40 - INSERT INTO users (user_id, dog_id, username, level, achievement) VALUES (?, ?, ?, ?, ?)
+2024-11-28 21:55:40 - [generated in 0.00016s] (1, None, 'meow', 1, None)
+2024-11-28 21:55:40 - COMMIT
+2024-11-28 21:55:54 - BEGIN (implicit)
+2024-11-28 21:55:54 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-28 21:55:54 - [generated in 0.00022s] ('meow', 'meow', 1, 0)
+2024-11-28 21:55:54 - ROLLBACK
+2024-11-28 21:56:34 - BEGIN (implicit)
+2024-11-28 21:56:34 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-28 21:56:34 - [cached since 40.05s ago] ('meow', 'mewo', 1, 0)
+2024-11-28 21:56:34 - ROLLBACK
+2024-11-28 21:57:06 - BEGIN (implicit)
+2024-11-28 21:57:06 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-28 21:57:06 - [cached since 72.52s ago] ('meow', 'mwoe', 1, 0)
+2024-11-28 21:57:06 - ROLLBACK
+2024-11-28 21:57:11 - Не найден идентификатор пользователя. Игра не может быть запущена.
+2024-11-28 21:57:13 - BEGIN (implicit)
+2024-11-28 21:57:13 - SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users 
+WHERE users.user_id IS NULL
+ LIMIT ? OFFSET ?
+2024-11-28 21:57:13 - [generated in 0.00016s] (1, 0)
+2024-11-28 21:57:13 - ROLLBACK
+2024-11-28 21:57:43 - BEGIN (implicit)
+2024-11-28 21:57:43 - SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users 
+WHERE users.user_id IS NULL
+ LIMIT ? OFFSET ?
+2024-11-28 21:57:43 - [cached since 30.28s ago] (1, 0)
+2024-11-28 21:57:43 - ROLLBACK
+2024-11-28 21:57:43 - Не найден идентификатор пользователя. Прогресс не может быть сохранён.
+2024-11-29 16:45:39 - Логирование игры начато.
+2024-11-29 16:46:05 - BEGIN (implicit)
+2024-11-29 16:46:05 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-29 16:46:05 - [generated in 0.00023s] ('meow', 'mwoe', 1, 0)
+2024-11-29 16:46:05 - ROLLBACK
+2024-11-29 17:15:11 - Логирование игры начато.
+2024-11-29 17:15:27 - BEGIN (implicit)
+2024-11-29 17:15:27 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-29 17:15:27 - [generated in 0.00026s] ('lubluNikitu', 'meow123', 1, 0)
+2024-11-29 17:15:27 - ROLLBACK
+2024-11-29 17:16:17 - Логирование игры начато.
+2024-11-29 17:16:49 - BEGIN (implicit)
+2024-11-29 17:16:49 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ?
+ LIMIT ? OFFSET ?
+2024-11-29 17:16:49 - [generated in 0.00029s] ('lubluNikitu', 1, 0)
+2024-11-29 17:16:49 - INSERT INTO auth (login, password) VALUES (?, ?)
+2024-11-29 17:16:49 - [generated in 0.00022s] ('lubluNikitu', 'meow123')
+2024-11-29 17:16:49 - COMMIT
+2024-11-29 17:16:49 - BEGIN (implicit)
+2024-11-29 17:16:49 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.user_id = ?
+2024-11-29 17:16:49 - [generated in 0.00015s] (1,)
+2024-11-29 17:16:49 - INSERT INTO users (user_id, dog_id, username, level, achievement) VALUES (?, ?, ?, ?, ?)
+2024-11-29 17:16:49 - [generated in 0.00017s] (1, None, 'meoww', 1, None)
+2024-11-29 17:16:49 - COMMIT
+2024-11-29 17:17:10 - BEGIN (implicit)
+2024-11-29 17:17:10 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-29 17:17:10 - [generated in 0.00016s] ('lubluNikitu', 'meow123', 1, 0)
+2024-11-29 17:17:10 - ROLLBACK
+2024-11-29 17:17:33 - Сохранение прогресса: уровень 1, собрано косточек 2.
+2024-11-29 17:20:24 - Логирование игры начато.
+2024-11-29 17:20:38 - BEGIN (implicit)
+2024-11-29 17:20:38 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-29 17:20:38 - [generated in 0.00032s] ('lubluNikitu', 'meow123', 1, 0)
+2024-11-29 17:20:38 - ROLLBACK
+2024-11-29 17:21:08 - Логирование игры начато.
+2024-11-29 17:21:29 - BEGIN (implicit)
+2024-11-29 17:21:29 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ?
+ LIMIT ? OFFSET ?
+2024-11-29 17:21:29 - [generated in 0.00021s] ('meow', 1, 0)
+2024-11-29 17:21:29 - INSERT INTO auth (login, password) VALUES (?, ?)
+2024-11-29 17:21:29 - [generated in 0.00016s] ('meow', 'meow123')
+2024-11-29 17:21:29 - COMMIT
+2024-11-29 17:21:29 - BEGIN (implicit)
+2024-11-29 17:21:29 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.user_id = ?
+2024-11-29 17:21:29 - [generated in 0.00015s] (2,)
+2024-11-29 17:21:29 - INSERT INTO users (user_id, dog_id, username, level, achievement) VALUES (?, ?, ?, ?, ?)
+2024-11-29 17:21:29 - [generated in 0.00020s] (2, None, 'meoww', 1, None)
+2024-11-29 17:21:29 - COMMIT
+2024-11-29 17:21:41 - BEGIN (implicit)
+2024-11-29 17:21:41 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-29 17:21:41 - [generated in 0.00016s] ('meow', 'meow123', 1, 0)
+2024-11-29 17:21:41 - ROLLBACK
+2024-11-29 17:22:13 - BEGIN (implicit)
+2024-11-29 17:22:13 - SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users 
+WHERE users.user_id IS NULL
+ LIMIT ? OFFSET ?
+2024-11-29 17:22:13 - [generated in 0.00025s] (1, 0)
+2024-11-29 17:22:13 - ROLLBACK
+2024-11-29 17:22:13 - Пользователь с ID None не найден в базе данных.
+2024-11-29 17:22:51 - BEGIN (implicit)
+2024-11-29 17:22:51 - SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users 
+WHERE users.user_id IS NULL
+ LIMIT ? OFFSET ?
+2024-11-29 17:22:51 - [cached since 37.97s ago] (1, 0)
+2024-11-29 17:22:51 - ROLLBACK
+2024-11-29 17:22:51 - Пользователь с ID None не найден в базе данных.
+2024-11-29 17:22:55 - Сохранение прогресса: уровень 3, собрано косточек 0.
+2024-11-29 17:28:33 - Логирование игры начато.
+2024-11-29 17:28:42 - BEGIN (implicit)
+2024-11-29 17:28:42 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-29 17:28:42 - [generated in 0.00029s] ('meow', 'meow123', 1, 0)
+2024-11-29 17:28:42 - ROLLBACK
+2024-11-29 17:30:52 - Сохранение прогресса: уровень 1, собрано косточек 0.
+2024-11-29 17:51:01 - Логирование игры начато.
+2024-11-29 17:52:47 - BEGIN (implicit)
+2024-11-29 17:52:47 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ?
+ LIMIT ? OFFSET ?
+2024-11-29 17:52:47 - [generated in 0.00024s] ('lubluNikitu', 1, 0)
+2024-11-29 17:52:47 - INSERT INTO auth (login, password) VALUES (?, ?)
+2024-11-29 17:52:47 - [generated in 0.00021s] ('lubluNikitu', 'meow123')
+2024-11-29 17:52:47 - COMMIT
+2024-11-29 17:52:47 - BEGIN (implicit)
+2024-11-29 17:52:47 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.user_id = ?
+2024-11-29 17:52:47 - [generated in 0.00019s] (1,)
+2024-11-29 17:52:47 - INSERT INTO users (user_id, dog_id, username, level, achievement) VALUES (?, ?, ?, ?, ?)
+2024-11-29 17:52:47 - [generated in 0.00019s] (1, None, 'umenyashizazovutNikita', 1, None)
+2024-11-29 17:52:47 - COMMIT
+2024-11-29 17:54:31 - BEGIN (implicit)
+2024-11-29 17:54:31 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-29 17:54:31 - [generated in 0.00017s] ('lubluNikitu', 'meow123', 1, 0)
+2024-11-29 17:54:32 - ROLLBACK
+2024-11-29 17:54:49 - Логирование игры начато.
+2024-11-29 17:55:02 - BEGIN (implicit)
+2024-11-29 17:55:02 - SELECT count(*) AS count_1 
+FROM (SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users) AS anon_1
+2024-11-29 17:55:02 - [generated in 0.00028s] ()
+2024-11-29 17:55:02 - SELECT game_sessions.level AS game_sessions_level, count(game_sessions.session_id) AS count_1 
+FROM game_sessions GROUP BY game_sessions.level
+2024-11-29 17:55:02 - [generated in 0.00018s] ()
+2024-11-29 17:55:02 - SELECT questions.question_text AS questions_question_text, questions.incorrect_attempts AS questions_incorrect_attempts 
+FROM questions ORDER BY questions.incorrect_attempts DESC
+2024-11-29 17:55:02 - [generated in 0.00013s] ()
+2024-11-29 17:55:02 - SELECT avg(game_sessions.duration) AS avg_1 
+FROM game_sessions
+2024-11-29 17:55:02 - [generated in 0.00016s] ()
+2024-11-29 17:55:02 - ROLLBACK
+2024-11-29 17:55:02 - BEGIN (implicit)
+2024-11-29 17:55:02 - SELECT game_sessions.start_time AS game_sessions_start_time 
+FROM game_sessions
+2024-11-29 17:55:02 - [generated in 0.00016s] ()
+2024-11-29 17:55:02 - ROLLBACK
+2024-11-29 17:55:17 - BEGIN (implicit)
+2024-11-29 17:55:17 - SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement, auth_1.user_id AS auth_1_user_id, auth_1.login AS auth_1_login, auth_1.password AS auth_1_password 
+FROM users LEFT OUTER JOIN auth AS auth_1 ON auth_1.user_id = users.user_id
+2024-11-29 17:55:17 - [generated in 0.00017s] ()
+2024-11-29 17:55:17 - ROLLBACK
+2024-11-29 17:55:27 - BEGIN (implicit)
+2024-11-29 17:55:27 - SELECT questions.question_id AS questions_question_id, questions.dog_id AS questions_dog_id, questions.question_text AS questions_question_text, questions.image_url AS questions_image_url, questions.helpful_info AS questions_helpful_info, questions.incorrect_attempts AS questions_incorrect_attempts 
+FROM questions
+2024-11-29 17:55:27 - [generated in 0.00016s] ()
+2024-11-29 17:55:27 - ROLLBACK
+2024-11-29 17:55:33 - BEGIN (implicit)
+2024-11-29 17:55:33 - SELECT dogs.dog_id AS dogs_dog_id, dogs.breed AS dogs_breed, dogs.characteristics AS dogs_characteristics, dogs.behavior AS dogs_behavior, dogs.care_info AS dogs_care_info, dogs.admin_comments AS dogs_admin_comments 
+FROM dogs
+2024-11-29 17:55:33 - [generated in 0.00015s] ()
+2024-11-29 17:55:33 - ROLLBACK
+2024-11-29 17:55:43 - BEGIN (implicit)
+2024-11-29 17:55:43 - SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement, auth_1.user_id AS auth_1_user_id, auth_1.login AS auth_1_login, auth_1.password AS auth_1_password 
+FROM users LEFT OUTER JOIN auth AS auth_1 ON auth_1.user_id = users.user_id
+2024-11-29 17:55:43 - [cached since 25.7s ago] ()
+2024-11-29 17:55:43 - ROLLBACK
+2024-11-29 17:55:43 - BEGIN (implicit)
+2024-11-29 17:55:43 - SELECT questions.question_id AS questions_question_id, questions.dog_id AS questions_dog_id, questions.question_text AS questions_question_text, questions.image_url AS questions_image_url, questions.helpful_info AS questions_helpful_info, questions.incorrect_attempts AS questions_incorrect_attempts 
+FROM questions
+2024-11-29 17:55:43 - [cached since 16.09s ago] ()
+2024-11-29 17:55:43 - ROLLBACK
+2024-11-29 17:55:43 - BEGIN (implicit)
+2024-11-29 17:55:43 - SELECT dogs.dog_id AS dogs_dog_id, dogs.breed AS dogs_breed, dogs.characteristics AS dogs_characteristics, dogs.behavior AS dogs_behavior, dogs.care_info AS dogs_care_info, dogs.admin_comments AS dogs_admin_comments 
+FROM dogs
+2024-11-29 17:55:43 - [cached since 9.602s ago] ()
+2024-11-29 17:55:43 - ROLLBACK
+2024-11-29 17:56:09 - Логирование игры начато.
+2024-11-29 18:06:07 - Логирование игры начато.
+2024-11-29 18:06:20 - BEGIN (implicit)
+2024-11-29 18:06:20 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-29 18:06:20 - [generated in 0.00026s] ('meow', 'meow123', 1, 0)
+2024-11-29 18:06:20 - ROLLBACK
+2024-11-29 18:06:45 - BEGIN (implicit)
+2024-11-29 18:06:45 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ?
+ LIMIT ? OFFSET ?
+2024-11-29 18:06:45 - [generated in 0.00016s] ('meow', 1, 0)
+2024-11-29 18:06:45 - INSERT INTO auth (login, password) VALUES (?, ?)
+2024-11-29 18:06:45 - [generated in 0.00013s] ('meow', 'meow')
+2024-11-29 18:06:45 - COMMIT
+2024-11-29 18:06:45 - BEGIN (implicit)
+2024-11-29 18:06:45 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.user_id = ?
+2024-11-29 18:06:45 - [generated in 0.00016s] (2,)
+2024-11-29 18:06:45 - INSERT INTO users (user_id, dog_id, username, level, achievement) VALUES (?, ?, ?, ?, ?)
+2024-11-29 18:06:45 - [generated in 0.00018s] (2, None, 'meoww', 1, None)
+2024-11-29 18:06:45 - COMMIT
+2024-11-29 18:07:00 - BEGIN (implicit)
+2024-11-29 18:07:00 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-29 18:07:00 - [cached since 39.6s ago] ('meow', 'meow', 1, 0)
+2024-11-29 18:07:00 - ROLLBACK
+2024-11-29 18:07:08 - BEGIN (implicit)
+2024-11-29 18:07:08 - SELECT game_sessions.session_id AS game_sessions_session_id, game_sessions.user_id AS game_sessions_user_id, game_sessions.level AS game_sessions_level, game_sessions.score AS game_sessions_score, game_sessions.duration AS game_sessions_duration, game_sessions.start_time AS game_sessions_start_time, game_sessions.end_time AS game_sessions_end_time, game_sessions.health AS game_sessions_health, game_sessions.hunger AS game_sessions_hunger, game_sessions.sleepiness AS game_sessions_sleepiness 
+FROM game_sessions 
+WHERE game_sessions.user_id IS NULL
+2024-11-29 18:07:08 - [generated in 0.00019s] ()
+2024-11-29 18:07:08 - ROLLBACK
+2024-11-29 18:08:30 - Логирование игры начато.
+2024-11-29 18:08:39 - BEGIN (implicit)
+2024-11-29 18:08:39 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-29 18:08:39 - [generated in 0.00022s] ('meow', 'meow', 1, 0)
+2024-11-29 18:08:39 - ROLLBACK
+2024-11-29 18:08:42 - BEGIN (implicit)
+2024-11-29 18:08:42 - SELECT game_sessions.session_id AS game_sessions_session_id, game_sessions.user_id AS game_sessions_user_id, game_sessions.level AS game_sessions_level, game_sessions.score AS game_sessions_score, game_sessions.duration AS game_sessions_duration, game_sessions.start_time AS game_sessions_start_time, game_sessions.end_time AS game_sessions_end_time, game_sessions.health AS game_sessions_health, game_sessions.hunger AS game_sessions_hunger, game_sessions.sleepiness AS game_sessions_sleepiness 
+FROM game_sessions 
+WHERE game_sessions.user_id IS NULL
+2024-11-29 18:08:42 - [generated in 0.00028s] ()
+2024-11-29 18:08:42 - ROLLBACK
+2024-11-29 18:13:23 - Логирование игры начато.
+2024-11-29 18:13:40 - BEGIN (implicit)
+2024-11-29 18:13:40 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-29 18:13:40 - [generated in 0.00024s] ('meow', 'meow', 1, 0)
+2024-11-29 18:13:40 - ROLLBACK
+2024-11-29 18:15:22 - Логирование игры начато.
+2024-11-29 18:15:35 - BEGIN (implicit)
+2024-11-29 18:15:35 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-29 18:15:35 - [generated in 0.00022s] ('meow', 'meow', 1, 0)
+2024-11-29 18:15:35 - ROLLBACK
+2024-11-29 18:15:40 - BEGIN (implicit)
+2024-11-29 18:15:40 - SELECT game_sessions.session_id AS game_sessions_session_id, game_sessions.user_id AS game_sessions_user_id, game_sessions.level AS game_sessions_level, game_sessions.score AS game_sessions_score, game_sessions.duration AS game_sessions_duration, game_sessions.start_time AS game_sessions_start_time, game_sessions.end_time AS game_sessions_end_time, game_sessions.health AS game_sessions_health, game_sessions.hunger AS game_sessions_hunger, game_sessions.sleepiness AS game_sessions_sleepiness 
+FROM game_sessions 
+WHERE game_sessions.user_id IS NULL
+2024-11-29 18:15:40 - [generated in 0.00026s] ()
+2024-11-29 18:15:40 - ROLLBACK
+2024-11-29 18:15:43 - BEGIN (implicit)
+2024-11-29 18:15:43 - SELECT game_sessions.session_id AS game_sessions_session_id, game_sessions.user_id AS game_sessions_user_id, game_sessions.level AS game_sessions_level, game_sessions.score AS game_sessions_score, game_sessions.duration AS game_sessions_duration, game_sessions.start_time AS game_sessions_start_time, game_sessions.end_time AS game_sessions_end_time, game_sessions.health AS game_sessions_health, game_sessions.hunger AS game_sessions_hunger, game_sessions.sleepiness AS game_sessions_sleepiness 
+FROM game_sessions 
+WHERE game_sessions.user_id IS NULL
+2024-11-29 18:15:43 - [cached since 3.702s ago] ()
+2024-11-29 18:15:43 - ROLLBACK
+2024-11-29 18:16:01 - Сохранение прогресса: уровень 1, собрано косточек 4.
+2024-11-29 18:16:03 - BEGIN (implicit)
+2024-11-29 18:16:03 - SELECT game_sessions.session_id AS game_sessions_session_id, game_sessions.user_id AS game_sessions_user_id, game_sessions.level AS game_sessions_level, game_sessions.score AS game_sessions_score, game_sessions.duration AS game_sessions_duration, game_sessions.start_time AS game_sessions_start_time, game_sessions.end_time AS game_sessions_end_time, game_sessions.health AS game_sessions_health, game_sessions.hunger AS game_sessions_hunger, game_sessions.sleepiness AS game_sessions_sleepiness 
+FROM game_sessions 
+WHERE game_sessions.user_id IS NULL
+2024-11-29 18:16:03 - [cached since 22.74s ago] ()
+2024-11-29 18:16:03 - ROLLBACK
+2024-11-29 18:24:04 - Логирование игры начато.
+2024-11-29 18:24:23 - BEGIN (implicit)
+2024-11-29 18:24:23 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-29 18:24:23 - [generated in 0.00024s] ('meow', 'meow', 1, 0)
+2024-11-29 18:24:23 - ROLLBACK
+2024-11-29 18:25:04 - BEGIN (implicit)
+2024-11-29 18:25:04 - INSERT INTO game_sessions (user_id, level, score, duration, start_time, end_time, health, hunger, sleepiness) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, ?, ?, ?, ?) RETURNING session_id, start_time
+2024-11-29 18:25:04 - [generated in 0.00037s] (None, 1, 10, 98, None, 100, 0, 0)
+2024-11-29 18:25:04 - COMMIT
+2024-11-29 18:25:21 - Сохранение прогресса: уровень 2, собрано косточек 0.
+2024-11-29 18:25:23 - BEGIN (implicit)
+2024-11-29 18:25:23 - SELECT game_sessions.session_id AS game_sessions_session_id, game_sessions.user_id AS game_sessions_user_id, game_sessions.level AS game_sessions_level, game_sessions.score AS game_sessions_score, game_sessions.duration AS game_sessions_duration, game_sessions.start_time AS game_sessions_start_time, game_sessions.end_time AS game_sessions_end_time, game_sessions.health AS game_sessions_health, game_sessions.hunger AS game_sessions_hunger, game_sessions.sleepiness AS game_sessions_sleepiness 
+FROM game_sessions 
+WHERE game_sessions.user_id IS NULL
+2024-11-29 18:25:23 - [generated in 0.00019s] ()
+2024-11-29 18:25:23 - ROLLBACK
+2024-11-29 18:26:06 - BEGIN (implicit)
+2024-11-29 18:26:06 - INSERT INTO game_sessions (user_id, level, score, duration, start_time, end_time, health, hunger, sleepiness) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, ?, ?, ?, ?) RETURNING session_id, start_time
+2024-11-29 18:26:06 - [cached since 61.46s ago] (None, 1, 10, 93, None, 100, 0, 0)
+2024-11-29 18:26:06 - COMMIT
+2024-11-29 18:26:11 - Сохранение прогресса: уровень 2, собрано косточек 0.
+2024-11-29 18:28:10 - Логирование игры начато.
+2024-11-29 18:28:22 - BEGIN (implicit)
+2024-11-29 18:28:22 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-29 18:28:22 - [generated in 0.00023s] ('meow', 'meow', 1, 0)
+2024-11-29 18:28:22 - ROLLBACK
+2024-11-29 18:28:25 - BEGIN (implicit)
+2024-11-29 18:28:25 - SELECT game_sessions.session_id AS game_sessions_session_id, game_sessions.user_id AS game_sessions_user_id, game_sessions.level AS game_sessions_level, game_sessions.score AS game_sessions_score, game_sessions.duration AS game_sessions_duration, game_sessions.start_time AS game_sessions_start_time, game_sessions.end_time AS game_sessions_end_time, game_sessions.health AS game_sessions_health, game_sessions.hunger AS game_sessions_hunger, game_sessions.sleepiness AS game_sessions_sleepiness 
+FROM game_sessions 
+WHERE game_sessions.user_id IS NULL
+2024-11-29 18:28:25 - [generated in 0.00255s] ()
+2024-11-29 18:28:25 - ROLLBACK
+2024-11-29 18:40:37 - Логирование игры начато.
+2024-11-29 18:41:14 - Логирование игры начато.
+2024-11-29 18:41:22 - BEGIN (implicit)
+2024-11-29 18:41:22 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-29 18:41:22 - [generated in 0.00024s] ('meow', 'meow', 1, 0)
+2024-11-29 18:41:22 - ROLLBACK
+2024-11-29 18:44:53 - Логирование игры начато.
+2024-11-29 18:45:04 - BEGIN (implicit)
+2024-11-29 18:45:04 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-29 18:45:04 - [generated in 0.00019s] ('meow', 'meow', 1, 0)
+2024-11-29 18:45:04 - ROLLBACK
+2024-11-29 18:49:06 - Логирование игры начато.
+2024-11-29 18:49:17 - BEGIN (implicit)
+2024-11-29 18:49:17 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-29 18:49:17 - [generated in 0.00022s] ('meow', 'meow', 1, 0)
+2024-11-29 18:49:17 - ROLLBACK
+2024-11-29 18:50:31 - Логирование игры начато.
+2024-11-29 18:50:39 - BEGIN (implicit)
+2024-11-29 18:50:39 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-29 18:50:39 - [generated in 0.00035s] ('meow', 'meow', 1, 0)
+2024-11-29 18:50:39 - ROLLBACK
+2024-11-29 18:58:44 - Логирование игры начато.
+2024-11-29 18:59:00 - BEGIN (implicit)
+2024-11-29 18:59:00 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-29 18:59:00 - [generated in 0.00026s] ('meow', 'meow', 1, 0)
+2024-11-29 18:59:00 - ROLLBACK
+2024-11-29 18:59:23 - Сохранение прогресса: уровень 1, собрано косточек 0.
+2024-11-29 19:00:41 - Логирование игры начато.
+2024-11-29 19:00:48 - BEGIN (implicit)
+2024-11-29 19:00:48 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-29 19:00:48 - [generated in 0.00022s] ('meow', 'meow', 1, 0)
+2024-11-29 19:00:48 - ROLLBACK
+2024-11-29 19:01:02 - Сохранение прогресса: уровень 1, собрано косточек 0.
+2024-11-29 19:10:23 - Логирование игры начато.
+2024-11-29 19:10:32 - BEGIN (implicit)
+2024-11-29 19:10:32 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-29 19:10:32 - [generated in 0.00022s] ('meow', 'meow', 1, 0)
+2024-11-29 19:10:32 - ROLLBACK
+2024-11-29 19:12:03 - Сохранение прогресса: уровень 1, собрано косточек 1.
+2024-11-29 19:14:42 - Логирование игры начато.
+2024-11-29 19:15:32 - Логирование игры начато.
+2024-11-29 19:15:32 - BEGIN (implicit)
+2024-11-29 19:15:32 - PRAGMA main.table_info("auth")
+2024-11-29 19:15:32 - [raw sql] ()
+2024-11-29 19:15:32 - PRAGMA main.table_info("users")
+2024-11-29 19:15:32 - [raw sql] ()
+2024-11-29 19:15:32 - PRAGMA main.table_info("dogs")
+2024-11-29 19:15:32 - [raw sql] ()
+2024-11-29 19:15:32 - PRAGMA main.table_info("questions")
+2024-11-29 19:15:32 - [raw sql] ()
+2024-11-29 19:15:32 - PRAGMA main.table_info("game_sessions")
+2024-11-29 19:15:32 - [raw sql] ()
+2024-11-29 19:15:32 - PRAGMA main.table_info("notifications")
+2024-11-29 19:15:32 - [raw sql] ()
+2024-11-29 19:15:32 - 
+DROP TABLE notifications
+2024-11-29 19:15:32 - [no key 0.00010s] ()
+2024-11-29 19:15:32 - 
+DROP TABLE game_sessions
+2024-11-29 19:15:32 - [no key 0.00018s] ()
+2024-11-29 19:15:32 - 
+DROP TABLE questions
+2024-11-29 19:15:32 - [no key 0.00016s] ()
+2024-11-29 19:15:32 - 
+DROP TABLE users
+2024-11-29 19:15:32 - [no key 0.00017s] ()
+2024-11-29 19:15:32 - 
+DROP TABLE dogs
+2024-11-29 19:15:32 - [no key 0.00018s] ()
+2024-11-29 19:15:32 - 
+DROP TABLE auth
+2024-11-29 19:15:32 - [no key 0.00018s] ()
+2024-11-29 19:15:33 - COMMIT
+2024-11-29 19:15:33 - BEGIN (implicit)
+2024-11-29 19:15:33 - PRAGMA main.table_info("auth")
+2024-11-29 19:15:33 - [raw sql] ()
+2024-11-29 19:15:33 - PRAGMA temp.table_info("auth")
+2024-11-29 19:15:33 - [raw sql] ()
+2024-11-29 19:15:33 - PRAGMA main.table_info("users")
+2024-11-29 19:15:33 - [raw sql] ()
+2024-11-29 19:15:33 - PRAGMA temp.table_info("users")
+2024-11-29 19:15:33 - [raw sql] ()
+2024-11-29 19:15:33 - PRAGMA main.table_info("dogs")
+2024-11-29 19:15:33 - [raw sql] ()
+2024-11-29 19:15:33 - PRAGMA temp.table_info("dogs")
+2024-11-29 19:15:33 - [raw sql] ()
+2024-11-29 19:15:33 - PRAGMA main.table_info("questions")
+2024-11-29 19:15:33 - [raw sql] ()
+2024-11-29 19:15:33 - PRAGMA temp.table_info("questions")
+2024-11-29 19:15:33 - [raw sql] ()
+2024-11-29 19:15:33 - PRAGMA main.table_info("game_sessions")
+2024-11-29 19:15:33 - [raw sql] ()
+2024-11-29 19:15:33 - PRAGMA temp.table_info("game_sessions")
+2024-11-29 19:15:33 - [raw sql] ()
+2024-11-29 19:15:33 - PRAGMA main.table_info("notifications")
+2024-11-29 19:15:33 - [raw sql] ()
+2024-11-29 19:15:33 - PRAGMA temp.table_info("notifications")
+2024-11-29 19:15:33 - [raw sql] ()
+2024-11-29 19:15:33 - 
+CREATE TABLE auth (
+	user_id INTEGER NOT NULL, 
+	login VARCHAR NOT NULL, 
+	password VARCHAR NOT NULL, 
+	PRIMARY KEY (user_id), 
+	UNIQUE (login)
+)
+
+
+2024-11-29 19:15:33 - [no key 0.00018s] ()
+2024-11-29 19:15:33 - 
+CREATE TABLE dogs (
+	dog_id INTEGER NOT NULL, 
+	breed VARCHAR, 
+	characteristics TEXT, 
+	behavior TEXT, 
+	care_info TEXT, 
+	admin_comments TEXT, 
+	PRIMARY KEY (dog_id)
+)
+
+
+2024-11-29 19:15:33 - [no key 0.00017s] ()
+2024-11-29 19:15:33 - 
+CREATE TABLE users (
+	user_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	username VARCHAR NOT NULL, 
+	level INTEGER, 
+	achievement TEXT, 
+	PRIMARY KEY (user_id), 
+	FOREIGN KEY(user_id) REFERENCES auth (user_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-29 19:15:33 - [no key 0.00021s] ()
+2024-11-29 19:15:33 - 
+CREATE TABLE questions (
+	question_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	question_text TEXT NOT NULL, 
+	image_url VARCHAR, 
+	helpful_info TEXT, 
+	incorrect_attempts INTEGER, 
+	PRIMARY KEY (question_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-29 19:15:33 - [no key 0.00017s] ()
+2024-11-29 19:15:33 - 
+CREATE TABLE game_sessions (
+	session_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	level INTEGER NOT NULL, 
+	score INTEGER, 
+	duration INTEGER, 
+	start_time DATETIME, 
+	end_time DATETIME, 
+	health INTEGER, 
+	hunger INTEGER, 
+	sleepiness INTEGER, 
+	PRIMARY KEY (session_id), 
+	CONSTRAINT uix_user_level UNIQUE (user_id, level), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-29 19:15:33 - [no key 0.00017s] ()
+2024-11-29 19:15:33 - 
+CREATE TABLE notifications (
+	notification_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	message TEXT NOT NULL, 
+	timestamp DATETIME, 
+	is_read BOOLEAN, 
+	PRIMARY KEY (notification_id), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-29 19:15:33 - [no key 0.00017s] ()
+2024-11-29 19:15:33 - COMMIT
+2024-11-29 19:16:00 - BEGIN (implicit)
+2024-11-29 19:16:00 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ?
+ LIMIT ? OFFSET ?
+2024-11-29 19:16:00 - [generated in 0.00021s] ('meow', 1, 0)
+2024-11-29 19:16:00 - INSERT INTO auth (login, password) VALUES (?, ?)
+2024-11-29 19:16:00 - [generated in 0.00015s] ('meow', 'meow')
+2024-11-29 19:16:00 - COMMIT
+2024-11-29 19:16:00 - BEGIN (implicit)
+2024-11-29 19:16:00 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.user_id = ?
+2024-11-29 19:16:00 - [generated in 0.00015s] (1,)
+2024-11-29 19:16:00 - INSERT INTO users (user_id, dog_id, username, level, achievement) VALUES (?, ?, ?, ?, ?)
+2024-11-29 19:16:00 - [generated in 0.00018s] (1, None, 'meoww', 1, None)
+2024-11-29 19:16:00 - COMMIT
+2024-11-29 19:16:14 - BEGIN (implicit)
+2024-11-29 19:16:14 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-29 19:16:14 - [generated in 0.00017s] ('meow', 'meow', 1, 0)
+2024-11-29 19:16:14 - ROLLBACK
+2024-11-29 19:18:06 - Логирование игры начато.
+2024-11-29 19:18:06 - BEGIN (implicit)
+2024-11-29 19:18:06 - PRAGMA main.table_info("auth")
+2024-11-29 19:18:06 - [raw sql] ()
+2024-11-29 19:18:06 - PRAGMA main.table_info("users")
+2024-11-29 19:18:06 - [raw sql] ()
+2024-11-29 19:18:06 - PRAGMA main.table_info("dogs")
+2024-11-29 19:18:06 - [raw sql] ()
+2024-11-29 19:18:06 - PRAGMA main.table_info("questions")
+2024-11-29 19:18:06 - [raw sql] ()
+2024-11-29 19:18:06 - PRAGMA main.table_info("game_sessions")
+2024-11-29 19:18:06 - [raw sql] ()
+2024-11-29 19:18:06 - PRAGMA main.table_info("notifications")
+2024-11-29 19:18:06 - [raw sql] ()
+2024-11-29 19:18:06 - 
+DROP TABLE notifications
+2024-11-29 19:18:06 - [no key 0.00009s] ()
+2024-11-29 19:18:06 - 
+DROP TABLE game_sessions
+2024-11-29 19:18:06 - [no key 0.00019s] ()
+2024-11-29 19:18:06 - 
+DROP TABLE questions
+2024-11-29 19:18:06 - [no key 0.00018s] ()
+2024-11-29 19:18:06 - 
+DROP TABLE users
+2024-11-29 19:18:06 - [no key 0.00029s] ()
+2024-11-29 19:18:06 - 
+DROP TABLE dogs
+2024-11-29 19:18:06 - [no key 0.00017s] ()
+2024-11-29 19:18:06 - 
+DROP TABLE auth
+2024-11-29 19:18:06 - [no key 0.00019s] ()
+2024-11-29 19:18:06 - COMMIT
+2024-11-29 19:18:06 - BEGIN (implicit)
+2024-11-29 19:18:06 - PRAGMA main.table_info("auth")
+2024-11-29 19:18:06 - [raw sql] ()
+2024-11-29 19:18:06 - PRAGMA temp.table_info("auth")
+2024-11-29 19:18:06 - [raw sql] ()
+2024-11-29 19:18:06 - PRAGMA main.table_info("users")
+2024-11-29 19:18:06 - [raw sql] ()
+2024-11-29 19:18:06 - PRAGMA temp.table_info("users")
+2024-11-29 19:18:06 - [raw sql] ()
+2024-11-29 19:18:06 - PRAGMA main.table_info("dogs")
+2024-11-29 19:18:06 - [raw sql] ()
+2024-11-29 19:18:06 - PRAGMA temp.table_info("dogs")
+2024-11-29 19:18:06 - [raw sql] ()
+2024-11-29 19:18:06 - PRAGMA main.table_info("questions")
+2024-11-29 19:18:06 - [raw sql] ()
+2024-11-29 19:18:06 - PRAGMA temp.table_info("questions")
+2024-11-29 19:18:06 - [raw sql] ()
+2024-11-29 19:18:06 - PRAGMA main.table_info("game_sessions")
+2024-11-29 19:18:06 - [raw sql] ()
+2024-11-29 19:18:06 - PRAGMA temp.table_info("game_sessions")
+2024-11-29 19:18:06 - [raw sql] ()
+2024-11-29 19:18:06 - PRAGMA main.table_info("notifications")
+2024-11-29 19:18:06 - [raw sql] ()
+2024-11-29 19:18:06 - PRAGMA temp.table_info("notifications")
+2024-11-29 19:18:06 - [raw sql] ()
+2024-11-29 19:18:06 - 
+CREATE TABLE auth (
+	user_id INTEGER NOT NULL, 
+	login VARCHAR NOT NULL, 
+	password VARCHAR NOT NULL, 
+	PRIMARY KEY (user_id), 
+	UNIQUE (login)
+)
+
+
+2024-11-29 19:18:06 - [no key 0.00012s] ()
+2024-11-29 19:18:06 - 
+CREATE TABLE dogs (
+	dog_id INTEGER NOT NULL, 
+	breed VARCHAR, 
+	characteristics TEXT, 
+	behavior TEXT, 
+	care_info TEXT, 
+	admin_comments TEXT, 
+	PRIMARY KEY (dog_id)
+)
+
+
+2024-11-29 19:18:06 - [no key 0.00019s] ()
+2024-11-29 19:18:07 - 
+CREATE TABLE users (
+	user_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	username VARCHAR NOT NULL, 
+	level INTEGER, 
+	achievement TEXT, 
+	PRIMARY KEY (user_id), 
+	FOREIGN KEY(user_id) REFERENCES auth (user_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-29 19:18:07 - [no key 0.00018s] ()
+2024-11-29 19:18:07 - 
+CREATE TABLE questions (
+	question_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	question_text TEXT NOT NULL, 
+	image_url VARCHAR, 
+	helpful_info TEXT, 
+	incorrect_attempts INTEGER, 
+	PRIMARY KEY (question_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-29 19:18:07 - [no key 0.00018s] ()
+2024-11-29 19:18:07 - 
+CREATE TABLE game_sessions (
+	session_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	level INTEGER NOT NULL, 
+	score INTEGER, 
+	duration INTEGER, 
+	start_time DATETIME, 
+	end_time DATETIME, 
+	health INTEGER, 
+	hunger INTEGER, 
+	sleepiness INTEGER, 
+	PRIMARY KEY (session_id), 
+	CONSTRAINT uix_user_level UNIQUE (user_id, level), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-29 19:18:07 - [no key 0.00017s] ()
+2024-11-29 19:18:07 - 
+CREATE TABLE notifications (
+	notification_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	message TEXT NOT NULL, 
+	timestamp DATETIME, 
+	is_read BOOLEAN, 
+	PRIMARY KEY (notification_id), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-29 19:18:07 - [no key 0.00022s] ()
+2024-11-29 19:18:07 - COMMIT
+2024-11-29 19:18:20 - BEGIN (implicit)
+2024-11-29 19:18:20 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ?
+ LIMIT ? OFFSET ?
+2024-11-29 19:18:20 - [generated in 0.00022s] ('meow', 1, 0)
+2024-11-29 19:18:20 - INSERT INTO auth (login, password) VALUES (?, ?)
+2024-11-29 19:18:20 - [generated in 0.00014s] ('meow', 'meow')
+2024-11-29 19:18:20 - COMMIT
+2024-11-29 19:18:20 - BEGIN (implicit)
+2024-11-29 19:18:20 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.user_id = ?
+2024-11-29 19:18:20 - [generated in 0.00015s] (1,)
+2024-11-29 19:18:20 - INSERT INTO users (user_id, dog_id, username, level, achievement) VALUES (?, ?, ?, ?, ?)
+2024-11-29 19:18:20 - [generated in 0.00019s] (1, None, 'meoww', 1, None)
+2024-11-29 19:18:20 - COMMIT
+2024-11-29 19:18:28 - BEGIN (implicit)
+2024-11-29 19:18:28 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-29 19:18:28 - [generated in 0.00018s] ('meow', 'meow', 1, 0)
+2024-11-29 19:18:28 - ROLLBACK
+2024-11-29 19:19:11 - Логирование игры начато.
+2024-11-29 19:19:12 - BEGIN (implicit)
+2024-11-29 19:19:12 - PRAGMA main.table_info("auth")
+2024-11-29 19:19:12 - [raw sql] ()
+2024-11-29 19:19:12 - PRAGMA main.table_info("users")
+2024-11-29 19:19:12 - [raw sql] ()
+2024-11-29 19:19:12 - PRAGMA main.table_info("dogs")
+2024-11-29 19:19:12 - [raw sql] ()
+2024-11-29 19:19:12 - PRAGMA main.table_info("questions")
+2024-11-29 19:19:12 - [raw sql] ()
+2024-11-29 19:19:12 - PRAGMA main.table_info("game_sessions")
+2024-11-29 19:19:12 - [raw sql] ()
+2024-11-29 19:19:12 - PRAGMA main.table_info("notifications")
+2024-11-29 19:19:12 - [raw sql] ()
+2024-11-29 19:19:12 - 
+DROP TABLE notifications
+2024-11-29 19:19:12 - [no key 0.00009s] ()
+2024-11-29 19:19:12 - 
+DROP TABLE game_sessions
+2024-11-29 19:19:12 - [no key 0.00018s] ()
+2024-11-29 19:19:12 - 
+DROP TABLE questions
+2024-11-29 19:19:12 - [no key 0.00017s] ()
+2024-11-29 19:19:12 - 
+DROP TABLE users
+2024-11-29 19:19:12 - [no key 0.00016s] ()
+2024-11-29 19:19:12 - 
+DROP TABLE dogs
+2024-11-29 19:19:12 - [no key 0.00016s] ()
+2024-11-29 19:19:12 - 
+DROP TABLE auth
+2024-11-29 19:19:12 - [no key 0.00016s] ()
+2024-11-29 19:19:12 - COMMIT
+2024-11-29 19:19:12 - BEGIN (implicit)
+2024-11-29 19:19:12 - PRAGMA main.table_info("auth")
+2024-11-29 19:19:12 - [raw sql] ()
+2024-11-29 19:19:12 - PRAGMA temp.table_info("auth")
+2024-11-29 19:19:12 - [raw sql] ()
+2024-11-29 19:19:12 - PRAGMA main.table_info("users")
+2024-11-29 19:19:12 - [raw sql] ()
+2024-11-29 19:19:12 - PRAGMA temp.table_info("users")
+2024-11-29 19:19:12 - [raw sql] ()
+2024-11-29 19:19:12 - PRAGMA main.table_info("dogs")
+2024-11-29 19:19:12 - [raw sql] ()
+2024-11-29 19:19:12 - PRAGMA temp.table_info("dogs")
+2024-11-29 19:19:12 - [raw sql] ()
+2024-11-29 19:19:12 - PRAGMA main.table_info("questions")
+2024-11-29 19:19:12 - [raw sql] ()
+2024-11-29 19:19:12 - PRAGMA temp.table_info("questions")
+2024-11-29 19:19:12 - [raw sql] ()
+2024-11-29 19:19:12 - PRAGMA main.table_info("game_sessions")
+2024-11-29 19:19:12 - [raw sql] ()
+2024-11-29 19:19:12 - PRAGMA temp.table_info("game_sessions")
+2024-11-29 19:19:12 - [raw sql] ()
+2024-11-29 19:19:12 - PRAGMA main.table_info("notifications")
+2024-11-29 19:19:12 - [raw sql] ()
+2024-11-29 19:19:12 - PRAGMA temp.table_info("notifications")
+2024-11-29 19:19:12 - [raw sql] ()
+2024-11-29 19:19:12 - 
+CREATE TABLE auth (
+	user_id INTEGER NOT NULL, 
+	login VARCHAR NOT NULL, 
+	password VARCHAR NOT NULL, 
+	PRIMARY KEY (user_id), 
+	UNIQUE (login)
+)
+
+
+2024-11-29 19:19:12 - [no key 0.00010s] ()
+2024-11-29 19:19:12 - 
+CREATE TABLE dogs (
+	dog_id INTEGER NOT NULL, 
+	breed VARCHAR, 
+	characteristics TEXT, 
+	behavior TEXT, 
+	care_info TEXT, 
+	admin_comments TEXT, 
+	PRIMARY KEY (dog_id)
+)
+
+
+2024-11-29 19:19:12 - [no key 0.00017s] ()
+2024-11-29 19:19:12 - 
+CREATE TABLE users (
+	user_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	username VARCHAR NOT NULL, 
+	level INTEGER, 
+	achievement TEXT, 
+	PRIMARY KEY (user_id), 
+	FOREIGN KEY(user_id) REFERENCES auth (user_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-29 19:19:12 - [no key 0.00029s] ()
+2024-11-29 19:19:12 - 
+CREATE TABLE questions (
+	question_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	question_text TEXT NOT NULL, 
+	image_url VARCHAR, 
+	helpful_info TEXT, 
+	incorrect_attempts INTEGER, 
+	PRIMARY KEY (question_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-29 19:19:12 - [no key 0.00023s] ()
+2024-11-29 19:19:12 - 
+CREATE TABLE game_sessions (
+	session_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	level INTEGER NOT NULL, 
+	score INTEGER, 
+	duration INTEGER, 
+	start_time DATETIME, 
+	end_time DATETIME, 
+	health INTEGER, 
+	hunger INTEGER, 
+	sleepiness INTEGER, 
+	PRIMARY KEY (session_id), 
+	CONSTRAINT uix_user_level UNIQUE (user_id, level), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-29 19:19:12 - [no key 0.00025s] ()
+2024-11-29 19:19:12 - 
+CREATE TABLE notifications (
+	notification_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	message TEXT NOT NULL, 
+	timestamp DATETIME, 
+	is_read BOOLEAN, 
+	PRIMARY KEY (notification_id), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-29 19:19:12 - [no key 0.00018s] ()
+2024-11-29 19:19:12 - COMMIT
+2024-11-29 19:19:23 - BEGIN (implicit)
+2024-11-29 19:19:23 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ?
+ LIMIT ? OFFSET ?
+2024-11-29 19:19:23 - [generated in 0.00018s] ('meow', 1, 0)
+2024-11-29 19:19:23 - INSERT INTO auth (login, password) VALUES (?, ?)
+2024-11-29 19:19:23 - [generated in 0.00018s] ('meow', 'meow')
+2024-11-29 19:19:23 - COMMIT
+2024-11-29 19:19:23 - BEGIN (implicit)
+2024-11-29 19:19:23 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.user_id = ?
+2024-11-29 19:19:23 - [generated in 0.00017s] (1,)
+2024-11-29 19:19:23 - INSERT INTO users (user_id, dog_id, username, level, achievement) VALUES (?, ?, ?, ?, ?)
+2024-11-29 19:19:23 - [generated in 0.00025s] (1, None, 'meoww', 1, None)
+2024-11-29 19:19:23 - COMMIT
+2024-11-29 19:19:32 - BEGIN (implicit)
+2024-11-29 19:19:32 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-29 19:19:32 - [generated in 0.00016s] ('meow', 'meow', 1, 0)
+2024-11-29 19:19:32 - ROLLBACK
+2024-11-29 19:19:42 - Сохранение прогресса: уровень 1, собрано косточек 0.
+2024-11-29 19:19:43 - BEGIN (implicit)
+2024-11-29 19:19:43 - SELECT game_sessions.session_id AS game_sessions_session_id, game_sessions.user_id AS game_sessions_user_id, game_sessions.level AS game_sessions_level, game_sessions.score AS game_sessions_score, game_sessions.duration AS game_sessions_duration, game_sessions.start_time AS game_sessions_start_time, game_sessions.end_time AS game_sessions_end_time, game_sessions.health AS game_sessions_health, game_sessions.hunger AS game_sessions_hunger, game_sessions.sleepiness AS game_sessions_sleepiness 
+FROM game_sessions 
+WHERE game_sessions.user_id IS NULL
+2024-11-29 19:19:43 - [generated in 0.00017s] ()
+2024-11-29 19:19:43 - ROLLBACK
+2024-11-29 19:19:56 - Логирование игры начато.
+2024-11-29 19:19:56 - BEGIN (implicit)
+2024-11-29 19:19:56 - PRAGMA main.table_info("auth")
+2024-11-29 19:19:56 - [raw sql] ()
+2024-11-29 19:19:56 - PRAGMA main.table_info("users")
+2024-11-29 19:19:56 - [raw sql] ()
+2024-11-29 19:19:56 - PRAGMA main.table_info("dogs")
+2024-11-29 19:19:56 - [raw sql] ()
+2024-11-29 19:19:56 - PRAGMA main.table_info("questions")
+2024-11-29 19:19:56 - [raw sql] ()
+2024-11-29 19:19:56 - PRAGMA main.table_info("game_sessions")
+2024-11-29 19:19:56 - [raw sql] ()
+2024-11-29 19:19:56 - PRAGMA main.table_info("notifications")
+2024-11-29 19:19:56 - [raw sql] ()
+2024-11-29 19:19:56 - 
+DROP TABLE notifications
+2024-11-29 19:19:56 - [no key 0.00010s] ()
+2024-11-29 19:19:57 - 
+DROP TABLE game_sessions
+2024-11-29 19:19:57 - [no key 0.00019s] ()
+2024-11-29 19:19:57 - 
+DROP TABLE questions
+2024-11-29 19:19:57 - [no key 0.00016s] ()
+2024-11-29 19:19:57 - 
+DROP TABLE users
+2024-11-29 19:19:57 - [no key 0.00017s] ()
+2024-11-29 19:19:57 - 
+DROP TABLE dogs
+2024-11-29 19:19:57 - [no key 0.00017s] ()
+2024-11-29 19:19:57 - 
+DROP TABLE auth
+2024-11-29 19:19:57 - [no key 0.00016s] ()
+2024-11-29 19:19:57 - COMMIT
+2024-11-29 19:19:57 - BEGIN (implicit)
+2024-11-29 19:19:57 - PRAGMA main.table_info("auth")
+2024-11-29 19:19:57 - [raw sql] ()
+2024-11-29 19:19:57 - PRAGMA temp.table_info("auth")
+2024-11-29 19:19:57 - [raw sql] ()
+2024-11-29 19:19:57 - PRAGMA main.table_info("users")
+2024-11-29 19:19:57 - [raw sql] ()
+2024-11-29 19:19:57 - PRAGMA temp.table_info("users")
+2024-11-29 19:19:57 - [raw sql] ()
+2024-11-29 19:19:57 - PRAGMA main.table_info("dogs")
+2024-11-29 19:19:57 - [raw sql] ()
+2024-11-29 19:19:57 - PRAGMA temp.table_info("dogs")
+2024-11-29 19:19:57 - [raw sql] ()
+2024-11-29 19:19:57 - PRAGMA main.table_info("questions")
+2024-11-29 19:19:57 - [raw sql] ()
+2024-11-29 19:19:57 - PRAGMA temp.table_info("questions")
+2024-11-29 19:19:57 - [raw sql] ()
+2024-11-29 19:19:57 - PRAGMA main.table_info("game_sessions")
+2024-11-29 19:19:57 - [raw sql] ()
+2024-11-29 19:19:57 - PRAGMA temp.table_info("game_sessions")
+2024-11-29 19:19:57 - [raw sql] ()
+2024-11-29 19:19:57 - PRAGMA main.table_info("notifications")
+2024-11-29 19:19:57 - [raw sql] ()
+2024-11-29 19:19:57 - PRAGMA temp.table_info("notifications")
+2024-11-29 19:19:57 - [raw sql] ()
+2024-11-29 19:19:57 - 
+CREATE TABLE auth (
+	user_id INTEGER NOT NULL, 
+	login VARCHAR NOT NULL, 
+	password VARCHAR NOT NULL, 
+	PRIMARY KEY (user_id), 
+	UNIQUE (login)
+)
+
+
+2024-11-29 19:19:57 - [no key 0.00009s] ()
+2024-11-29 19:19:57 - 
+CREATE TABLE dogs (
+	dog_id INTEGER NOT NULL, 
+	breed VARCHAR, 
+	characteristics TEXT, 
+	behavior TEXT, 
+	care_info TEXT, 
+	admin_comments TEXT, 
+	PRIMARY KEY (dog_id)
+)
+
+
+2024-11-29 19:19:57 - [no key 0.00018s] ()
+2024-11-29 19:19:57 - 
+CREATE TABLE users (
+	user_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	username VARCHAR NOT NULL, 
+	level INTEGER, 
+	achievement TEXT, 
+	PRIMARY KEY (user_id), 
+	FOREIGN KEY(user_id) REFERENCES auth (user_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-29 19:19:57 - [no key 0.00017s] ()
+2024-11-29 19:19:57 - 
+CREATE TABLE questions (
+	question_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	question_text TEXT NOT NULL, 
+	image_url VARCHAR, 
+	helpful_info TEXT, 
+	incorrect_attempts INTEGER, 
+	PRIMARY KEY (question_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-29 19:19:57 - [no key 0.00018s] ()
+2024-11-29 19:19:57 - 
+CREATE TABLE game_sessions (
+	session_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	level INTEGER NOT NULL, 
+	score INTEGER, 
+	duration INTEGER, 
+	start_time DATETIME, 
+	end_time DATETIME, 
+	health INTEGER, 
+	hunger INTEGER, 
+	sleepiness INTEGER, 
+	PRIMARY KEY (session_id), 
+	CONSTRAINT uix_user_level UNIQUE (user_id, level), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-29 19:19:57 - [no key 0.00019s] ()
+2024-11-29 19:19:57 - 
+CREATE TABLE notifications (
+	notification_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	message TEXT NOT NULL, 
+	timestamp DATETIME, 
+	is_read BOOLEAN, 
+	PRIMARY KEY (notification_id), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-29 19:19:57 - [no key 0.00026s] ()
+2024-11-29 19:19:57 - COMMIT
+2024-11-29 19:20:12 - BEGIN (implicit)
+2024-11-29 19:20:12 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ?
+ LIMIT ? OFFSET ?
+2024-11-29 19:20:12 - [generated in 0.00025s] ('meow', 1, 0)
+2024-11-29 19:20:12 - INSERT INTO auth (login, password) VALUES (?, ?)
+2024-11-29 19:20:12 - [generated in 0.00023s] ('meow', 'meow')
+2024-11-29 19:20:12 - COMMIT
+2024-11-29 19:20:12 - BEGIN (implicit)
+2024-11-29 19:20:12 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.user_id = ?
+2024-11-29 19:20:12 - [generated in 0.00015s] (1,)
+2024-11-29 19:20:12 - INSERT INTO users (user_id, dog_id, username, level, achievement) VALUES (?, ?, ?, ?, ?)
+2024-11-29 19:20:12 - [generated in 0.00018s] (1, None, 'meoww', 1, None)
+2024-11-29 19:20:12 - COMMIT
+2024-11-29 19:20:19 - BEGIN (implicit)
+2024-11-29 19:20:19 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-29 19:20:19 - [generated in 0.00016s] ('meow', 'meow', 1, 0)
+2024-11-29 19:20:19 - ROLLBACK
+2024-11-29 19:31:45 - Логирование игры начато.
+2024-11-29 19:31:45 - BEGIN (implicit)
+2024-11-29 19:31:45 - PRAGMA main.table_info("auth")
+2024-11-29 19:31:45 - [raw sql] ()
+2024-11-29 19:31:45 - PRAGMA main.table_info("users")
+2024-11-29 19:31:45 - [raw sql] ()
+2024-11-29 19:31:45 - PRAGMA main.table_info("dogs")
+2024-11-29 19:31:45 - [raw sql] ()
+2024-11-29 19:31:45 - PRAGMA main.table_info("questions")
+2024-11-29 19:31:45 - [raw sql] ()
+2024-11-29 19:31:45 - PRAGMA main.table_info("game_sessions")
+2024-11-29 19:31:45 - [raw sql] ()
+2024-11-29 19:31:45 - PRAGMA main.table_info("notifications")
+2024-11-29 19:31:45 - [raw sql] ()
+2024-11-29 19:31:45 - 
+DROP TABLE notifications
+2024-11-29 19:31:45 - [no key 0.00009s] ()
+2024-11-29 19:31:45 - 
+DROP TABLE game_sessions
+2024-11-29 19:31:45 - [no key 0.00019s] ()
+2024-11-29 19:31:45 - 
+DROP TABLE questions
+2024-11-29 19:31:45 - [no key 0.00017s] ()
+2024-11-29 19:31:45 - 
+DROP TABLE users
+2024-11-29 19:31:45 - [no key 0.00019s] ()
+2024-11-29 19:31:45 - 
+DROP TABLE dogs
+2024-11-29 19:31:45 - [no key 0.00019s] ()
+2024-11-29 19:31:45 - 
+DROP TABLE auth
+2024-11-29 19:31:45 - [no key 0.00017s] ()
+2024-11-29 19:31:45 - COMMIT
+2024-11-29 19:31:45 - BEGIN (implicit)
+2024-11-29 19:31:45 - PRAGMA main.table_info("auth")
+2024-11-29 19:31:45 - [raw sql] ()
+2024-11-29 19:31:45 - PRAGMA temp.table_info("auth")
+2024-11-29 19:31:45 - [raw sql] ()
+2024-11-29 19:31:45 - PRAGMA main.table_info("users")
+2024-11-29 19:31:45 - [raw sql] ()
+2024-11-29 19:31:45 - PRAGMA temp.table_info("users")
+2024-11-29 19:31:45 - [raw sql] ()
+2024-11-29 19:31:45 - PRAGMA main.table_info("dogs")
+2024-11-29 19:31:45 - [raw sql] ()
+2024-11-29 19:31:45 - PRAGMA temp.table_info("dogs")
+2024-11-29 19:31:45 - [raw sql] ()
+2024-11-29 19:31:45 - PRAGMA main.table_info("questions")
+2024-11-29 19:31:45 - [raw sql] ()
+2024-11-29 19:31:45 - PRAGMA temp.table_info("questions")
+2024-11-29 19:31:45 - [raw sql] ()
+2024-11-29 19:31:45 - PRAGMA main.table_info("game_sessions")
+2024-11-29 19:31:45 - [raw sql] ()
+2024-11-29 19:31:45 - PRAGMA temp.table_info("game_sessions")
+2024-11-29 19:31:45 - [raw sql] ()
+2024-11-29 19:31:45 - PRAGMA main.table_info("notifications")
+2024-11-29 19:31:45 - [raw sql] ()
+2024-11-29 19:31:45 - PRAGMA temp.table_info("notifications")
+2024-11-29 19:31:45 - [raw sql] ()
+2024-11-29 19:31:45 - 
+CREATE TABLE auth (
+	user_id INTEGER NOT NULL, 
+	login VARCHAR NOT NULL, 
+	password VARCHAR NOT NULL, 
+	PRIMARY KEY (user_id), 
+	UNIQUE (login)
+)
+
+
+2024-11-29 19:31:45 - [no key 0.00010s] ()
+2024-11-29 19:31:45 - 
+CREATE TABLE dogs (
+	dog_id INTEGER NOT NULL, 
+	breed VARCHAR, 
+	characteristics TEXT, 
+	behavior TEXT, 
+	care_info TEXT, 
+	admin_comments TEXT, 
+	PRIMARY KEY (dog_id)
+)
+
+
+2024-11-29 19:31:45 - [no key 0.00016s] ()
+2024-11-29 19:31:45 - 
+CREATE TABLE users (
+	user_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	username VARCHAR NOT NULL, 
+	level INTEGER, 
+	achievement TEXT, 
+	PRIMARY KEY (user_id), 
+	FOREIGN KEY(user_id) REFERENCES auth (user_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-29 19:31:45 - [no key 0.00018s] ()
+2024-11-29 19:31:45 - 
+CREATE TABLE questions (
+	question_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	question_text TEXT NOT NULL, 
+	image_url VARCHAR, 
+	helpful_info TEXT, 
+	incorrect_attempts INTEGER, 
+	PRIMARY KEY (question_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-29 19:31:45 - [no key 0.00016s] ()
+2024-11-29 19:31:45 - 
+CREATE TABLE game_sessions (
+	session_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	level INTEGER NOT NULL, 
+	score INTEGER, 
+	duration INTEGER, 
+	start_time DATETIME, 
+	end_time DATETIME, 
+	health INTEGER, 
+	hunger INTEGER, 
+	sleepiness INTEGER, 
+	PRIMARY KEY (session_id), 
+	CONSTRAINT uix_user_level UNIQUE (user_id, level), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-29 19:31:45 - [no key 0.00024s] ()
+2024-11-29 19:31:45 - 
+CREATE TABLE notifications (
+	notification_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	message TEXT NOT NULL, 
+	timestamp DATETIME, 
+	is_read BOOLEAN, 
+	PRIMARY KEY (notification_id), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-29 19:31:45 - [no key 0.00022s] ()
+2024-11-29 19:31:45 - COMMIT
+2024-11-29 19:31:56 - BEGIN (implicit)
+2024-11-29 19:31:56 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ?
+ LIMIT ? OFFSET ?
+2024-11-29 19:31:56 - [generated in 0.00024s] ('meow', 1, 0)
+2024-11-29 19:31:56 - INSERT INTO auth (login, password) VALUES (?, ?)
+2024-11-29 19:31:56 - [generated in 0.00015s] ('meow', 'meow')
+2024-11-29 19:31:56 - COMMIT
+2024-11-29 19:31:56 - BEGIN (implicit)
+2024-11-29 19:31:56 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.user_id = ?
+2024-11-29 19:31:56 - [generated in 0.00016s] (1,)
+2024-11-29 19:31:56 - INSERT INTO users (user_id, dog_id, username, level, achievement) VALUES (?, ?, ?, ?, ?)
+2024-11-29 19:31:56 - [generated in 0.00018s] (1, None, 'meoww', 1, None)
+2024-11-29 19:31:56 - COMMIT
+2024-11-29 19:32:04 - BEGIN (implicit)
+2024-11-29 19:32:04 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-29 19:32:04 - [generated in 0.00016s] ('meow', 'meow', 1, 0)
+2024-11-29 19:32:04 - ROLLBACK
+2024-11-29 19:33:41 - Логирование игры начато.
+2024-11-29 19:33:41 - BEGIN (implicit)
+2024-11-29 19:33:41 - PRAGMA main.table_info("auth")
+2024-11-29 19:33:41 - [raw sql] ()
+2024-11-29 19:33:41 - PRAGMA main.table_info("users")
+2024-11-29 19:33:41 - [raw sql] ()
+2024-11-29 19:33:41 - PRAGMA main.table_info("dogs")
+2024-11-29 19:33:41 - [raw sql] ()
+2024-11-29 19:33:41 - PRAGMA main.table_info("questions")
+2024-11-29 19:33:41 - [raw sql] ()
+2024-11-29 19:33:41 - PRAGMA main.table_info("game_sessions")
+2024-11-29 19:33:41 - [raw sql] ()
+2024-11-29 19:33:41 - PRAGMA main.table_info("notifications")
+2024-11-29 19:33:41 - [raw sql] ()
+2024-11-29 19:33:41 - 
+DROP TABLE notifications
+2024-11-29 19:33:41 - [no key 0.00010s] ()
+2024-11-29 19:33:41 - 
+DROP TABLE game_sessions
+2024-11-29 19:33:41 - [no key 0.00018s] ()
+2024-11-29 19:33:41 - 
+DROP TABLE questions
+2024-11-29 19:33:41 - [no key 0.00017s] ()
+2024-11-29 19:33:41 - 
+DROP TABLE users
+2024-11-29 19:33:41 - [no key 0.00022s] ()
+2024-11-29 19:33:41 - 
+DROP TABLE dogs
+2024-11-29 19:33:41 - [no key 0.00017s] ()
+2024-11-29 19:33:41 - 
+DROP TABLE auth
+2024-11-29 19:33:41 - [no key 0.00017s] ()
+2024-11-29 19:33:41 - COMMIT
+2024-11-29 19:33:41 - BEGIN (implicit)
+2024-11-29 19:33:41 - PRAGMA main.table_info("auth")
+2024-11-29 19:33:41 - [raw sql] ()
+2024-11-29 19:33:41 - PRAGMA temp.table_info("auth")
+2024-11-29 19:33:41 - [raw sql] ()
+2024-11-29 19:33:41 - PRAGMA main.table_info("users")
+2024-11-29 19:33:41 - [raw sql] ()
+2024-11-29 19:33:41 - PRAGMA temp.table_info("users")
+2024-11-29 19:33:41 - [raw sql] ()
+2024-11-29 19:33:41 - PRAGMA main.table_info("dogs")
+2024-11-29 19:33:41 - [raw sql] ()
+2024-11-29 19:33:41 - PRAGMA temp.table_info("dogs")
+2024-11-29 19:33:41 - [raw sql] ()
+2024-11-29 19:33:41 - PRAGMA main.table_info("questions")
+2024-11-29 19:33:41 - [raw sql] ()
+2024-11-29 19:33:41 - PRAGMA temp.table_info("questions")
+2024-11-29 19:33:41 - [raw sql] ()
+2024-11-29 19:33:41 - PRAGMA main.table_info("game_sessions")
+2024-11-29 19:33:41 - [raw sql] ()
+2024-11-29 19:33:41 - PRAGMA temp.table_info("game_sessions")
+2024-11-29 19:33:41 - [raw sql] ()
+2024-11-29 19:33:41 - PRAGMA main.table_info("notifications")
+2024-11-29 19:33:41 - [raw sql] ()
+2024-11-29 19:33:41 - PRAGMA temp.table_info("notifications")
+2024-11-29 19:33:41 - [raw sql] ()
+2024-11-29 19:33:41 - 
+CREATE TABLE auth (
+	user_id INTEGER NOT NULL, 
+	login VARCHAR NOT NULL, 
+	password VARCHAR NOT NULL, 
+	PRIMARY KEY (user_id), 
+	UNIQUE (login)
+)
+
+
+2024-11-29 19:33:41 - [no key 0.00016s] ()
+2024-11-29 19:33:41 - 
+CREATE TABLE dogs (
+	dog_id INTEGER NOT NULL, 
+	breed VARCHAR, 
+	characteristics TEXT, 
+	behavior TEXT, 
+	care_info TEXT, 
+	admin_comments TEXT, 
+	PRIMARY KEY (dog_id)
+)
+
+
+2024-11-29 19:33:41 - [no key 0.00016s] ()
+2024-11-29 19:33:41 - 
+CREATE TABLE users (
+	user_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	username VARCHAR NOT NULL, 
+	level INTEGER, 
+	achievement TEXT, 
+	PRIMARY KEY (user_id), 
+	FOREIGN KEY(user_id) REFERENCES auth (user_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-29 19:33:41 - [no key 0.00018s] ()
+2024-11-29 19:33:41 - 
+CREATE TABLE questions (
+	question_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	question_text TEXT NOT NULL, 
+	image_url VARCHAR, 
+	helpful_info TEXT, 
+	incorrect_attempts INTEGER, 
+	PRIMARY KEY (question_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-29 19:33:41 - [no key 0.00016s] ()
+2024-11-29 19:33:41 - 
+CREATE TABLE game_sessions (
+	session_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	level INTEGER NOT NULL, 
+	score INTEGER, 
+	duration INTEGER, 
+	start_time DATETIME, 
+	end_time DATETIME, 
+	health INTEGER, 
+	hunger INTEGER, 
+	sleepiness INTEGER, 
+	PRIMARY KEY (session_id), 
+	CONSTRAINT uix_user_level UNIQUE (user_id, level), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-29 19:33:41 - [no key 0.00019s] ()
+2024-11-29 19:33:41 - 
+CREATE TABLE notifications (
+	notification_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	message TEXT NOT NULL, 
+	timestamp DATETIME, 
+	is_read BOOLEAN, 
+	PRIMARY KEY (notification_id), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-29 19:33:41 - [no key 0.00017s] ()
+2024-11-29 19:33:42 - COMMIT
+2024-11-29 19:33:58 - BEGIN (implicit)
+2024-11-29 19:33:58 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ?
+ LIMIT ? OFFSET ?
+2024-11-29 19:33:58 - [generated in 0.00020s] ('meow', 1, 0)
+2024-11-29 19:33:58 - INSERT INTO auth (login, password) VALUES (?, ?)
+2024-11-29 19:33:58 - [generated in 0.00016s] ('meow', 'meow')
+2024-11-29 19:33:58 - COMMIT
+2024-11-29 19:33:58 - BEGIN (implicit)
+2024-11-29 19:33:58 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.user_id = ?
+2024-11-29 19:33:58 - [generated in 0.00015s] (1,)
+2024-11-29 19:33:58 - INSERT INTO users (user_id, dog_id, username, level, achievement) VALUES (?, ?, ?, ?, ?)
+2024-11-29 19:33:58 - [generated in 0.00023s] (1, None, 'meoww', 1, None)
+2024-11-29 19:33:58 - COMMIT
+2024-11-29 19:34:04 - BEGIN (implicit)
+2024-11-29 19:34:04 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-29 19:34:04 - [generated in 0.00016s] ('meow', 'meow', 1, 0)
+2024-11-29 19:34:04 - ROLLBACK
+2024-11-29 19:36:11 - Логирование игры начато.
+2024-11-29 19:36:11 - BEGIN (implicit)
+2024-11-29 19:36:11 - PRAGMA main.table_info("auth")
+2024-11-29 19:36:11 - [raw sql] ()
+2024-11-29 19:36:11 - PRAGMA main.table_info("users")
+2024-11-29 19:36:11 - [raw sql] ()
+2024-11-29 19:36:11 - PRAGMA main.table_info("dogs")
+2024-11-29 19:36:11 - [raw sql] ()
+2024-11-29 19:36:11 - PRAGMA main.table_info("questions")
+2024-11-29 19:36:11 - [raw sql] ()
+2024-11-29 19:36:11 - PRAGMA main.table_info("game_sessions")
+2024-11-29 19:36:11 - [raw sql] ()
+2024-11-29 19:36:11 - PRAGMA main.table_info("notifications")
+2024-11-29 19:36:11 - [raw sql] ()
+2024-11-29 19:36:11 - 
+DROP TABLE notifications
+2024-11-29 19:36:11 - [no key 0.00010s] ()
+2024-11-29 19:36:11 - 
+DROP TABLE game_sessions
+2024-11-29 19:36:11 - [no key 0.00018s] ()
+2024-11-29 19:36:12 - 
+DROP TABLE questions
+2024-11-29 19:36:12 - [no key 0.00017s] ()
+2024-11-29 19:36:12 - 
+DROP TABLE users
+2024-11-29 19:36:12 - [no key 0.00017s] ()
+2024-11-29 19:36:12 - 
+DROP TABLE dogs
+2024-11-29 19:36:12 - [no key 0.00016s] ()
+2024-11-29 19:36:12 - 
+DROP TABLE auth
+2024-11-29 19:36:12 - [no key 0.00018s] ()
+2024-11-29 19:36:12 - COMMIT
+2024-11-29 19:36:12 - BEGIN (implicit)
+2024-11-29 19:36:12 - PRAGMA main.table_info("auth")
+2024-11-29 19:36:12 - [raw sql] ()
+2024-11-29 19:36:12 - PRAGMA temp.table_info("auth")
+2024-11-29 19:36:12 - [raw sql] ()
+2024-11-29 19:36:12 - PRAGMA main.table_info("users")
+2024-11-29 19:36:12 - [raw sql] ()
+2024-11-29 19:36:12 - PRAGMA temp.table_info("users")
+2024-11-29 19:36:12 - [raw sql] ()
+2024-11-29 19:36:12 - PRAGMA main.table_info("dogs")
+2024-11-29 19:36:12 - [raw sql] ()
+2024-11-29 19:36:12 - PRAGMA temp.table_info("dogs")
+2024-11-29 19:36:12 - [raw sql] ()
+2024-11-29 19:36:12 - PRAGMA main.table_info("questions")
+2024-11-29 19:36:12 - [raw sql] ()
+2024-11-29 19:36:12 - PRAGMA temp.table_info("questions")
+2024-11-29 19:36:12 - [raw sql] ()
+2024-11-29 19:36:12 - PRAGMA main.table_info("game_sessions")
+2024-11-29 19:36:12 - [raw sql] ()
+2024-11-29 19:36:12 - PRAGMA temp.table_info("game_sessions")
+2024-11-29 19:36:12 - [raw sql] ()
+2024-11-29 19:36:12 - PRAGMA main.table_info("notifications")
+2024-11-29 19:36:12 - [raw sql] ()
+2024-11-29 19:36:12 - PRAGMA temp.table_info("notifications")
+2024-11-29 19:36:12 - [raw sql] ()
+2024-11-29 19:36:12 - 
+CREATE TABLE auth (
+	user_id INTEGER NOT NULL, 
+	login VARCHAR NOT NULL, 
+	password VARCHAR NOT NULL, 
+	PRIMARY KEY (user_id), 
+	UNIQUE (login)
+)
+
+
+2024-11-29 19:36:12 - [no key 0.00010s] ()
+2024-11-29 19:36:12 - 
+CREATE TABLE dogs (
+	dog_id INTEGER NOT NULL, 
+	breed VARCHAR, 
+	characteristics TEXT, 
+	behavior TEXT, 
+	care_info TEXT, 
+	admin_comments TEXT, 
+	PRIMARY KEY (dog_id)
+)
+
+
+2024-11-29 19:36:12 - [no key 0.00017s] ()
+2024-11-29 19:36:12 - 
+CREATE TABLE users (
+	user_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	username VARCHAR NOT NULL, 
+	level INTEGER, 
+	achievement TEXT, 
+	PRIMARY KEY (user_id), 
+	FOREIGN KEY(user_id) REFERENCES auth (user_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-29 19:36:12 - [no key 0.00017s] ()
+2024-11-29 19:36:12 - 
+CREATE TABLE questions (
+	question_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	question_text TEXT NOT NULL, 
+	image_url VARCHAR, 
+	helpful_info TEXT, 
+	incorrect_attempts INTEGER, 
+	PRIMARY KEY (question_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-29 19:36:12 - [no key 0.00016s] ()
+2024-11-29 19:36:12 - 
+CREATE TABLE game_sessions (
+	session_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	level INTEGER NOT NULL, 
+	score INTEGER, 
+	duration INTEGER, 
+	start_time DATETIME, 
+	end_time DATETIME, 
+	health INTEGER, 
+	hunger INTEGER, 
+	sleepiness INTEGER, 
+	PRIMARY KEY (session_id), 
+	CONSTRAINT uix_user_level UNIQUE (user_id, level), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-29 19:36:12 - [no key 0.00017s] ()
+2024-11-29 19:36:12 - 
+CREATE TABLE notifications (
+	notification_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	message TEXT NOT NULL, 
+	timestamp DATETIME, 
+	is_read BOOLEAN, 
+	PRIMARY KEY (notification_id), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-29 19:36:12 - [no key 0.00019s] ()
+2024-11-29 19:36:12 - COMMIT
+2024-11-29 19:36:24 - BEGIN (implicit)
+2024-11-29 19:36:24 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ?
+ LIMIT ? OFFSET ?
+2024-11-29 19:36:24 - [generated in 0.00018s] ('meow', 1, 0)
+2024-11-29 19:36:24 - INSERT INTO auth (login, password) VALUES (?, ?)
+2024-11-29 19:36:24 - [generated in 0.00016s] ('meow', 'meow')
+2024-11-29 19:36:24 - COMMIT
+2024-11-29 19:36:24 - BEGIN (implicit)
+2024-11-29 19:36:24 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.user_id = ?
+2024-11-29 19:36:24 - [generated in 0.00016s] (1,)
+2024-11-29 19:36:24 - INSERT INTO users (user_id, dog_id, username, level, achievement) VALUES (?, ?, ?, ?, ?)
+2024-11-29 19:36:24 - [generated in 0.00017s] (1, None, 'meoww', 1, None)
+2024-11-29 19:36:24 - COMMIT
+2024-11-29 19:36:31 - BEGIN (implicit)
+2024-11-29 19:36:31 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-29 19:36:31 - [generated in 0.00016s] ('meow', 'meow', 1, 0)
+2024-11-29 19:36:31 - ROLLBACK
+2024-11-29 19:37:16 - Логирование игры начато.
+2024-11-29 19:37:16 - BEGIN (implicit)
+2024-11-29 19:37:16 - PRAGMA main.table_info("auth")
+2024-11-29 19:37:16 - [raw sql] ()
+2024-11-29 19:37:16 - PRAGMA main.table_info("users")
+2024-11-29 19:37:16 - [raw sql] ()
+2024-11-29 19:37:16 - PRAGMA main.table_info("dogs")
+2024-11-29 19:37:16 - [raw sql] ()
+2024-11-29 19:37:16 - PRAGMA main.table_info("questions")
+2024-11-29 19:37:16 - [raw sql] ()
+2024-11-29 19:37:16 - PRAGMA main.table_info("game_sessions")
+2024-11-29 19:37:16 - [raw sql] ()
+2024-11-29 19:37:16 - PRAGMA main.table_info("notifications")
+2024-11-29 19:37:16 - [raw sql] ()
+2024-11-29 19:37:16 - 
+DROP TABLE notifications
+2024-11-29 19:37:16 - [no key 0.00009s] ()
+2024-11-29 19:37:16 - 
+DROP TABLE game_sessions
+2024-11-29 19:37:16 - [no key 0.00019s] ()
+2024-11-29 19:37:16 - 
+DROP TABLE questions
+2024-11-29 19:37:16 - [no key 0.00020s] ()
+2024-11-29 19:37:16 - 
+DROP TABLE users
+2024-11-29 19:37:16 - [no key 0.00021s] ()
+2024-11-29 19:37:16 - 
+DROP TABLE dogs
+2024-11-29 19:37:16 - [no key 0.00018s] ()
+2024-11-29 19:37:16 - 
+DROP TABLE auth
+2024-11-29 19:37:16 - [no key 0.00025s] ()
+2024-11-29 19:37:16 - COMMIT
+2024-11-29 19:37:16 - BEGIN (implicit)
+2024-11-29 19:37:16 - PRAGMA main.table_info("auth")
+2024-11-29 19:37:16 - [raw sql] ()
+2024-11-29 19:37:16 - PRAGMA temp.table_info("auth")
+2024-11-29 19:37:16 - [raw sql] ()
+2024-11-29 19:37:16 - PRAGMA main.table_info("users")
+2024-11-29 19:37:16 - [raw sql] ()
+2024-11-29 19:37:16 - PRAGMA temp.table_info("users")
+2024-11-29 19:37:16 - [raw sql] ()
+2024-11-29 19:37:16 - PRAGMA main.table_info("dogs")
+2024-11-29 19:37:16 - [raw sql] ()
+2024-11-29 19:37:16 - PRAGMA temp.table_info("dogs")
+2024-11-29 19:37:16 - [raw sql] ()
+2024-11-29 19:37:16 - PRAGMA main.table_info("questions")
+2024-11-29 19:37:16 - [raw sql] ()
+2024-11-29 19:37:16 - PRAGMA temp.table_info("questions")
+2024-11-29 19:37:16 - [raw sql] ()
+2024-11-29 19:37:16 - PRAGMA main.table_info("game_sessions")
+2024-11-29 19:37:16 - [raw sql] ()
+2024-11-29 19:37:16 - PRAGMA temp.table_info("game_sessions")
+2024-11-29 19:37:16 - [raw sql] ()
+2024-11-29 19:37:16 - PRAGMA main.table_info("notifications")
+2024-11-29 19:37:16 - [raw sql] ()
+2024-11-29 19:37:16 - PRAGMA temp.table_info("notifications")
+2024-11-29 19:37:16 - [raw sql] ()
+2024-11-29 19:37:16 - 
+CREATE TABLE auth (
+	user_id INTEGER NOT NULL, 
+	login VARCHAR NOT NULL, 
+	password VARCHAR NOT NULL, 
+	PRIMARY KEY (user_id), 
+	UNIQUE (login)
+)
+
+
+2024-11-29 19:37:16 - [no key 0.00030s] ()
+2024-11-29 19:37:16 - 
+CREATE TABLE dogs (
+	dog_id INTEGER NOT NULL, 
+	breed VARCHAR, 
+	characteristics TEXT, 
+	behavior TEXT, 
+	care_info TEXT, 
+	admin_comments TEXT, 
+	PRIMARY KEY (dog_id)
+)
+
+
+2024-11-29 19:37:16 - [no key 0.00033s] ()
+2024-11-29 19:37:17 - 
+CREATE TABLE users (
+	user_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	username VARCHAR NOT NULL, 
+	level INTEGER, 
+	achievement TEXT, 
+	PRIMARY KEY (user_id), 
+	FOREIGN KEY(user_id) REFERENCES auth (user_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-29 19:37:17 - [no key 0.00022s] ()
+2024-11-29 19:37:17 - 
+CREATE TABLE questions (
+	question_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	question_text TEXT NOT NULL, 
+	image_url VARCHAR, 
+	helpful_info TEXT, 
+	incorrect_attempts INTEGER, 
+	PRIMARY KEY (question_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-29 19:37:17 - [no key 0.00025s] ()
+2024-11-29 19:37:17 - 
+CREATE TABLE game_sessions (
+	session_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	level INTEGER NOT NULL, 
+	score INTEGER, 
+	duration INTEGER, 
+	start_time DATETIME, 
+	end_time DATETIME, 
+	health INTEGER, 
+	hunger INTEGER, 
+	sleepiness INTEGER, 
+	PRIMARY KEY (session_id), 
+	CONSTRAINT uix_user_level UNIQUE (user_id, level), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-29 19:37:17 - [no key 0.00023s] ()
+2024-11-29 19:37:17 - 
+CREATE TABLE notifications (
+	notification_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	message TEXT NOT NULL, 
+	timestamp DATETIME, 
+	is_read BOOLEAN, 
+	PRIMARY KEY (notification_id), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-29 19:37:17 - [no key 0.00020s] ()
+2024-11-29 19:37:17 - COMMIT
+2024-11-29 19:37:27 - BEGIN (implicit)
+2024-11-29 19:37:27 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ?
+ LIMIT ? OFFSET ?
+2024-11-29 19:37:27 - [generated in 0.00027s] ('meow', 1, 0)
+2024-11-29 19:37:27 - INSERT INTO auth (login, password) VALUES (?, ?)
+2024-11-29 19:37:27 - [generated in 0.00022s] ('meow', 'meow')
+2024-11-29 19:37:27 - COMMIT
+2024-11-29 19:37:27 - BEGIN (implicit)
+2024-11-29 19:37:27 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.user_id = ?
+2024-11-29 19:37:27 - [generated in 0.00017s] (1,)
+2024-11-29 19:37:27 - INSERT INTO users (user_id, dog_id, username, level, achievement) VALUES (?, ?, ?, ?, ?)
+2024-11-29 19:37:27 - [generated in 0.00017s] (1, None, 'meoww', 1, None)
+2024-11-29 19:37:27 - COMMIT
+2024-11-29 19:37:33 - BEGIN (implicit)
+2024-11-29 19:37:33 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-29 19:37:33 - [generated in 0.00017s] ('meow', 'meow', 1, 0)
+2024-11-29 19:37:33 - ROLLBACK
+2024-11-29 19:38:25 - Логирование игры начато.
+2024-11-29 19:38:25 - BEGIN (implicit)
+2024-11-29 19:38:25 - PRAGMA main.table_info("auth")
+2024-11-29 19:38:25 - [raw sql] ()
+2024-11-29 19:38:25 - PRAGMA main.table_info("users")
+2024-11-29 19:38:25 - [raw sql] ()
+2024-11-29 19:38:25 - PRAGMA main.table_info("dogs")
+2024-11-29 19:38:25 - [raw sql] ()
+2024-11-29 19:38:25 - PRAGMA main.table_info("questions")
+2024-11-29 19:38:25 - [raw sql] ()
+2024-11-29 19:38:25 - PRAGMA main.table_info("game_sessions")
+2024-11-29 19:38:25 - [raw sql] ()
+2024-11-29 19:38:25 - PRAGMA main.table_info("notifications")
+2024-11-29 19:38:25 - [raw sql] ()
+2024-11-29 19:38:25 - 
+DROP TABLE notifications
+2024-11-29 19:38:25 - [no key 0.00010s] ()
+2024-11-29 19:38:25 - 
+DROP TABLE game_sessions
+2024-11-29 19:38:25 - [no key 0.00020s] ()
+2024-11-29 19:38:25 - 
+DROP TABLE questions
+2024-11-29 19:38:25 - [no key 0.00017s] ()
+2024-11-29 19:38:25 - 
+DROP TABLE users
+2024-11-29 19:38:25 - [no key 0.00017s] ()
+2024-11-29 19:38:25 - 
+DROP TABLE dogs
+2024-11-29 19:38:25 - [no key 0.00017s] ()
+2024-11-29 19:38:25 - 
+DROP TABLE auth
+2024-11-29 19:38:25 - [no key 0.00016s] ()
+2024-11-29 19:38:25 - COMMIT
+2024-11-29 19:38:25 - BEGIN (implicit)
+2024-11-29 19:38:25 - PRAGMA main.table_info("auth")
+2024-11-29 19:38:25 - [raw sql] ()
+2024-11-29 19:38:25 - PRAGMA temp.table_info("auth")
+2024-11-29 19:38:25 - [raw sql] ()
+2024-11-29 19:38:25 - PRAGMA main.table_info("users")
+2024-11-29 19:38:25 - [raw sql] ()
+2024-11-29 19:38:25 - PRAGMA temp.table_info("users")
+2024-11-29 19:38:25 - [raw sql] ()
+2024-11-29 19:38:25 - PRAGMA main.table_info("dogs")
+2024-11-29 19:38:25 - [raw sql] ()
+2024-11-29 19:38:25 - PRAGMA temp.table_info("dogs")
+2024-11-29 19:38:25 - [raw sql] ()
+2024-11-29 19:38:25 - PRAGMA main.table_info("questions")
+2024-11-29 19:38:25 - [raw sql] ()
+2024-11-29 19:38:25 - PRAGMA temp.table_info("questions")
+2024-11-29 19:38:25 - [raw sql] ()
+2024-11-29 19:38:25 - PRAGMA main.table_info("game_sessions")
+2024-11-29 19:38:25 - [raw sql] ()
+2024-11-29 19:38:25 - PRAGMA temp.table_info("game_sessions")
+2024-11-29 19:38:25 - [raw sql] ()
+2024-11-29 19:38:25 - PRAGMA main.table_info("notifications")
+2024-11-29 19:38:25 - [raw sql] ()
+2024-11-29 19:38:25 - PRAGMA temp.table_info("notifications")
+2024-11-29 19:38:25 - [raw sql] ()
+2024-11-29 19:38:25 - 
+CREATE TABLE auth (
+	user_id INTEGER NOT NULL, 
+	login VARCHAR NOT NULL, 
+	password VARCHAR NOT NULL, 
+	PRIMARY KEY (user_id), 
+	UNIQUE (login)
+)
+
+
+2024-11-29 19:38:25 - [no key 0.00012s] ()
+2024-11-29 19:38:25 - 
+CREATE TABLE dogs (
+	dog_id INTEGER NOT NULL, 
+	breed VARCHAR, 
+	characteristics TEXT, 
+	behavior TEXT, 
+	care_info TEXT, 
+	admin_comments TEXT, 
+	PRIMARY KEY (dog_id)
+)
+
+
+2024-11-29 19:38:25 - [no key 0.00016s] ()
+2024-11-29 19:38:25 - 
+CREATE TABLE users (
+	user_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	username VARCHAR NOT NULL, 
+	level INTEGER, 
+	achievement TEXT, 
+	PRIMARY KEY (user_id), 
+	FOREIGN KEY(user_id) REFERENCES auth (user_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-29 19:38:25 - [no key 0.00018s] ()
+2024-11-29 19:38:25 - 
+CREATE TABLE questions (
+	question_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	question_text TEXT NOT NULL, 
+	image_url VARCHAR, 
+	helpful_info TEXT, 
+	incorrect_attempts INTEGER, 
+	PRIMARY KEY (question_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-29 19:38:25 - [no key 0.00017s] ()
+2024-11-29 19:38:25 - 
+CREATE TABLE game_sessions (
+	session_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	level INTEGER NOT NULL, 
+	score INTEGER, 
+	duration INTEGER, 
+	start_time DATETIME, 
+	end_time DATETIME, 
+	health INTEGER, 
+	hunger INTEGER, 
+	sleepiness INTEGER, 
+	PRIMARY KEY (session_id), 
+	CONSTRAINT uix_user_level UNIQUE (user_id, level), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-29 19:38:25 - [no key 0.00020s] ()
+2024-11-29 19:38:25 - 
+CREATE TABLE notifications (
+	notification_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	message TEXT NOT NULL, 
+	timestamp DATETIME, 
+	is_read BOOLEAN, 
+	PRIMARY KEY (notification_id), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-29 19:38:25 - [no key 0.00017s] ()
+2024-11-29 19:38:26 - COMMIT
+2024-11-29 19:38:37 - BEGIN (implicit)
+2024-11-29 19:38:37 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ?
+ LIMIT ? OFFSET ?
+2024-11-29 19:38:37 - [generated in 0.00022s] ('meow', 1, 0)
+2024-11-29 19:38:37 - INSERT INTO auth (login, password) VALUES (?, ?)
+2024-11-29 19:38:37 - [generated in 0.00014s] ('meow', 'meow')
+2024-11-29 19:38:37 - COMMIT
+2024-11-29 19:38:37 - BEGIN (implicit)
+2024-11-29 19:38:37 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.user_id = ?
+2024-11-29 19:38:37 - [generated in 0.00016s] (1,)
+2024-11-29 19:38:37 - INSERT INTO users (user_id, dog_id, username, level, achievement) VALUES (?, ?, ?, ?, ?)
+2024-11-29 19:38:37 - [generated in 0.00018s] (1, None, 'meoww', 1, None)
+2024-11-29 19:38:37 - COMMIT
+2024-11-29 19:38:44 - BEGIN (implicit)
+2024-11-29 19:38:44 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-29 19:38:44 - [generated in 0.00017s] ('meow', 'meow', 1, 0)
+2024-11-29 19:38:44 - ROLLBACK
+2024-11-29 19:46:13 - Логирование игры начато.
+2024-11-29 19:46:13 - BEGIN (implicit)
+2024-11-29 19:46:13 - PRAGMA main.table_info("auth")
+2024-11-29 19:46:13 - [raw sql] ()
+2024-11-29 19:46:13 - PRAGMA main.table_info("users")
+2024-11-29 19:46:13 - [raw sql] ()
+2024-11-29 19:46:13 - PRAGMA main.table_info("dogs")
+2024-11-29 19:46:13 - [raw sql] ()
+2024-11-29 19:46:13 - PRAGMA main.table_info("questions")
+2024-11-29 19:46:13 - [raw sql] ()
+2024-11-29 19:46:13 - PRAGMA main.table_info("game_sessions")
+2024-11-29 19:46:13 - [raw sql] ()
+2024-11-29 19:46:13 - PRAGMA main.table_info("notifications")
+2024-11-29 19:46:13 - [raw sql] ()
+2024-11-29 19:46:13 - 
+DROP TABLE notifications
+2024-11-29 19:46:13 - [no key 0.00041s] ()
+2024-11-29 19:46:13 - 
+DROP TABLE game_sessions
+2024-11-29 19:46:13 - [no key 0.00017s] ()
+2024-11-29 19:46:14 - 
+DROP TABLE questions
+2024-11-29 19:46:14 - [no key 0.00017s] ()
+2024-11-29 19:46:14 - 
+DROP TABLE users
+2024-11-29 19:46:14 - [no key 0.00017s] ()
+2024-11-29 19:46:14 - 
+DROP TABLE dogs
+2024-11-29 19:46:14 - [no key 0.00017s] ()
+2024-11-29 19:46:14 - 
+DROP TABLE auth
+2024-11-29 19:46:14 - [no key 0.00016s] ()
+2024-11-29 19:46:14 - COMMIT
+2024-11-29 19:46:14 - BEGIN (implicit)
+2024-11-29 19:46:14 - PRAGMA main.table_info("auth")
+2024-11-29 19:46:14 - [raw sql] ()
+2024-11-29 19:46:14 - PRAGMA temp.table_info("auth")
+2024-11-29 19:46:14 - [raw sql] ()
+2024-11-29 19:46:14 - PRAGMA main.table_info("users")
+2024-11-29 19:46:14 - [raw sql] ()
+2024-11-29 19:46:14 - PRAGMA temp.table_info("users")
+2024-11-29 19:46:14 - [raw sql] ()
+2024-11-29 19:46:14 - PRAGMA main.table_info("dogs")
+2024-11-29 19:46:14 - [raw sql] ()
+2024-11-29 19:46:14 - PRAGMA temp.table_info("dogs")
+2024-11-29 19:46:14 - [raw sql] ()
+2024-11-29 19:46:14 - PRAGMA main.table_info("questions")
+2024-11-29 19:46:14 - [raw sql] ()
+2024-11-29 19:46:14 - PRAGMA temp.table_info("questions")
+2024-11-29 19:46:14 - [raw sql] ()
+2024-11-29 19:46:14 - PRAGMA main.table_info("game_sessions")
+2024-11-29 19:46:14 - [raw sql] ()
+2024-11-29 19:46:14 - PRAGMA temp.table_info("game_sessions")
+2024-11-29 19:46:14 - [raw sql] ()
+2024-11-29 19:46:14 - PRAGMA main.table_info("notifications")
+2024-11-29 19:46:14 - [raw sql] ()
+2024-11-29 19:46:14 - PRAGMA temp.table_info("notifications")
+2024-11-29 19:46:14 - [raw sql] ()
+2024-11-29 19:46:14 - 
+CREATE TABLE auth (
+	user_id INTEGER NOT NULL, 
+	login VARCHAR NOT NULL, 
+	password VARCHAR NOT NULL, 
+	PRIMARY KEY (user_id), 
+	UNIQUE (login)
+)
+
+
+2024-11-29 19:46:14 - [no key 0.00010s] ()
+2024-11-29 19:46:14 - 
+CREATE TABLE dogs (
+	dog_id INTEGER NOT NULL, 
+	breed VARCHAR, 
+	characteristics TEXT, 
+	behavior TEXT, 
+	care_info TEXT, 
+	admin_comments TEXT, 
+	PRIMARY KEY (dog_id)
+)
+
+
+2024-11-29 19:46:14 - [no key 0.00017s] ()
+2024-11-29 19:46:14 - 
+CREATE TABLE users (
+	user_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	username VARCHAR NOT NULL, 
+	level INTEGER, 
+	achievement TEXT, 
+	PRIMARY KEY (user_id), 
+	FOREIGN KEY(user_id) REFERENCES auth (user_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-29 19:46:14 - [no key 0.00017s] ()
+2024-11-29 19:46:14 - 
+CREATE TABLE questions (
+	question_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	question_text TEXT NOT NULL, 
+	image_url VARCHAR, 
+	helpful_info TEXT, 
+	incorrect_attempts INTEGER, 
+	PRIMARY KEY (question_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-29 19:46:14 - [no key 0.00017s] ()
+2024-11-29 19:46:14 - 
+CREATE TABLE game_sessions (
+	session_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	level INTEGER NOT NULL, 
+	score INTEGER, 
+	duration INTEGER, 
+	start_time DATETIME, 
+	end_time DATETIME, 
+	health INTEGER, 
+	hunger INTEGER, 
+	sleepiness INTEGER, 
+	PRIMARY KEY (session_id), 
+	CONSTRAINT uix_user_level UNIQUE (user_id, level), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-29 19:46:14 - [no key 0.00018s] ()
+2024-11-29 19:46:14 - 
+CREATE TABLE notifications (
+	notification_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	message TEXT NOT NULL, 
+	timestamp DATETIME, 
+	is_read BOOLEAN, 
+	PRIMARY KEY (notification_id), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-29 19:46:14 - [no key 0.00017s] ()
+2024-11-29 19:46:14 - COMMIT
+2024-11-29 19:46:28 - BEGIN (implicit)
+2024-11-29 19:46:28 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ?
+ LIMIT ? OFFSET ?
+2024-11-29 19:46:28 - [generated in 0.00021s] ('meow', 1, 0)
+2024-11-29 19:46:28 - INSERT INTO auth (login, password) VALUES (?, ?)
+2024-11-29 19:46:28 - [generated in 0.00026s] ('meow', 'meow')
+2024-11-29 19:46:28 - COMMIT
+2024-11-29 19:46:28 - BEGIN (implicit)
+2024-11-29 19:46:28 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.user_id = ?
+2024-11-29 19:46:28 - [generated in 0.00016s] (1,)
+2024-11-29 19:46:28 - INSERT INTO users (user_id, dog_id, username, level, achievement) VALUES (?, ?, ?, ?, ?)
+2024-11-29 19:46:28 - [generated in 0.00016s] (1, None, 'meoww', 1, None)
+2024-11-29 19:46:28 - COMMIT
+2024-11-29 19:46:34 - BEGIN (implicit)
+2024-11-29 19:46:34 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-29 19:46:34 - [generated in 0.00017s] ('meow', 'meow', 1, 0)
+2024-11-29 19:46:34 - ROLLBACK
+2024-11-29 19:49:21 - Логирование игры начато.
+2024-11-29 19:49:21 - BEGIN (implicit)
+2024-11-29 19:49:21 - PRAGMA main.table_info("auth")
+2024-11-29 19:49:21 - [raw sql] ()
+2024-11-29 19:49:21 - PRAGMA main.table_info("users")
+2024-11-29 19:49:21 - [raw sql] ()
+2024-11-29 19:49:21 - PRAGMA main.table_info("dogs")
+2024-11-29 19:49:21 - [raw sql] ()
+2024-11-29 19:49:21 - PRAGMA main.table_info("questions")
+2024-11-29 19:49:21 - [raw sql] ()
+2024-11-29 19:49:21 - PRAGMA main.table_info("game_sessions")
+2024-11-29 19:49:21 - [raw sql] ()
+2024-11-29 19:49:21 - PRAGMA main.table_info("notifications")
+2024-11-29 19:49:21 - [raw sql] ()
+2024-11-29 19:49:21 - 
+DROP TABLE notifications
+2024-11-29 19:49:21 - [no key 0.00011s] ()
+2024-11-29 19:49:21 - 
+DROP TABLE game_sessions
+2024-11-29 19:49:21 - [no key 0.00020s] ()
+2024-11-29 19:49:21 - 
+DROP TABLE questions
+2024-11-29 19:49:21 - [no key 0.00022s] ()
+2024-11-29 19:49:21 - 
+DROP TABLE users
+2024-11-29 19:49:21 - [no key 0.00018s] ()
+2024-11-29 19:49:21 - 
+DROP TABLE dogs
+2024-11-29 19:49:21 - [no key 0.00021s] ()
+2024-11-29 19:49:21 - 
+DROP TABLE auth
+2024-11-29 19:49:21 - [no key 0.00019s] ()
+2024-11-29 19:49:21 - COMMIT
+2024-11-29 19:49:21 - BEGIN (implicit)
+2024-11-29 19:49:21 - PRAGMA main.table_info("auth")
+2024-11-29 19:49:21 - [raw sql] ()
+2024-11-29 19:49:21 - PRAGMA temp.table_info("auth")
+2024-11-29 19:49:21 - [raw sql] ()
+2024-11-29 19:49:21 - PRAGMA main.table_info("users")
+2024-11-29 19:49:21 - [raw sql] ()
+2024-11-29 19:49:21 - PRAGMA temp.table_info("users")
+2024-11-29 19:49:21 - [raw sql] ()
+2024-11-29 19:49:21 - PRAGMA main.table_info("dogs")
+2024-11-29 19:49:21 - [raw sql] ()
+2024-11-29 19:49:21 - PRAGMA temp.table_info("dogs")
+2024-11-29 19:49:21 - [raw sql] ()
+2024-11-29 19:49:21 - PRAGMA main.table_info("questions")
+2024-11-29 19:49:21 - [raw sql] ()
+2024-11-29 19:49:21 - PRAGMA temp.table_info("questions")
+2024-11-29 19:49:21 - [raw sql] ()
+2024-11-29 19:49:21 - PRAGMA main.table_info("game_sessions")
+2024-11-29 19:49:21 - [raw sql] ()
+2024-11-29 19:49:21 - PRAGMA temp.table_info("game_sessions")
+2024-11-29 19:49:21 - [raw sql] ()
+2024-11-29 19:49:21 - PRAGMA main.table_info("notifications")
+2024-11-29 19:49:21 - [raw sql] ()
+2024-11-29 19:49:21 - PRAGMA temp.table_info("notifications")
+2024-11-29 19:49:21 - [raw sql] ()
+2024-11-29 19:49:21 - 
+CREATE TABLE auth (
+	user_id INTEGER NOT NULL, 
+	login VARCHAR NOT NULL, 
+	password VARCHAR NOT NULL, 
+	PRIMARY KEY (user_id), 
+	UNIQUE (login)
+)
+
+
+2024-11-29 19:49:21 - [no key 0.00011s] ()
+2024-11-29 19:49:21 - 
+CREATE TABLE dogs (
+	dog_id INTEGER NOT NULL, 
+	breed VARCHAR, 
+	characteristics TEXT, 
+	behavior TEXT, 
+	care_info TEXT, 
+	admin_comments TEXT, 
+	PRIMARY KEY (dog_id)
+)
+
+
+2024-11-29 19:49:21 - [no key 0.00017s] ()
+2024-11-29 19:49:21 - 
+CREATE TABLE users (
+	user_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	username VARCHAR NOT NULL, 
+	level INTEGER, 
+	achievement TEXT, 
+	PRIMARY KEY (user_id), 
+	FOREIGN KEY(user_id) REFERENCES auth (user_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-29 19:49:21 - [no key 0.00019s] ()
+2024-11-29 19:49:21 - 
+CREATE TABLE questions (
+	question_id INTEGER NOT NULL, 
+	dog_id INTEGER, 
+	question_text TEXT NOT NULL, 
+	image_url VARCHAR, 
+	helpful_info TEXT, 
+	incorrect_attempts INTEGER, 
+	PRIMARY KEY (question_id), 
+	FOREIGN KEY(dog_id) REFERENCES dogs (dog_id)
+)
+
+
+2024-11-29 19:49:21 - [no key 0.00023s] ()
+2024-11-29 19:49:21 - 
+CREATE TABLE game_sessions (
+	session_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	level INTEGER NOT NULL, 
+	score INTEGER, 
+	duration INTEGER, 
+	start_time DATETIME, 
+	end_time DATETIME, 
+	health INTEGER, 
+	hunger INTEGER, 
+	sleepiness INTEGER, 
+	PRIMARY KEY (session_id), 
+	CONSTRAINT uix_user_level UNIQUE (user_id, level), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-29 19:49:21 - [no key 0.00022s] ()
+2024-11-29 19:49:21 - 
+CREATE TABLE notifications (
+	notification_id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	message TEXT NOT NULL, 
+	timestamp DATETIME, 
+	is_read BOOLEAN, 
+	PRIMARY KEY (notification_id), 
+	FOREIGN KEY(user_id) REFERENCES users (user_id)
+)
+
+
+2024-11-29 19:49:21 - [no key 0.00017s] ()
+2024-11-29 19:49:21 - COMMIT
+2024-11-29 19:50:11 - BEGIN (implicit)
+2024-11-29 19:50:11 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ?
+ LIMIT ? OFFSET ?
+2024-11-29 19:50:11 - [generated in 0.00039s] ('lubluNikitu', 1, 0)
+2024-11-29 19:50:11 - INSERT INTO auth (login, password) VALUES (?, ?)
+2024-11-29 19:50:11 - [generated in 0.00038s] ('lubluNikitu', 'meow123')
+2024-11-29 19:50:11 - COMMIT
+2024-11-29 19:50:11 - BEGIN (implicit)
+2024-11-29 19:50:11 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.user_id = ?
+2024-11-29 19:50:11 - [generated in 0.00016s] (1,)
+2024-11-29 19:50:11 - INSERT INTO users (user_id, dog_id, username, level, achievement) VALUES (?, ?, ?, ?, ?)
+2024-11-29 19:50:11 - [generated in 0.00020s] (1, None, 'umenyashizazovutNikita', 1, None)
+2024-11-29 19:50:11 - COMMIT
+2024-11-29 19:50:56 - BEGIN (implicit)
+2024-11-29 19:50:56 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-11-29 19:50:56 - [generated in 0.00016s] ('lubluNikitu', 'meow123', 1, 0)
+2024-11-29 19:50:56 - ROLLBACK
+2024-11-29 19:52:23 - BEGIN (implicit)
+2024-11-29 19:52:23 - SELECT game_sessions.session_id AS game_sessions_session_id, game_sessions.user_id AS game_sessions_user_id, game_sessions.level AS game_sessions_level, game_sessions.score AS game_sessions_score, game_sessions.duration AS game_sessions_duration, game_sessions.start_time AS game_sessions_start_time, game_sessions.end_time AS game_sessions_end_time, game_sessions.health AS game_sessions_health, game_sessions.hunger AS game_sessions_hunger, game_sessions.sleepiness AS game_sessions_sleepiness 
+FROM game_sessions 
+WHERE game_sessions.user_id IS NULL
+2024-11-29 19:52:23 - [generated in 0.00030s] ()
+2024-11-29 19:52:23 - ROLLBACK

@@ -95,13 +95,12 @@ def save_progress(user_id, level, score, duration, health, hunger, sleepiness):
         session.close()
 
 def get_user_progress(user_id):
-    """Получение прогресса пользователя по его ID."""
+    """Получение игрового прогресса пользователя."""
     session = get_session()
     try:
-        progress = session.query(GameSession).filter_by(user_id=user_id).all()
-        return progress
-    except SQLAlchemyError as e:
-        print(f"Ошибка при получении прогресса: {e}")
+        return session.query(GameSession).filter_by(user_id=user_id).all()
+    except Exception as e:
+        print(f"Ошибка при получении прогресса пользователя: {e}")
         return []
     finally:
         session.close()

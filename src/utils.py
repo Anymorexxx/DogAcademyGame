@@ -2,11 +2,12 @@ import tkinter as tk
 
 
 def clear_frame(frame):
-    """Удаление всех виджетов из фрейма."""
+    """Очистить все виджеты в frame"""
     for widget in frame.winfo_children():
         widget.destroy()
 
-def feature_in_development(frame):
+
+def feature_in_development_admin(frame):
     """Сообщение о том, что функционал недоступен."""
     clear_frame(frame)  # Очистка фрейма перед выводом сообщения
     tk.Label(
@@ -16,6 +17,7 @@ def feature_in_development(frame):
         fg="#b2acc0",  # Цвет текста
         font=("Comic Sans MS", 16)
     ).pack(expand=True)
+
 
 def show_message(message):
     """Показать сообщение пользователю"""
