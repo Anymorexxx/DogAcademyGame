@@ -1,3 +1,7 @@
+import logging
+
+from sqlalchemy.exc import SQLAlchemyError
+
 from database.db_session import get_session
 from database.models import Dogs
 
@@ -47,21 +51,44 @@ DOG_CHARACTERS = {
 }
 
 def populate_dogs():
+    """
+    Заполнение таблицы Dogs предустановленными данными.
+    """
     session = get_session()
     try:
+        logging.info("Начинается заполнение таблицы Dogs.")
         for breed, data in DOG_CHARACTERS.items():
-            dog = Dogs(
-                breed=breed,
-                characteristics=data['characteristics'],
-                behavior=data['behavior'],
-                care_info=data['care_info'],
-                admin_comments=data['admin_comments']
-            )
-            session.add(dog)
+            existing_dog = session.query(Dogs).filter_by(breed=breed).first()
+            if not existing_dog:
+                dog = Dogs(
+                    breed=breed,
+                    characteristics=data['characteristics'],
+                    behavior=data['behavior'],
+                    care_info=data['care_info'],
+                    admin_comments=data['admin_comments']
+                )
+                session.add(dog)
         session.commit()
-        print("Таблица Dogs успешно заполнена.")
-    except Exception as e:
+        logging.info("Таблица Dogs успешно заполнена.")
+    except SQLAlchemyError as e:
         session.rollback()
-        print(f"Ошибка при заполнении Dogs: {e}")
+        logging.error(f"Ошибка при заполнении Dogs: {e}")
+    finally:
+        session.close()
+
+
+def get_all_dogs():
+    """
+    Получение списка всех пород собак из базы данных.
+
+    :return: Список объектов Dogs.
+    """
+    session = get_session()
+    try:
+        dogs = session.query(Dogs).all()
+        return dogs
+    except SQLAlchemyError as e:
+        logging.error(f"Ошибка при получении списка собак: {e}")
+        return []
     finally:
         session.close()

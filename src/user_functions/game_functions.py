@@ -1,26 +1,8 @@
+import logging
 import time
 import tkinter as tk
 from src.utils import clear_frame
 from database.db_events import save_progress
-
-
-def start_game(root, user_id, dog_id):
-    """Игровой процесс."""
-    clear_frame(root)
-
-    # Обратный отсчет
-    for i in range(3, 0, -1):
-        clear_frame(root)
-        tk.Label(root, text=f"{i}...", font=("Comic Sans MS", 30)).pack(expand=True)
-        root.update()
-        time.sleep(1)  # Пауза между отсчетами
-
-    # Начало уровня
-    print("Начало уровня")  # Для отладки
-
-    # Здесь подключается логика работы с картой и вопросами
-    pass
-
 
 def handle_checkpoint(obstacle, current_score, root):
     """

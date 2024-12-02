@@ -1,9 +1,10 @@
 import tkinter as tk
+from tkinter import messagebox
+
 from PIL import Image, ImageTk
 import random
 import logging
-
-from database.db_events import get_user_by_id
+from database.db_events import get_user_by_id, get_user_progress, save_progress
 from database.info.GameSessions_table import save_game_session
 from src.user_functions.game_logs import setup_logging
 from config import DOG_CHARACTERS, DONE, BONE, BACKGROUND_GAME
@@ -12,14 +13,22 @@ from src.utils import clear_frame
 # Настройка логирования
 setup_logging()
 
+user = get_user_by_id(user_id=1)
+if user:
+    print(f"Данные пользователя: {user}")
+else:
+    print("Пользователь не найден")
+
 class GameUI:
     def __init__(self, root, user_id, return_to_main_menu_callback):
+        if not user_id:
+            raise ValueError("user_id отсутствует при инициализации GameUI!")
+
         self.root = root
         self.user_id = user_id
         self.return_to_main_menu_callback = return_to_main_menu_callback
         self.selected_dog = None
         self.current_level = 1
-        self.max_unlocked_level = 1
         self.completed_levels = set()
 
         self.total_bones = 0
@@ -28,6 +37,11 @@ class GameUI:
         self.bones_positions = []
         self.max_bones_per_level = 10
         self.steps_taken = 0
+        self.user_data = get_user_by_id(self.user_id)
+
+        # Получаем прогресс пользователя
+        self.user_progress = get_user_progress(user_id)
+        self.max_unlocked_level = max([session.level for session in self.user_progress]) if self.user_progress else 1
 
         # Изображения
         self.done_image = ImageTk.PhotoImage(Image.open(DONE).resize((50, 50), Image.Resampling.LANCZOS))
@@ -45,7 +59,7 @@ class GameUI:
         # Флаги
         self.is_pause_menu_open = False
         self.is_victory_screen_open = False
-        self.is_game_active = False  # Для контроля состояния игры
+        self.is_game_active = False
 
         # Привязка клавиш
         self.root.bind("<KeyPress-w>", self.move_up)
@@ -56,6 +70,15 @@ class GameUI:
 
         # Отображение начального экрана
         self.show_dog_selection()
+
+        # Инициализация интерфейса
+        self.create_main_menu_button()
+
+        if self.user_data:
+            self.max_unlocked_level = self.user_data.level or 1
+            self.total_bones = sum([session.score for session in get_user_progress(self.user_id)])
+        else:
+            logging.warning("Данные пользователя не найдены")
 
     def create_background(self):
         """Создаёт фон для игры."""
@@ -122,62 +145,99 @@ class GameUI:
         clear_frame(self.root)
         self.create_background()
 
-        tk.Label(
-            self.root, text="Выберите уровень", font=("Comic Sans MS", 24), bg="#E5E5E5"
-        ).pack(pady=20)
+        tk.Label(self.root, text="Выберите уровень", font=("Comic Sans MS", 24), bg="#E5E5E5").pack(pady=20)
 
         level_frame = tk.Frame(self.root, bg="#E5E5E5")
         level_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
-        for level in range(1, 6):
+        progress = get_user_progress(self.user_id)
+        completed_levels = {session.level for session in progress if session.score > 0}
+        self.max_unlocked_level = max(completed_levels) if completed_levels else 1
+
+        for level in range(1, 101):
+            color = (
+                "#4CAF50" if level in completed_levels else
+                "#FFEB3B" if level <= self.max_unlocked_level else
+                "#A9A9A9"
+            )
+            state = tk.NORMAL if level <= self.max_unlocked_level else tk.DISABLED
+
             button = tk.Button(
                 level_frame,
                 text=f"Уровень {level}",
-                state=tk.NORMAL if level <= self.max_unlocked_level else tk.DISABLED,
-                font=("Comic Sans MS", 20),
-                bg="#4CAF50" if level <= self.max_unlocked_level else "#A9A9A9",
-                width=15,
-                height=2,
-                command=lambda l=level: self.start_level(l),
+                bg=color,
+                state=state,
+                font=("Comic Sans MS", 14),
+                command=lambda l=level: self.handle_level_selection(l)
             )
-            button.pack(pady=10)
+            button.grid(row=(level - 1) // 10, column=(level - 1) % 10, padx=5, pady=5)
 
         tk.Button(
             self.root,
             text="Вернуться",
             font=("Comic Sans MS", 16),
             bg="lightgreen",
-            command=self.show_dog_selection,
+            command=self.show_dog_selection
         ).place(relx=0.5, rely=0.9, anchor=tk.CENTER)
 
+    def handle_level_selection(self, level):
+        """Обработка выбора уровня."""
+        if level in self.completed_levels:
+            if messagebox.askyesno("Повторить уровень", f"Вы уже прошли уровень {level}. Хотите пройти его заново?"):
+                self.current_level = level
+                self.total_bones = 0
+                self.steps_taken = 0
+                self.start_game()
+        elif level <= self.max_unlocked_level:
+            self.current_level = level
+            self.countdown()
+        else:
+            messagebox.showinfo("Недоступно", "Пройдите предыдущие уровни, чтобы разблокировать этот.")
+
     def start_level(self, level):
-        """Начало выбранного уровня."""
-        self.current_level = level
-        self.countdown()
+        """Запуск уровня."""
+        if level in self.completed_levels:
+            if messagebox.askyesno("Повторить уровень", f"Вы уже прошли уровень {level}. Хотите пройти его заново?"):
+                self.current_level = level
+                self.total_bones = 0
+                self.steps_taken = 0
+                self.start_game()  # Запускаем уровень заново
+            return
+        elif level <= self.max_unlocked_level:
+            self.current_level = level
+            self.countdown()  # Запуск обратного отсчёта перед началом игры
+        else:
+            messagebox.showinfo("Недоступно", "Этот уровень заблокирован.")
 
     def countdown(self):
-        """Обратный отсчёт перед началом уровня."""
-        clear_frame(self.root)
+        """Обратный отсчёт перед началом уровня с анимацией."""
+        clear_frame(self.root)  # Очищаем экран
         countdown_label = tk.Label(
-            self.root, text="", font=("Comic Sans MS", 30), bg="#E5E5E5"
+            self.root, text="Готовьтесь!", font=("Comic Sans MS", 40), bg="#E5E5E5"
         )
         countdown_label.pack(expand=True)
 
-        for i in range(3, 0, -1):
-            countdown_label.config(text=f"{i}...")
-            self.root.update()
-            self.root.after(1000)
+        def update_countdown(counter):
+            if counter > 0:
+                countdown_label.config(text=f"{counter}", fg=random.choice(["red", "green", "blue"]))
+                self.root.update()
+                self.root.after(1000, update_countdown, counter - 1)
+            else:
+                countdown_label.config(text="Вперёд!", fg="orange")
+                self.root.update()
+                self.root.after(1000, self.start_game)
 
-        self.start_game()
+        update_countdown(3)  # Старт обратного отсчёта с 3 секунд
 
     def start_game(self):
         """Запуск игрового процесса."""
-        clear_frame(self.root)
+        logging.info(f"Игра начата на уровне {self.current_level}")
+        clear_frame(self.root)  # Очищаем экран
         self.map_canvas = tk.Canvas(self.root, width=1920, height=1080, bg="#E5E5E5")
         self.map_canvas.pack()
 
         self.draw_grid()
-        self.bones_positions = self.generate_bones()
+        self.bones_positions = self.generate_bones()  # Генерация новых косточек
 
         # Прямоугольник и изображение косточек (создаются один раз)
         self.rect_x1, self.rect_y1 = 1600, 0
@@ -189,11 +249,6 @@ class GameUI:
         self.bones_label = tk.Label(self.root, text=f"{self.total_bones}", font=("Comic Sans MS", 16), bg="#CCCCCC")
         self.bones_label.place(x=1700, y=30)
 
-        # В методе update_map (не удаляем прямоугольник):
-        self.map_canvas.delete("all")  # Удаляем только динамичные объекты карты (косточки, собаку)
-        self.draw_grid()
-        self.collect_bones()
-
         self.update_map()  # Начальное обновление карты
 
     def draw_grid(self):
@@ -204,11 +259,15 @@ class GameUI:
             self.map_canvas.create_line(0, y, 1920, y, fill="lightgray")
 
     def generate_bones(self):
-        """Генерация косточек на карте."""
-        return [
+        """Генерация косточек на карте с увеличением их количества по геометрической прогрессии."""
+        # Количество косточек увеличивается по геометрической прогрессии
+        bones_count = min(5, 10 * (2 ** (self.current_level - 1)))  # Ограничение в 5 косточек на уровне
+        bones = [
             (random.randint(0, self.cols - 1), random.randint(0, self.rows - 1))
-            for _ in range(2)
+            for _ in range(bones_count)
         ]
+        logging.info(f"Генерация косточек: {bones}")  # Логируем координаты косточек
+        return bones
 
     def collect_bones(self):
         """Проверка и сбор косточек."""
@@ -216,10 +275,19 @@ class GameUI:
             if self.dog_position == [bone[0], bone[1]]:
                 self.bones_positions.remove(bone)
                 self.total_bones += 1
+
+                # Сохранение прогресса
+                save_progress(self.user_id, self.current_level, self.total_bones, self.steps_taken, 100, 0, 0)
+
                 self.bones_label.config(text=f"{self.total_bones}")
 
+        # Условие для победы
+        target_bones = 10 * (2 ** (self.current_level - 1))  # Модифицируем целевое количество косточек
+        if self.total_bones >= target_bones and not self.is_victory_screen_open:
+            self.show_victory_screen()  # Показываем экран победы
+
         if self.steps_taken % 10 == 0 and len(self.bones_positions) < self.max_bones_per_level:
-            self.bones_positions.extend(self.generate_bones())
+            self.bones_positions.extend(self.generate_bones())  # Генерация новых косточек, если нужно
 
     def move_up(self, event):
         """Движение вверх."""
@@ -299,6 +367,7 @@ class GameUI:
         if self.is_pause_menu_open:
             self.pause_window.destroy()  # Закрываем окно паузы
             self.is_pause_menu_open = False  # Сбрасываем флаг
+            self.is_game_active = True  # Возвращаем игру в активное состояние
 
     def save_and_exit(self):
         """Сохранение данных и выход в главное меню."""
@@ -313,8 +382,8 @@ class GameUI:
         if self.is_victory_screen_open:  # Отключаем обновления, если окно победы открыто
             return
 
-        self.map_canvas.delete("all")
-        self.draw_grid()
+        self.map_canvas.delete("all")  # Удаляем старые объекты карты
+        self.draw_grid()  # Перерисовываем сетку
 
         # Отображение косточек
         for x, y in self.bones_positions:
@@ -325,14 +394,17 @@ class GameUI:
             )
 
         # Отображение собаки
-        dog_image = Image.open(DOG_CHARACTERS[self.selected_dog]["image"]).resize((self.grid_size, self.grid_size),
-                                                                                  Image.Resampling.LANCZOS)
-        self.dog_photo = ImageTk.PhotoImage(dog_image)
-        self.map_canvas.create_image(
-            self.dog_position[0] * self.grid_size + self.grid_size // 2,
-            self.dog_position[1] * self.grid_size + self.grid_size // 2,
-            image=self.dog_photo
-        )
+        if self.selected_dog:
+            dog_image = Image.open(DOG_CHARACTERS[self.selected_dog]["image"]).resize(
+                (self.grid_size, self.grid_size),
+                Image.Resampling.LANCZOS
+            )
+            self.dog_photo = ImageTk.PhotoImage(dog_image)
+            self.map_canvas.create_image(
+                self.dog_position[0] * self.grid_size + self.grid_size // 2,
+                self.dog_position[1] * self.grid_size + self.grid_size // 2,
+                image=self.dog_photo
+            )
 
         # Проверка сбора косточек
         self.collect_bones()
@@ -344,17 +416,17 @@ class GameUI:
 
     def show_victory_screen(self):
         """Экран победы."""
-        if self.is_victory_screen_open:  # Проверяем, чтобы не было второго окна
+        if self.is_victory_screen_open:
             return
 
-        self.is_victory_screen_open = True  # Устанавливаем флаг
-        self.is_game_active = False  # Останавливаем движение
+        self.is_victory_screen_open = True
+        self.is_game_active = False
 
         victory_window = tk.Toplevel(self.root)
         victory_window.title("Ура, победа!")
         victory_window.geometry("800x600")
         victory_window.configure(bg="#E5E5E5")
-        victory_window.grab_set()  # Блокируем взаимодействие с основным окном
+        victory_window.grab_set()
 
         # Изображение собаки
         dog_image = Image.open(DOG_CHARACTERS[self.selected_dog]["image"]).resize((200, 200), Image.Resampling.LANCZOS)
@@ -364,25 +436,25 @@ class GameUI:
         dog_label.place(x=50, y=50)
 
         # Текст победы
-        victory_label = tk.Label(
-            victory_window, text="Ура, победа!", font=("Comic Sans MS", 24), bg="#E5E5E5"
-        )
+        victory_label = tk.Label(victory_window, text="Ура, победа!", font=("Comic Sans MS", 24), bg="#E5E5E5")
         victory_label.pack(pady=20)
 
         # Характеристики собаки
         dog_info = f"Порода: {self.selected_dog}"
-        info_label = tk.Label(
-            victory_window, text=dog_info, font=("Comic Sans MS", 16), bg="#E5E5E5"
-        )
+        info_label = tk.Label(victory_window, text=dog_info, font=("Comic Sans MS", 16), bg="#E5E5E5")
         info_label.place(x=300, y=100)
 
         # Собрано косточек
-        target_bones = 10 * (2 ** (self.current_level - 1))  # Геометрическая прогрессия для косточек
+        target_bones = 10 * (2 ** (self.current_level - 1))  # Геометрическая прогрессия
         collected_info = f"Собрано: {self.total_bones} из {target_bones}"
-        score_label = tk.Label(
-            victory_window, text=collected_info, font=("Comic Sans MS", 16), bg="#E5E5E5"
-        )
+        score_label = tk.Label(victory_window, text=collected_info, font=("Comic Sans MS", 16), bg="#E5E5E5")
         score_label.place(x=300, y=150)
+
+        # Никнейм игрока
+        user_info = get_user_by_id(self.user_id)
+        username_label = tk.Label(victory_window, text=f"Никнейм: {user_info.username}", font=("Comic Sans MS", 16),
+                                  bg="#E5E5E5")
+        username_label.place(x=300, y=200)
 
         # Кнопка перехода на следующий уровень
         next_level_button = tk.Button(
@@ -404,29 +476,91 @@ class GameUI:
         )
         exit_button.place(relx=0.5, rely=0.8, anchor=tk.CENTER)
 
+    def close_victory_window(self):
+        """Закрытие окна победы и сброс флага."""
+        self.is_victory_screen_open = False
+        self.is_game_active = True
+        self.return_to_main_menu()  # Возвращаем в меню
+
     def return_to_main_menu(self):
         """Возврат в главное меню."""
-        self.is_victory_screen_open = False  # Сбрасываем флаг окна победы
-        self.return_to_main_menu_callback()  # Вызываем колбэк для возврата
+        if self.is_pause_menu_open:
+            self.pause_window.destroy()  # Закрываем окно паузы
+            self.is_pause_menu_open = False  # Сбрасываем флаг
+
+        clear_frame(self.root)  # Очищаем текущий экран
+        self.show_main_menu()  # Переходим в главное меню
 
     def start_next_level(self):
         """Переход на следующий уровень."""
-        self.save_progress()  # Сохраняем прогресс перед переходом на следующий уровень
+        try:
+            # Сохранение текущего прогресса
+            self.save_progress()
 
-        # Переход на следующий уровень
-        self.current_level += 1
-        self.total_bones = 0  # Сбрасываем счётчик косточек
-        self.start_level(self.current_level)
+            # Переход на следующий уровень
+            self.current_level += 1
+            self.max_unlocked_level = max(self.max_unlocked_level, self.current_level)
+
+            # Сброс состояния игры: собака возвращается в начальную позицию
+            self.total_bones = 0
+            self.steps_taken = 0
+            self.dog_position = [1, 1]  # Начальная позиция собаки
+            self.bones_positions = []  # Очищаем текущие косточки
+
+            # Генерация новых косточек с увеличением их количества по геометрической прогрессии
+            self.bones_positions = self.generate_bones()
+
+            # Начинаем новый уровень с обратным отсчётом
+            self.countdown()  # Запуск обратного отсчёта
+        except Exception as e:
+            logging.error(f"Ошибка при переходе на следующий уровень: {e}")
 
     def save_progress(self):
         """Сохранение игрового процесса в таблицу GameSessions."""
-        from datetime import datetime
+        if not self.user_id:
+            logging.error("Ошибка: user_id равен None. Запись невозможна.")
+            return
 
-        # Получаем время начала и окончания уровня
-        duration = self.steps_taken  # Время можно рассчитать по шагам или в реальном времени
-        score = self.total_bones  # Количество собранных косточек
+        try:
+            # Рассчитываем длительность уровня и текущий счет
+            duration = self.steps_taken
+            score = self.total_bones
 
-        # Сохранение прогресса в базу данных
-        save_game_session(self.user_id, self.current_level, score, duration, 100, 0, 0)
+            # Логирование
+            logging.info(
+                f"Сохранение сессии: user_id={self.user_id}, level={self.current_level}, score={score}, duration={duration}")
 
-        # Также можно сохранять дополнительные параметры, если необходимо (например, здоровье, голод, усталость)
+            # Сохранение данных в базу
+            save_game_session(
+                user_id=self.user_id,
+                level=self.current_level,
+                score=self.total_bones,
+                steps=self.steps_taken,  # Используйте количество шагов или время
+                duration=self.steps_taken,  # Если 'steps' отражают время, используйте их
+                health=100,  # Примерное значение
+                hunger=0,  # Примерное значение
+                sleepiness=0  # Примерное значение
+            )
+
+            logging.info("Прогресс успешно сохранен.")
+        except Exception as e:
+            logging.error(f"Ошибка при сохранении прогресса: {e}")
+            raise
+
+    def create_main_menu_button(self):
+        """Создаём кнопку для возврата в главное меню."""
+        main_menu_button = tk.Button(
+            self.root,
+            text="Главное меню",
+            font=("Comic Sans MS", 16),
+            bg="lightgreen",
+            command=self.show_main_menu,  # Вызов нового метода
+        )
+        main_menu_button.pack()
+
+    def show_main_menu(self):
+        """Переход в главное меню."""
+        self.is_game_active = False  # Останавливаем игру, если мы возвращаемся в меню
+        clear_frame(self.root)  # Очищаем текущий экран
+        self.return_to_main_menu_callback()  # Вызов колбэка для возврата в главное меню
+

@@ -1,6 +1,7 @@
 import os
 import logging
 import tkinter as tk
+from functools import partial
 from tkinter import messagebox, Canvas
 from PIL import Image, ImageTk
 import math
@@ -31,10 +32,11 @@ PLAY_BUTTON_RADIUS = 100  # Радиус кнопки "Играть"
 
 
 class UserApp:
-    def __init__(self, root, user_id=None):
+    def __init__(self, root, user_id):
+        """Инициализация пользовательского интерфейса."""
         self.root = root
         self.user_id = user_id
-        self.root.configure(bg=BACKGROUND_COLOR)
+        self.root.configure(bg="#E5E5E5")
         self.root.geometry("1920x1080")
         self.root.title("Собачья академия")
         self.show_user_dashboard()
@@ -151,8 +153,12 @@ class UserApp:
 
     def show_profile(self):
         """Показать экран профиля пользователя."""
-        self.clear_frame()
-        profile_ui(self.root, self.user_id, self)  # Передаем сам объект self для доступа к show_user_dashboard
+        try:
+            self.clear_frame()
+            profile_ui(self.root, self.user_id, self)
+        except Exception as e:
+            logging.error(f"Ошибка при отображении профиля: {e}")
+            messagebox.showerror("Ошибка", "Не удалось открыть профиль.")
 
     def clear_frame(self):
         """Очистить текущий экран."""
@@ -160,14 +166,15 @@ class UserApp:
             widget.destroy()
 
     def play_game(self):
-        """Переход к игровому интерфейсу."""
-        print("Запуск игры...")
+        """Запуск игры и передача колбэка для возврата в меню."""
+        # Передаем метод через partial для корректной передачи self
+        return_to_main_menu = partial(self.return_to_main_menu)
+        GameUI(self.root, self.user_id, return_to_main_menu)
 
-        def return_to_main_menu():
-            clear_frame(self.root)
-            self.show_user_dashboard()  # Возврат в главное меню
-
-        GameUI(self.root, self.user_id, return_to_main_menu)  # Передаём колбэк для возврата
+    def return_to_main_menu(self):
+        """Возврат в главное меню."""
+        self.clear_frame()  # Очищаем экран перед переходом
+        self.show_user_dashboard()  # Показываем главное меню
 
     def exit_app(self):
         """Подтверждение выхода из приложения."""

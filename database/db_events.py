@@ -1,3 +1,4 @@
+import logging
 from sqlalchemy import func
 from sqlalchemy.orm import joinedload
 from database.db_session import get_session
@@ -6,36 +7,50 @@ from sqlalchemy.exc import SQLAlchemyError
 
 
 def get_user_by_id(user_id):
-    """Получение данных пользователя по ID."""
+    """Получение данных пользователя по ID с предварительной загрузкой связанных данных."""
     session = get_session()
     try:
-        user = session.query(Users).filter_by(user_id=user_id).first()
+        user = (
+            session.query(Users)
+            .options(joinedload(Users.game_sessions))  # Предзагрузка связанных игровых сессий
+            .filter_by(user_id=user_id)
+            .first()
+        )
         return user
     except SQLAlchemyError as e:
-        print(f"Ошибка при получении пользователя: {e}")
+        logging.error(f"Ошибка при получении пользователя: {e}")
         return None
     finally:
         session.close()
 
 def create_user(login, password, username):
-    """Создание нового пользователя в базе данных."""
+    """Регистрация нового пользователя."""
     session = get_session()
 
-    # Проверяем, есть ли уже пользователь с таким логином
+    # Проверка, есть ли уже пользователь с таким логином
     if session.query(Auth).filter_by(login=login).first():
         return False, "Логин уже используется."
 
-    # Создаем новую запись в таблице Auth
+    # Создаём новую запись в таблице Auth
     new_auth = Auth(login=login, password=password)
     session.add(new_auth)
 
     try:
         session.commit()  # Сохраняем изменения в таблице Auth
 
-        # Создаем новую запись в таблице Users, связывая с только что добавленным Auth
+        # Создаём новую запись в таблице Users, связываем с только что добавленным Auth
         new_user = Users(user_id=new_auth.user_id, username=username)
         session.add(new_user)
         session.commit()  # Сохраняем изменения в таблице Users
+
+        # Создаём новый игровой процесс для этого пользователя
+        new_game_session = GameSession(user_id=new_user.user_id, level=1)  # Устанавливаем уровень по умолчанию
+        session.add(new_game_session)
+        session.commit()  # Сохраняем данные в GameSession
+
+        print(f"Пользователь {username} успешно добавлен!")
+        return True, "Регистрация успешна."
+
     except SQLAlchemyError as e:
         session.rollback()  # Откат изменений при ошибке
         print(f"Ошибка при создании пользователя: {e}")
@@ -43,28 +58,18 @@ def create_user(login, password, username):
     finally:
         session.close()
 
-    return True, "Регистрация успешна."
 
 
 def check_user(login, password=None):
-    """Проверка существования пользователя по логину и паролю (если передан)."""
     session = get_session()
     try:
-        print(f"Проверяем пользователя с логином: {login}")
-        # Фильтрация только по логину
         query = session.query(Auth).filter_by(login=login)
-
-        # Если передан пароль, фильтруем и по паролю
         if password:
             query = query.filter_by(password=password)
-
         user = query.first()
-
         if user:
-            print(f"Пользователь найден: {user.user_id}")
-            return user.user_id  # Возвращаем user_id пользователя
+            return user.user_id
         else:
-            print("Пользователь не найден.")
             return None
     except SQLAlchemyError as e:
         print(f"Ошибка при проверке пользователя: {e}")
@@ -76,6 +81,8 @@ def save_progress(user_id, level, score, duration, health, hunger, sleepiness):
     """Сохранение игрового прогресса в базу данных."""
     session = get_session()
     try:
+        if not user_id:
+            raise ValueError("user_id не указан!")
         session_data = GameSession(
             user_id=user_id,
             level=level,
@@ -89,8 +96,10 @@ def save_progress(user_id, level, score, duration, health, hunger, sleepiness):
         session.add(session_data)
         session.commit()
     except SQLAlchemyError as e:
-        print(f"Ошибка при сохранении прогресса: {e}")
+        logging.error(f"Ошибка при сохранении прогресса: {e}")
         session.rollback()
+    except ValueError as e:
+        logging.error(e)
     finally:
         session.close()
 
@@ -100,7 +109,7 @@ def get_user_progress(user_id):
     try:
         return session.query(GameSession).filter_by(user_id=user_id).all()
     except Exception as e:
-        print(f"Ошибка при получении прогресса пользователя: {e}")
+        logging.error(f"Ошибка при получении прогресса пользователя: {e}")
         return []
     finally:
         session.close()
