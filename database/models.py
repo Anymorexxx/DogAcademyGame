@@ -68,6 +68,7 @@ class GameSession(Base):
     level = Column(Integer, nullable=False)
     score = Column(Integer, default=0)
     duration = Column(Integer)  # Время игры в секундах
+    steps = Column(Integer, default=0)  # Количество шагов
     start_time = Column(DateTime, default=func.now())
     end_time = Column(DateTime, nullable=True)
     health = Column(Integer, default=100)  # Здоровье

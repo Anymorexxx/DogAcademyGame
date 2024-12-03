@@ -325,3 +325,17 @@ def update_question(question_id, text, helpful_info):
         return False, f"Ошибка при обновлении: {e}"
     finally:
         session.close()
+
+def update_user_level(user_id, new_level):
+    """Обновляет уровень пользователя в базе данных."""
+    session = get_session()
+    try:
+        user = session.query(Users).filter_by(user_id=user_id).first()
+        if user and user.level < new_level:
+            user.level = new_level
+            session.commit()
+    except Exception as e:
+        session.rollback()
+        logging.error(f"Ошибка при обновлении уровня пользователя: {e}")
+    finally:
+        session.close()
