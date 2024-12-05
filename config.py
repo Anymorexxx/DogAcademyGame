@@ -1,3 +1,12 @@
+import os
+
+# Базовая директория проекта
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Директория с ресурсами
+ASSETS_DIR = os.path.join(BASE_DIR, "assets")
+DOGS_DIR = os.path.join(ASSETS_DIR, "dogs")
+
 # Админ-интерфейс (тёмные цвета)
 ADMIN_BACKGROUND_COLOR = "#403d49"
 ADMIN_PRIMARY_COLOR = "#ff6347"
@@ -39,68 +48,69 @@ ADMIN_LOGIN = "admin"
 ADMIN_PASSWORD = "admin123"
 
 # База данных
-DATABASE_URL = "sqlite:///F:/Projects/Dog_Academy/database/DogAcademy.db"  # Абсолютный путь
+DATABASE_URL = f"sqlite:///{os.path.join(BASE_DIR, 'database', 'DogAcademy.db')}"
 
-# Иконки
-SETTINGS_IMG = "assets/settings.png"
-LOGO = "F:/Projects/Dog_Academy/assets/logo.png"
-BACKGROUND_GAME = "F:/Projects/Dog_Academy/assets/background.png"
-BONE = "F:/Projects/Dog_Academy/assets/bone.png"
-LOCK = "F:/Projects/Dog_Academy/assets/lock.png"
-UNLOCK = "F:/Projects/Dog_Academy/assets/unlock.png"
-DONE = "F:/Projects/Dog_Academy/assets/done.png"
+# Пути к ресурсам
+SETTINGS_IMG = os.path.join(ASSETS_DIR, "settings.png")
+LOGO = os.path.join(ASSETS_DIR, "logo.png")
+BACKGROUND_GAME = os.path.join(ASSETS_DIR, "background.png")
+BONE = os.path.join(ASSETS_DIR, "bone.png")
+LOCK = os.path.join(ASSETS_DIR, "lock.png")
+UNLOCK = os.path.join(ASSETS_DIR, "unlock.png")
+DONE = os.path.join(ASSETS_DIR, "done.png")
 
-# Собаки
-CHIHUAHUA = "F:/Projects/Dog_Academy/assets/dogs/Chihuahua.png"
-CORGI = "F:/Projects/Dog_Academy/assets/dogs/Corgi.png"
-RETRIEVER = "F:/Projects/Dog_Academy/assets/dogs/Golden_Retriever.png"
-HUSKY = "F:/Projects/Dog_Academy/assets/dogs/Husky.png"
-POMERANIAN = "F:/Projects/Dog_Academy/assets/dogs/Pomeranian.png"
-PUG = "F:/Projects/Dog_Academy/assets/dogs/Pug.png"
-YORKSHIRE = "F:/Projects/Dog_Academy/assets/dogs/Yorkshire_Terrier.png"
+# Пути к изображениям собак
+CHIHUAHUA = os.path.join(DOGS_DIR, "Chihuahua.png")
+CORGI = os.path.join(DOGS_DIR, "Corgi.png")
+RETRIEVER = os.path.join(DOGS_DIR, "Golden_Retriever.png")
+HUSKY = os.path.join(DOGS_DIR, "Husky.png")
+POMERANIAN = os.path.join(DOGS_DIR, "Pomeranian.png")
+PUG = os.path.join(DOGS_DIR, "Pug.png")
+YORKSHIRE = os.path.join(DOGS_DIR, "Yorkshire_Terrier.png")
 
+# Данные о характерах собак
 DOG_CHARACTERS = {
     "Chihuahua": {
         "image": CHIHUAHUA,
         "speed": 8,
         "endurance": 5,
-        "special_ability": "Fast Dodge",  # Уклонение от препятствий
+        "special_ability": "Fast Dodge",
     },
     "Corgi": {
         "image": CORGI,
         "speed": 6,
         "endurance": 7,
-        "special_ability": "Extra Jump",  # Дополнительный прыжок
+        "special_ability": "Extra Jump",
     },
     "Golden Retriever": {
         "image": RETRIEVER,
         "speed": 7,
         "endurance": 8,
-        "special_ability": "Bonus Points",  # Увеличенные очки за правильные ответы
+        "special_ability": "Bonus Points",
     },
     "Husky": {
         "image": HUSKY,
         "speed": 9,
         "endurance": 6,
-        "special_ability": "Speed Boost",  # Ускорение
+        "special_ability": "Speed Boost",
     },
     "Pomeranian": {
         "image": POMERANIAN,
         "speed": 7,
         "endurance": 4,
-        "special_ability": "Charm",  # Уменьшает штраф за ошибки
+        "special_ability": "Charm",
     },
     "Pug": {
         "image": PUG,
         "speed": 5,
         "endurance": 9,
-        "special_ability": "Resilience",  # Сохраняет здоровье при столкновениях
+        "special_ability": "Resilience",
     },
     "Yorkshire Terrier": {
         "image": YORKSHIRE,
         "speed": 6,
         "endurance": 5,
-        "special_ability": "Quick Recovery",  # Быстрое восстановление характеристик
+        "special_ability": "Quick Recovery",
     },
 }
 

@@ -8,6 +8,7 @@ import math
 
 from config import EXIT_BUTTON_WIDTH, EXIT_BUTTON_HEIGHT, BUTTON_COLOR_EXIT
 from src.ui.user_ui.game_ui import GameUI
+from src.ui.user_ui.knowledge_ui import knowledge_ui
 from src.ui.user_ui.profile_ui import profile_ui
 from src.utils import clear_frame
 
@@ -87,7 +88,8 @@ class UserApp:
             relief=tk.FLAT,
             padx=20,
             pady=10,
-            state=tk.DISABLED  # Делаем кнопку некликабельной
+            state=tk.NORMAL,  # Делаем кнопку активной
+            command=lambda: knowledge_ui(self.root, self)  # Подключаем knowledge_ui
         )
         knowledge_button.pack(side=tk.LEFT, padx=20)
 
