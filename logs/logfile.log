@@ -23777,3 +23777,99 @@ FROM game_sessions
 WHERE game_sessions.user_id = ?
 2024-12-05 21:15:39 - [cached since 1.178s ago] (1,)
 2024-12-05 21:15:39 - ROLLBACK
+2024-12-05 21:38:46 - Логирование игры начато.
+2024-12-05 21:38:46 - BEGIN (implicit)
+2024-12-05 21:38:46 - SELECT anon_1.users_user_id AS anon_1_users_user_id, anon_1.users_dog_id AS anon_1_users_dog_id, anon_1.users_username AS anon_1_users_username, anon_1.users_level AS anon_1_users_level, anon_1.users_achievement AS anon_1_users_achievement, game_sessions_1.session_id AS game_sessions_1_session_id, game_sessions_1.user_id AS game_sessions_1_user_id, game_sessions_1.level AS game_sessions_1_level, game_sessions_1.score AS game_sessions_1_score, game_sessions_1.duration AS game_sessions_1_duration, game_sessions_1.steps AS game_sessions_1_steps, game_sessions_1.start_time AS game_sessions_1_start_time, game_sessions_1.end_time AS game_sessions_1_end_time, game_sessions_1.health AS game_sessions_1_health, game_sessions_1.hunger AS game_sessions_1_hunger, game_sessions_1.sleepiness AS game_sessions_1_sleepiness 
+FROM (SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users 
+WHERE users.user_id = ?
+ LIMIT ? OFFSET ?) AS anon_1 LEFT OUTER JOIN game_sessions AS game_sessions_1 ON anon_1.users_user_id = game_sessions_1.user_id
+2024-12-05 21:38:46 - [generated in 0.00029s] (1, 1, 0)
+2024-12-05 21:38:46 - ROLLBACK
+2024-12-05 21:38:52 - BEGIN (implicit)
+2024-12-05 21:38:52 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-12-05 21:38:52 - [generated in 0.00020s] ('qwe', 'qwe', 1, 0)
+2024-12-05 21:38:52 - ROLLBACK
+2024-12-05 21:39:06 - BEGIN (implicit)
+2024-12-05 21:39:06 - SELECT anon_1.users_user_id AS anon_1_users_user_id, anon_1.users_dog_id AS anon_1_users_dog_id, anon_1.users_username AS anon_1_users_username, anon_1.users_level AS anon_1_users_level, anon_1.users_achievement AS anon_1_users_achievement, game_sessions_1.session_id AS game_sessions_1_session_id, game_sessions_1.user_id AS game_sessions_1_user_id, game_sessions_1.level AS game_sessions_1_level, game_sessions_1.score AS game_sessions_1_score, game_sessions_1.duration AS game_sessions_1_duration, game_sessions_1.steps AS game_sessions_1_steps, game_sessions_1.start_time AS game_sessions_1_start_time, game_sessions_1.end_time AS game_sessions_1_end_time, game_sessions_1.health AS game_sessions_1_health, game_sessions_1.hunger AS game_sessions_1_hunger, game_sessions_1.sleepiness AS game_sessions_1_sleepiness 
+FROM (SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users 
+WHERE users.user_id = ?
+ LIMIT ? OFFSET ?) AS anon_1 LEFT OUTER JOIN game_sessions AS game_sessions_1 ON anon_1.users_user_id = game_sessions_1.user_id
+2024-12-05 21:39:06 - [cached since 19.7s ago] (1, 1, 0)
+2024-12-05 21:39:06 - ROLLBACK
+2024-12-05 21:39:06 - BEGIN (implicit)
+2024-12-05 21:39:06 - SELECT game_sessions.session_id AS game_sessions_session_id, game_sessions.user_id AS game_sessions_user_id, game_sessions.level AS game_sessions_level, game_sessions.score AS game_sessions_score, game_sessions.duration AS game_sessions_duration, game_sessions.steps AS game_sessions_steps, game_sessions.start_time AS game_sessions_start_time, game_sessions.end_time AS game_sessions_end_time, game_sessions.health AS game_sessions_health, game_sessions.hunger AS game_sessions_hunger, game_sessions.sleepiness AS game_sessions_sleepiness 
+FROM game_sessions 
+WHERE game_sessions.user_id = ?
+2024-12-05 21:39:06 - [generated in 0.00023s] (1,)
+2024-12-05 21:39:06 - ROLLBACK
+2024-12-05 21:39:10 - BEGIN (implicit)
+2024-12-05 21:39:10 - SELECT dogs.dog_id AS dogs_dog_id, dogs.breed AS dogs_breed, dogs.characteristics AS dogs_characteristics, dogs.behavior AS dogs_behavior, dogs.care_info AS dogs_care_info, dogs.admin_comments AS dogs_admin_comments 
+FROM dogs
+2024-12-05 21:39:10 - [generated in 0.00015s] ()
+2024-12-05 21:39:10 - ROLLBACK
+2024-12-05 21:40:07 - BEGIN (implicit)
+2024-12-05 21:40:07 - SELECT dogs.dog_id AS dogs_dog_id, dogs.breed AS dogs_breed, dogs.characteristics AS dogs_characteristics, dogs.behavior AS dogs_behavior, dogs.care_info AS dogs_care_info, dogs.admin_comments AS dogs_admin_comments 
+FROM dogs
+2024-12-05 21:40:07 - [cached since 57.02s ago] ()
+2024-12-05 21:40:07 - ROLLBACK
+2024-12-05 21:40:10 - BEGIN (implicit)
+2024-12-05 21:40:10 - SELECT dogs.dog_id AS dogs_dog_id, dogs.breed AS dogs_breed, dogs.characteristics AS dogs_characteristics, dogs.behavior AS dogs_behavior, dogs.care_info AS dogs_care_info, dogs.admin_comments AS dogs_admin_comments 
+FROM dogs
+2024-12-05 21:40:10 - [cached since 59.78s ago] ()
+2024-12-05 21:40:10 - ROLLBACK
+2024-12-05 21:40:12 - BEGIN (implicit)
+2024-12-05 21:40:12 - SELECT anon_1.users_user_id AS anon_1_users_user_id, anon_1.users_dog_id AS anon_1_users_dog_id, anon_1.users_username AS anon_1_users_username, anon_1.users_level AS anon_1_users_level, anon_1.users_achievement AS anon_1_users_achievement, game_sessions_1.session_id AS game_sessions_1_session_id, game_sessions_1.user_id AS game_sessions_1_user_id, game_sessions_1.level AS game_sessions_1_level, game_sessions_1.score AS game_sessions_1_score, game_sessions_1.duration AS game_sessions_1_duration, game_sessions_1.steps AS game_sessions_1_steps, game_sessions_1.start_time AS game_sessions_1_start_time, game_sessions_1.end_time AS game_sessions_1_end_time, game_sessions_1.health AS game_sessions_1_health, game_sessions_1.hunger AS game_sessions_1_hunger, game_sessions_1.sleepiness AS game_sessions_1_sleepiness 
+FROM (SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users 
+WHERE users.user_id = ?
+ LIMIT ? OFFSET ?) AS anon_1 LEFT OUTER JOIN game_sessions AS game_sessions_1 ON anon_1.users_user_id = game_sessions_1.user_id
+2024-12-05 21:40:12 - [cached since 85.93s ago] (1, 1, 0)
+2024-12-05 21:40:12 - ROLLBACK
+2024-12-05 21:40:12 - BEGIN (implicit)
+2024-12-05 21:40:12 - SELECT game_sessions.session_id AS game_sessions_session_id, game_sessions.user_id AS game_sessions_user_id, game_sessions.level AS game_sessions_level, game_sessions.score AS game_sessions_score, game_sessions.duration AS game_sessions_duration, game_sessions.steps AS game_sessions_steps, game_sessions.start_time AS game_sessions_start_time, game_sessions.end_time AS game_sessions_end_time, game_sessions.health AS game_sessions_health, game_sessions.hunger AS game_sessions_hunger, game_sessions.sleepiness AS game_sessions_sleepiness 
+FROM game_sessions 
+WHERE game_sessions.user_id = ?
+2024-12-05 21:40:12 - [cached since 66.24s ago] (1,)
+2024-12-05 21:40:12 - ROLLBACK
+2024-12-05 21:40:12 - BEGIN (implicit)
+2024-12-05 21:40:12 - SELECT game_sessions.session_id AS game_sessions_session_id, game_sessions.user_id AS game_sessions_user_id, game_sessions.level AS game_sessions_level, game_sessions.score AS game_sessions_score, game_sessions.duration AS game_sessions_duration, game_sessions.steps AS game_sessions_steps, game_sessions.start_time AS game_sessions_start_time, game_sessions.end_time AS game_sessions_end_time, game_sessions.health AS game_sessions_health, game_sessions.hunger AS game_sessions_hunger, game_sessions.sleepiness AS game_sessions_sleepiness 
+FROM game_sessions 
+WHERE game_sessions.user_id = ?
+2024-12-05 21:40:12 - [cached since 66.45s ago] (1,)
+2024-12-05 21:40:12 - ROLLBACK
+2024-12-05 21:40:13 - BEGIN (implicit)
+2024-12-05 21:40:13 - SELECT game_sessions.session_id AS game_sessions_session_id, game_sessions.user_id AS game_sessions_user_id, game_sessions.level AS game_sessions_level, game_sessions.score AS game_sessions_score, game_sessions.duration AS game_sessions_duration, game_sessions.steps AS game_sessions_steps, game_sessions.start_time AS game_sessions_start_time, game_sessions.end_time AS game_sessions_end_time, game_sessions.health AS game_sessions_health, game_sessions.hunger AS game_sessions_hunger, game_sessions.sleepiness AS game_sessions_sleepiness 
+FROM game_sessions 
+WHERE game_sessions.user_id = ?
+2024-12-05 21:40:13 - [cached since 67.21s ago] (1,)
+2024-12-05 21:40:13 - ROLLBACK
+2024-12-05 21:43:42 - Логирование игры начато.
+2024-12-05 21:43:42 - BEGIN (implicit)
+2024-12-05 21:43:42 - SELECT anon_1.users_user_id AS anon_1_users_user_id, anon_1.users_dog_id AS anon_1_users_dog_id, anon_1.users_username AS anon_1_users_username, anon_1.users_level AS anon_1_users_level, anon_1.users_achievement AS anon_1_users_achievement, game_sessions_1.session_id AS game_sessions_1_session_id, game_sessions_1.user_id AS game_sessions_1_user_id, game_sessions_1.level AS game_sessions_1_level, game_sessions_1.score AS game_sessions_1_score, game_sessions_1.duration AS game_sessions_1_duration, game_sessions_1.steps AS game_sessions_1_steps, game_sessions_1.start_time AS game_sessions_1_start_time, game_sessions_1.end_time AS game_sessions_1_end_time, game_sessions_1.health AS game_sessions_1_health, game_sessions_1.hunger AS game_sessions_1_hunger, game_sessions_1.sleepiness AS game_sessions_1_sleepiness 
+FROM (SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users 
+WHERE users.user_id = ?
+ LIMIT ? OFFSET ?) AS anon_1 LEFT OUTER JOIN game_sessions AS game_sessions_1 ON anon_1.users_user_id = game_sessions_1.user_id
+2024-12-05 21:43:42 - [generated in 0.00029s] (1, 1, 0)
+2024-12-05 21:43:42 - ROLLBACK
+2024-12-05 21:43:48 - BEGIN (implicit)
+2024-12-05 21:43:48 - SELECT auth.user_id AS auth_user_id, auth.login AS auth_login, auth.password AS auth_password 
+FROM auth 
+WHERE auth.login = ? AND auth.password = ?
+ LIMIT ? OFFSET ?
+2024-12-05 21:43:48 - [generated in 0.00023s] ('qwe', 'qwe', 1, 0)
+2024-12-05 21:43:48 - ROLLBACK
+2024-12-05 23:04:35 - Логирование игры начато.
+2024-12-05 23:04:35 - BEGIN (implicit)
+2024-12-05 23:04:35 - SELECT anon_1.users_user_id AS anon_1_users_user_id, anon_1.users_dog_id AS anon_1_users_dog_id, anon_1.users_username AS anon_1_users_username, anon_1.users_level AS anon_1_users_level, anon_1.users_achievement AS anon_1_users_achievement, game_sessions_1.session_id AS game_sessions_1_session_id, game_sessions_1.user_id AS game_sessions_1_user_id, game_sessions_1.level AS game_sessions_1_level, game_sessions_1.score AS game_sessions_1_score, game_sessions_1.duration AS game_sessions_1_duration, game_sessions_1.steps AS game_sessions_1_steps, game_sessions_1.start_time AS game_sessions_1_start_time, game_sessions_1.end_time AS game_sessions_1_end_time, game_sessions_1.health AS game_sessions_1_health, game_sessions_1.hunger AS game_sessions_1_hunger, game_sessions_1.sleepiness AS game_sessions_1_sleepiness 
+FROM (SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users 
+WHERE users.user_id = ?
+ LIMIT ? OFFSET ?) AS anon_1 LEFT OUTER JOIN game_sessions AS game_sessions_1 ON anon_1.users_user_id = game_sessions_1.user_id
+2024-12-05 23:04:35 - [generated in 0.00031s] (1, 1, 0)
+2024-12-05 23:04:35 - ROLLBACK

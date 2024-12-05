@@ -1,4 +1,3 @@
-import os
 import logging
 import tkinter as tk
 from functools import partial
@@ -6,11 +5,10 @@ from tkinter import messagebox, Canvas
 from PIL import Image, ImageTk
 import math
 
-from config import EXIT_BUTTON_WIDTH, EXIT_BUTTON_HEIGHT, BUTTON_COLOR_EXIT
+from config import BUTTON_COLOR_EXIT
 from src.ui.user_ui.game_ui import GameUI
 from src.ui.user_ui.knowledge_ui import knowledge_ui
 from src.ui.user_ui.profile_ui import profile_ui
-from src.utils import clear_frame
 
 # Пути к изображениям собак
 DOG_IMAGES = [

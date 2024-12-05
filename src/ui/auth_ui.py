@@ -1,10 +1,9 @@
-import logging
 import tkinter as tk
 from tkinter import messagebox
 from config import BACKGROUND_COLOR, PRIMARY_COLOR, BUTTON_COLOR, BUTTON_TEXT_COLOR, FONT, BIG_FONT, ADMIN_LOGIN, ADMIN_PASSWORD
 from src.auth import login_user
 from src.ui.admin_ui import AdminApp  # Импорт интерфейса администратора
-from database.db_events import create_user, check_user
+from database.db_events import create_user
 from src.ui.user_ui.main_menu import UserApp
 
 class DogAcademyApp:
