@@ -11,8 +11,8 @@ class Auth(Base):
     login = Column(String, unique=True, nullable=False)
     password = Column(String, nullable=False)
 
-    # Связь с таблицей Users
-    user = relationship("Users", back_populates="auth", uselist=False)
+    user = relationship("Users", back_populates="auth", cascade="all, delete-orphan", uselist=False)
+
 
 
 class Users(Base):

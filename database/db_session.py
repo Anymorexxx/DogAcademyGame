@@ -14,7 +14,7 @@ Session = sessionmaker(bind=engine, autoflush=True)
 current_session = None
 
 def create_session():
-    """Создаёт сессию для работы с базой данных."""
+    """Создание сессии для работы с базой данных."""
     return Session()
 
 def init_db(refresh=False):
@@ -26,10 +26,10 @@ def init_db(refresh=False):
     if not os.path.exists("database/DogAcademy.db") or refresh:
         if refresh:
             print("Обновление базы данных: удаление старых таблиц...")
-            Base.metadata.drop_all(bind=engine)  # Удаляем все таблицы
+            Base.metadata.drop_all(bind=engine)  # Удалить все таблицы
 
         print("Создание базы данных и таблиц...")
-        Base.metadata.create_all(bind=engine)  # Создаём таблицы заново
+        Base.metadata.create_all(bind=engine)  # Создать таблицы заново
     else:
         print("База данных уже существует. Обновление не требуется.")
 
@@ -38,7 +38,7 @@ def init_db(refresh=False):
 
 def get_session():
     """Возвращает сессию для работы с базой данных."""
-    return Session()  # Просто возвращаем объект сессии
+    return Session()
 
 def close_sessions():
     """Закрытие всех сессий перед выходом из программы."""

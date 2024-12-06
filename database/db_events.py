@@ -31,14 +31,14 @@ def create_user(login, password, username):
     if session.query(Auth).filter_by(login=login).first():
         return False, "Логин уже используется."
 
-    # Создаём новую запись в таблице Auth
+    # Создание новой записи в таблице Auth
     new_auth = Auth(login=login, password=password)
     session.add(new_auth)
 
     try:
-        session.commit()  # Сохраняем изменения в таблице Auth
+        session.commit()  # Сохранение изменений в таблице Auth
 
-        # Создаём новую запись в таблице Users, связываем с только что добавленным Auth
+        # Создание новой записи в таблице Users, связываем с только что добавленным Auth
         new_user = Users(user_id=new_auth.user_id, username=username)
         session.add(new_user)
         session.commit()  # Сохраняем изменения в таблице Users
@@ -220,7 +220,7 @@ def get_all_dogs():
     """Получить все записи о собаках."""
     session = get_session()
     try:
-        dogs = session.query(Dogs).all()
+        dogs = session.query(Dogs).all()  # Запрос к базе данных для получения всех собак
         return dogs
     except SQLAlchemyError as e:
         print(f"Ошибка при получении собак: {e}")
@@ -275,20 +275,31 @@ def update_user_info(user_id, new_login, new_username):
 
 
 def delete_user(user_id):
-    """Удаление пользователя."""
+    """Удаление пользователя по ID, включая связанные записи."""
     session = get_session()
     try:
+        # Находим пользователя
         user = session.query(Users).filter_by(user_id=user_id).first()
-        if user:
-            session.delete(user.auth)
-            session.commit()
-            return True, "Пользователь удалён."
-        return False, "Пользователь не найден."
+        if not user:
+            return False, "Пользователь не найден."
+
+        # Удаляем запись из Auth
+        auth = user.auth
+        if auth:
+            session.delete(auth)
+
+        # Удаляем запись из Users
+        session.delete(user)
+
+        # Фиксируем изменения
+        session.commit()
+        return True, "Пользователь успешно удалён."
     except SQLAlchemyError as e:
         session.rollback()
-        return False, f"Ошибка при удалении: {e}"
+        return False, f"Ошибка при удалении пользователя: {e}"
     finally:
         session.close()
+
 
 
 def update_dog_info(dog_id, breed, characteristics):
@@ -339,3 +350,96 @@ def update_user_level(user_id, new_level):
         logging.error(f"Ошибка при обновлении уровня пользователя: {e}")
     finally:
         session.close()
+
+def add_user_to_db(user_data):
+    """
+    Добавление нового пользователя в базу данных.
+    Создаёт записи в таблицах Auth и Users.
+    """
+    session = get_session()
+    try:
+        # Создание записи в таблице Auth
+        new_auth = Auth(
+            login=user_data['login'],
+            password=user_data['password']
+        )
+        session.add(new_auth)
+        session.flush()  # Сохраняем, чтобы получить user_id для Users
+
+        # Создание записи в таблице Users, связываем с Auth
+        new_user = Users(
+            user_id=new_auth.user_id,  # Используем внешний ключ
+            username=user_data['username'],
+            level=user_data.get('level', 1),  # Уровень по умолчанию 1
+            achievement=user_data.get('achievement', None)  # По умолчанию пусто
+        )
+        session.add(new_user)
+        session.commit()
+        print(f"Пользователь {user_data['username']} успешно добавлен.")
+    except SQLAlchemyError as e:
+        session.rollback()
+        print(f"Ошибка при добавлении пользователя: {e}")
+        raise  # Пробрасываем исключение для обработки
+    finally:
+        session.close()
+
+
+def add_question_to_db(question_data):
+    session = get_session()
+    try:
+            new_question = Questions(**question_data)
+            session.add(new_question)
+            session.commit()
+            print(f"Вопрос успешно добавлен: {question_data['question_text']}")
+    except SQLAlchemyError as e:
+            print(f"Ошибка при добавлении вопроса: {e}")
+            session.rollback()
+    finally:
+            session.close()
+
+def add_dog_to_db(dog_data):
+    session = get_session()
+    try:
+            new_dog = Dogs(**dog_data)
+            session.add(new_dog)
+            session.commit()
+            print(f"Собака успешно добавлена: {dog_data['breed']}")
+    except SQLAlchemyError as e:
+            print(f"Ошибка при добавлении собаки: {e}")
+            session.rollback()
+    finally:
+            session.close()
+
+def delete_dog(dog_id):
+    """Удаление породы собак по ID."""
+    session = get_session()
+    try:
+        dog = session.query(Dogs).filter_by(dog_id=dog_id).first()
+        if dog:
+            session.delete(dog)
+            session.commit()
+            print(f"Порода с ID {dog_id} успешно удалена.")
+            return True, "Порода успешно удалена."
+        return False, "Порода не найдена."
+    except SQLAlchemyError as e:
+        session.rollback()
+        return False, f"Ошибка при удалении: {e}"
+    finally:
+        session.close()
+
+def delete_question(question_id):
+    """Удаление вопроса по ID."""
+    session = get_session()
+    try:
+        question = session.query(Questions).filter_by(question_id=question_id).first()
+        if question:
+            session.delete(question)
+            session.commit()
+            return True, "Вопрос успешно удалён."
+        return False, "Вопрос не найден."
+    except SQLAlchemyError as e:
+        session.rollback()
+        return False, f"Ошибка при удалении: {e}"
+    finally:
+        session.close()
+

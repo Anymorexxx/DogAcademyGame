@@ -8,7 +8,8 @@ from database.db_session import get_session
 from database.models import Dogs, Questions, Users
 from src.admin_functions import admin_logging, statistics
 from src.utils import clear_frame, feature_in_development_admin  # Импортируем общую функцию для очистки фрейма
-from database.db_events import check_user, get_all_users, get_all_questions, get_all_dogs
+from database.db_events import check_user, get_all_users, get_all_questions, get_all_dogs, delete_dog, update_dog_info, \
+    add_question_to_db, add_user_to_db, add_dog_to_db, delete_question, delete_user
 
 # Конфигурация цветов из config.py
 BACKGROUND_COLOR = "#403d49"
@@ -99,19 +100,12 @@ class AdminApp:
                 ("Просмотр таблиц", self.view_tables),
             ]),
             ("Управление игровым контентом", [
-                ("Создание и настройка уровней", feature_in_development_admin),
-                ("Настройка параметров собаки", feature_in_development_admin),
+                ("Создание и настройка уровней", lambda: feature_in_development_admin(self.main_frame)),
+                ("Настройка параметров собаки", lambda: feature_in_development_admin(self.main_frame)),
             ]),
             ("Управление интерфейсом пользователя", [
-                ("Добавление подсказок в интерфейс", feature_in_development_admin),
-            ]),
-            ("Работа с базой знаний", [
-                ("Добавление информации", feature_in_development_admin),
-                ("Редактирование записей", feature_in_development_admin),
-                ("Удаление записей", feature_in_development_admin),
-                ("Просмотр базы знаний", feature_in_development_admin),
-                ("Генерация вопросов", feature_in_development_admin),
-            ]),
+                ("Добавление подсказок в интерфейс", lambda: feature_in_development_admin(self.main_frame)),
+            ])
         ]
 
         # Определяем максимальную ширину текста для настройки ширины меню и кнопок
@@ -280,231 +274,477 @@ class AdminApp:
     def manage_users(self):
         """Управление пользователями."""
         clear_frame(self.main_frame)
-        tk.Label(self.main_frame, text="Редактирование пользователей", font=("Comic Sans MS", 16)).pack()
 
-        users = get_all_users()  # Получаем пользователей
+        tk.Label(self.main_frame, text="Управление пользователями", font=("Comic Sans MS", 16), bg=BACKGROUND_COLOR,
+                 fg=TEXT_COLOR).pack()
+
+        # Кнопка добавления нового пользователя
+        tk.Button(
+            self.main_frame,
+            text="Добавить пользователя",
+            command=self.open_add_user_window,
+            bg=BUTTON_COLOR,
+            fg=TEXT_COLOR
+        ).pack(pady=10)
+
+        # Кнопка обновления списка
+        tk.Button(
+            self.main_frame,
+            text="Обновить список",
+            command=self.manage_users,  # Перезагрузка данных
+            bg=BUTTON_COLOR,
+            fg=TEXT_COLOR
+        ).pack(pady=10)
+
+        users = get_all_users()  # Получение списка пользователей
+
         if not users:
             tk.Label(self.main_frame, text="Нет пользователей в базе данных.", bg=BACKGROUND_COLOR,
                      fg=TEXT_COLOR).pack()
             return
 
-        table = ttk.Treeview(self.main_frame, columns=("ID", "Логин", "Имя"), show="headings")
+        # Отображение данных в таблице
+        table = ttk.Treeview(self.main_frame, columns=("ID", "Логин", "Имя пользователя", "Уровень"), show="headings")
         table.heading("ID", text="ID")
         table.heading("Логин", text="Логин")
-        table.heading("Имя", text="Имя")
-        table.pack(fill="both", expand=True)
+        table.heading("Имя пользователя", text="Имя пользователя")
+        table.heading("Уровень", text="Уровень")
+        table.pack(fill="both", expand=True, pady=10)
 
+        # Очистка старых записей из таблицы
+        for row in table.get_children():
+            table.delete(row)
+
+        # Добавление данных из базы
         for user in users:
-            table.insert("", "end", values=(user.user_id, user.auth.login, user.username))
+            table.insert("", "end", values=(user.user_id, user.auth.login, user.username, user.level))
+
+        def delete_selected():
+            selected_item = table.selection()
+            if not selected_item:
+                messagebox.showwarning("Удаление", "Выберите пользователя для удаления.")
+                return
+            user_id = table.item(selected_item, "values")[0]
+            success, message = delete_user(user_id)
+            if success:
+                messagebox.showinfo("Успех", message)
+                self.manage_users()  # Обновление списка
+            else:
+                messagebox.showerror("Ошибка", message)
+
+        # Кнопка удаления
+        tk.Button(
+            self.main_frame,
+            text="Удалить выбранного пользователя",
+            command=delete_selected,
+            bg=BUTTON_COLOR,
+            fg=TEXT_COLOR
+        ).pack(pady=10)
 
     def manage_questions(self):
         """Управление вопросами."""
         clear_frame(self.main_frame)
-        tk.Label(self.main_frame, text="Управление вопросами", font=("Comic Sans MS", 16)).pack()
 
-        questions = get_all_questions()  # Получаем вопросы
+        tk.Label(self.main_frame, text="Управление вопросами", font=("Comic Sans MS", 16), bg=BACKGROUND_COLOR,
+                 fg=TEXT_COLOR).pack()
+
+        # Кнопка добавления нового вопроса
+        tk.Button(
+            self.main_frame,
+            text="Добавить вопрос",
+            command=self.open_add_question_window,
+            bg=BUTTON_COLOR,
+            fg=TEXT_COLOR
+        ).pack(pady=10)
+
+        # Кнопка обновления списка
+        tk.Button(
+            self.main_frame,
+            text="Обновить список",
+            command=self.manage_questions,  # Перезагрузка данных
+            bg=BUTTON_COLOR,
+            fg=TEXT_COLOR
+        ).pack(pady=10)
+
+        questions = get_all_questions()  # Получение списка вопросов
+
         if not questions:
             tk.Label(self.main_frame, text="Нет вопросов в базе данных.", bg=BACKGROUND_COLOR, fg=TEXT_COLOR).pack()
             return
 
-        table = ttk.Treeview(self.main_frame, columns=("ID", "Вопрос", "Ответ"), show="headings")
+        # Отображение данных в таблице
+        table = ttk.Treeview(self.main_frame, columns=("ID", "Вопрос", "Полезная информация"), show="headings")
         table.heading("ID", text="ID")
         table.heading("Вопрос", text="Вопрос")
-        table.heading("Ответ", text="Ответ")
-        table.pack(fill="both", expand=True)
+        table.heading("Полезная информация", text="Полезная информация")
+        table.pack(fill="both", expand=True, pady=10)
+
+        # Очистка таблицы перед заполнением новыми данными
+        for row in table.get_children():
+            table.delete(row)
 
         for question in questions:
-            table.insert("", "end", values=(
-            question.question_id, question.question_text, question.helpful_info))  # Заполняем таблицу данными
+            table.insert("", "end", values=(question.question_id, question.question_text, question.helpful_info))
+
+        def delete_selected():
+            selected_item = table.selection()
+            if not selected_item:
+                messagebox.showwarning("Удаление", "Выберите вопрос для удаления.")
+                return
+
+            question_id = table.item(selected_item, "values")[0]  # Получение ID вопроса
+            success, message = delete_question(question_id)  # Вызов метода для удаления вопроса
+            if success:
+                messagebox.showinfo("Успех", message)
+                self.manage_questions()  # Обновление списка вопросов
+            else:
+                messagebox.showerror("Ошибка", message)
+
+        # Кнопка удаления
+        tk.Button(
+            self.main_frame,
+            text="Удалить выбранный вопрос",
+            command=delete_selected,
+            bg=BUTTON_COLOR,
+            fg=TEXT_COLOR
+        ).pack(pady=10)
 
     def manage_dogs(self):
-        """Управление собаками."""
+        """Управление породами собак."""
         clear_frame(self.main_frame)
-        tk.Label(self.main_frame, text="Управление собаками", font=("Comic Sans MS", 16)).pack()
 
-        dogs = get_all_dogs()  # Получаем список собак
+        # Заголовок
+        tk.Label(self.main_frame, text="Управление породами собак", font=("Comic Sans MS", 16), bg=BACKGROUND_COLOR,
+                 fg=TEXT_COLOR).pack()
+
+        # Функция удаления выбранной породы
+        def delete_selected():
+            selected_item = table.selection()
+            if not selected_item:
+                messagebox.showwarning("Удаление", "Выберите породу для удаления.")
+                return
+            dog_id = table.item(selected_item, "values")[0]  # ID породы
+            success, message = delete_dog(dog_id)
+            if success:
+                messagebox.showinfo("Успех", message)
+                self.manage_dogs()  # Обновление списка
+            else:
+                messagebox.showerror("Ошибка", message)
+
+        # Функция редактирования выбранной породы
+        def edit_selected():
+            selected_item = table.selection()
+            if not selected_item:
+                messagebox.showwarning("Редактирование", "Выберите породу для редактирования.")
+                return
+
+            # Получение данных выбранной породы
+            dog_data = table.item(selected_item, "values")
+
+            # Пример dog_data: ('dog_id', 'breed', 'characteristics', 'behavior', 'care_info', 'admin_comments')
+
+            if len(dog_data) < 6:
+                messagebox.showwarning("Ошибка", "Недостаточно данных для редактирования.")
+                return
+
+            dog_id = dog_data[0]
+            breed = dog_data[1]
+            characteristics = dog_data[2]
+            behavior = dog_data[3]
+            care_info = dog_data[4]  # Дополнительная информация о породе
+            admin_comments = dog_data[5]  # Комментарии администратора
+
+            # Вызов функции открытия окна редактирования породы, передавая все необходимые данные
+            self.open_edit_dog_window(dog_id, breed, characteristics, behavior, care_info, admin_comments)
+
+        # Кнопка добавления новой породы
+        tk.Button(
+            self.main_frame,
+            text="Добавить породу",
+            command=self.open_add_dog_window,
+            bg=BUTTON_COLOR,
+            fg=TEXT_COLOR
+        ).pack(pady=10)
+
+        # Кнопка обновления списка
+        tk.Button(
+            self.main_frame,
+            text="Обновить список",
+            command=self.manage_dogs,  # Повторный вызов для обновления данных
+            bg=BUTTON_COLOR,
+            fg=TEXT_COLOR
+        ).pack(pady=10)
+
+        # Кнопка удаления
+        tk.Button(
+            self.main_frame,
+            text="Удалить выбранную породу",
+            command=delete_selected,
+            bg=BUTTON_COLOR,
+            fg=TEXT_COLOR
+        ).pack(pady=10)
+
+        # Кнопка редактирования
+        tk.Button(
+            self.main_frame,
+            text="Редактировать выбранную породу",
+            command=edit_selected,
+            bg=BUTTON_COLOR,
+            fg=TEXT_COLOR
+        ).pack(pady=10)
+
+        # Получение данных из базы
+        dogs = get_all_dogs()
+
         if not dogs:
-            tk.Label(self.main_frame, text="Нет собак в базе данных.", bg=BACKGROUND_COLOR, fg=TEXT_COLOR).pack()
+            tk.Label(self.main_frame, text="Нет записей о породах в базе данных.", bg=BACKGROUND_COLOR,
+                     fg=TEXT_COLOR).pack()
             return
 
-        table = ttk.Treeview(self.main_frame, columns=("ID", "Порода", "Характеристики"), show="headings")
+        # Создание таблицы
+        table = ttk.Treeview(self.main_frame, columns=(
+        "ID", "Порода", "Характеристики", "Поведение", "Информация по уходу", "Комментарии"), show="headings")
         table.heading("ID", text="ID")
         table.heading("Порода", text="Порода")
         table.heading("Характеристики", text="Характеристики")
-        table.pack(fill="both", expand=True)
+        table.heading("Поведение", text="Поведение")
+        table.heading("Информация по уходу", text="Информация по уходу")
+        table.heading("Комментарии", text="Комментарии")
+        table.pack(fill="both", expand=True, pady=10)
 
+        # Заполнение таблицы данными о породах
         for dog in dogs:
-            table.insert("", "end", values=(dog.dog_id, dog.breed, dog.characteristics))  # Заполняем таблицу данными
+            table.insert("", "end", values=(
+            dog.dog_id, dog.breed, dog.characteristics, dog.behavior, dog.care_info, dog.admin_comments))
+
+    def open_edit_dog_window(self, dog_id, breed, characteristics, behavior, care_info, admin_comments):
+        """Открыть окно редактирования данных о породе собак."""
+        edit_dog_window = tk.Toplevel(self.root)
+        edit_dog_window.title("Редактировать данные породы")
+        edit_dog_window.geometry("500x400")
+        edit_dog_window.configure(bg=BACKGROUND_COLOR)
+
+        fields = {
+            "Порода": (breed, tk.Entry(edit_dog_window, font=("Comic Sans MS", 12))),
+            "Характеристики": (characteristics, tk.Entry(edit_dog_window, font=("Comic Sans MS", 12))),
+            "Поведение": (behavior, tk.Entry(edit_dog_window, font=("Comic Sans MS", 12))),
+            "Уход": (care_info, tk.Entry(edit_dog_window, font=("Comic Sans MS", 12))),
+            "Комментарии администратора": (admin_comments, tk.Entry(edit_dog_window, font=("Comic Sans MS", 12))),
+        }
+
+        for idx, (label_text, (value, entry)) in enumerate(fields.items()):
+            tk.Label(edit_dog_window, text=label_text, bg=BACKGROUND_COLOR, fg=TEXT_COLOR,
+                     font=("Comic Sans MS", 12)).grid(row=idx, column=0, pady=10, padx=10)
+            entry.insert(0, value)
+            entry.grid(row=idx, column=1, pady=10, padx=10)
+
+        def save_changes():
+            updated_data = {key: entry.get() for key, (_, entry) in fields.items()}
+            success, message = update_dog_info(dog_id, updated_data["Порода"], updated_data["Характеристики"])
+            if success:
+                messagebox.showinfo("Успех", message)
+                edit_dog_window.destroy()
+                self.manage_dogs()  # Обновление списка пород
+            else:
+                messagebox.showerror("Ошибка", message)
+
+        tk.Button(edit_dog_window, text="Сохранить", command=save_changes, bg=BUTTON_COLOR, fg=TEXT_COLOR).grid(
+            row=len(fields), column=0, pady=20)
+        tk.Button(edit_dog_window, text="Отмена", command=edit_dog_window.destroy, bg=BUTTON_COLOR, fg=TEXT_COLOR).grid(
+            row=len(fields), column=1, pady=20)
 
     def view_tables(self):
-        """Просмотр таблиц."""
-        clear_frame(self.main_frame)  # Очищаем старое содержимое
-        self.manage_users()  # Отображаем пользователей
-        self.manage_questions()  # Отображаем вопросы
-        self.manage_dogs()  # Отображаем собак
+        """Просмотр всех таблиц."""
+        clear_frame(self.main_frame)
+
+        tk.Label(self.main_frame, text="Просмотр всех таблиц", font=("Comic Sans MS", 16), bg=BACKGROUND_COLOR,
+                 fg=TEXT_COLOR).pack()
+
+        # Создаём вкладки для отображения таблиц
+        tab_control = ttk.Notebook(self.main_frame)
+
+        # Таблица пользователей
+        users_frame = ttk.Frame(tab_control)
+        tab_control.add(users_frame, text="Пользователи")
+        users_data = get_all_users()
+        if users_data:
+            self.create_table_view(users_frame, users_data, ["user_id", "login", "username", "level"])
+        else:
+            tk.Label(users_frame, text="Нет данных о пользователях.", bg=BACKGROUND_COLOR, fg=TEXT_COLOR).pack()
+
+        # Таблица собак
+        dogs_frame = ttk.Frame(tab_control)
+        tab_control.add(dogs_frame, text="Породы собак")
+        dogs_data = get_all_dogs()
+        if dogs_data:
+            self.create_table_view(dogs_frame, dogs_data, ["dog_id", "breed", "characteristics", "behavior"])
+        else:
+            tk.Label(dogs_frame, text="Нет данных о породах собак.", bg=BACKGROUND_COLOR, fg=TEXT_COLOR).pack()
+
+        # Таблица вопросов
+        questions_frame = ttk.Frame(tab_control)
+        tab_control.add(questions_frame, text="Вопросы")
+        questions_data = get_all_questions()
+        if questions_data:
+            self.create_table_view(questions_frame, questions_data, ["question_id", "question_text", "helpful_info"])
+        else:
+            tk.Label(questions_frame, text="Нет данных о вопросах.", bg=BACKGROUND_COLOR, fg=TEXT_COLOR).pack()
+
+        tab_control.pack(expand=True, fill="both")
+
+    def create_table_view(self, frame, data, columns):
+        """Создание и отображение таблицы на основе данных и столбцов."""
+        # Создаём таблицу
+        table = ttk.Treeview(frame, columns=columns, show="headings")
+
+        # Заголовки таблицы
+        for col in columns:
+            table.heading(col, text=col)
+            table.column(col, anchor="center")  # Выравнивание заголовков по центру
+
+        # Заполнение таблицы данными
+        for row in data:
+            if isinstance(row, dict):  # Если данные представлены в виде словаря
+                values = [row.get(col, "") for col in columns]
+            elif hasattr(row, "__dict__"):  # Если данные — это объект SQLAlchemy
+                values = [getattr(row, col, "") for col in columns]
+            else:
+                values = row if isinstance(row, (list, tuple)) else []
+
+            table.insert("", "end", values=values)
+
+        # Устанавливаем таблицу в интерфейс
+        table.pack(fill="both", expand=True, pady=10)
+
+    def open_add_dog_window(self):
+        """Открыть окно для добавления новой собаки."""
+        add_dog_window = tk.Toplevel(self.root)
+        add_dog_window.title("Добавить новую собаку")
+        add_dog_window.geometry("400x300")
+        add_dog_window.configure(bg=BACKGROUND_COLOR)
+
+        tk.Label(add_dog_window, text="Порода", bg=BACKGROUND_COLOR, fg=TEXT_COLOR).pack(pady=10)
+        breed_entry = tk.Entry(add_dog_window, font=("Comic Sans MS", 12))
+        breed_entry.pack(pady=5)
+
+        tk.Label(add_dog_window, text="Характеристики", bg=BACKGROUND_COLOR, fg=TEXT_COLOR).pack(pady=10)
+        characteristics_entry = tk.Entry(add_dog_window, font=("Comic Sans MS", 12))
+        characteristics_entry.pack(pady=5)
+
+        tk.Label(add_dog_window, text="Поведение", bg=BACKGROUND_COLOR, fg=TEXT_COLOR).pack(pady=10)
+        behavior_entry = tk.Entry(add_dog_window, font=("Comic Sans MS", 12))
+        behavior_entry.pack(pady=5)
+
+        tk.Label(add_dog_window, text="Уход", bg=BACKGROUND_COLOR, fg=TEXT_COLOR).pack(pady=10)
+        care_info_entry = tk.Entry(add_dog_window, font=("Comic Sans MS", 12))
+        care_info_entry.pack(pady=5)
+
+        tk.Label(add_dog_window, text="Комментарии администратора", bg=BACKGROUND_COLOR, fg=TEXT_COLOR).pack(pady=10)
+        admin_comments_entry = tk.Entry(add_dog_window, font=("Comic Sans MS", 12))
+        admin_comments_entry.pack(pady=5)
+
+        def save_dog():
+            dog_data = {
+                'breed': breed_entry.get(),
+                'characteristics': characteristics_entry.get(),
+                'behavior': behavior_entry.get(),
+                'care_info': care_info_entry.get(),
+                'admin_comments': admin_comments_entry.get()
+            }
+            add_dog_to_db(dog_data)
+            add_dog_window.destroy()
+
+        def cancel_add():
+            add_dog_window.destroy()
+
+        save_button = tk.Button(add_dog_window, text="Сохранить", command=save_dog, bg=BUTTON_COLOR, fg=TEXT_COLOR)
+        save_button.pack(pady=20)
+
+        cancel_button = tk.Button(add_dog_window, text="Отменить", command=cancel_add, bg=BUTTON_COLOR, fg=TEXT_COLOR)
+        cancel_button.pack(pady=10)
 
 
-def open_add_user_window(self):
-    """Открыть окно для добавления нового пользователя."""
-    add_user_window = tk.Toplevel(self.root)
-    add_user_window.title("Добавить нового пользователя")
-    add_user_window.geometry("400x300")
-    add_user_window.configure(bg=BACKGROUND_COLOR)
+    def open_add_user_window(self):
+        """Открыть окно для добавления нового пользователя."""
+        add_user_window = tk.Toplevel(self.root)
+        add_user_window.title("Добавить нового пользователя")
+        add_user_window.geometry("400x300")
+        add_user_window.configure(bg=BACKGROUND_COLOR)
 
-    tk.Label(add_user_window, text="Логин", bg=BACKGROUND_COLOR, fg=TEXT_COLOR).pack(pady=10)
-    login_entry = tk.Entry(add_user_window, font=("Comic Sans MS", 12))
-    login_entry.pack(pady=5)
+        tk.Label(add_user_window, text="Логин", bg=BACKGROUND_COLOR, fg=TEXT_COLOR).pack(pady=10)
+        login_entry = tk.Entry(add_user_window, font=("Comic Sans MS", 12))
+        login_entry.pack(pady=5)
 
-    tk.Label(add_user_window, text="Пароль", bg=BACKGROUND_COLOR, fg=TEXT_COLOR).pack(pady=10)
-    password_entry = tk.Entry(add_user_window, font=("Comic Sans MS", 12), show="*")
-    password_entry.pack(pady=5)
+        tk.Label(add_user_window, text="Пароль", bg=BACKGROUND_COLOR, fg=TEXT_COLOR).pack(pady=10)
+        password_entry = tk.Entry(add_user_window, font=("Comic Sans MS", 12), show="*")
+        password_entry.pack(pady=5)
 
-    tk.Label(add_user_window, text="Имя пользователя", bg=BACKGROUND_COLOR, fg=TEXT_COLOR).pack(pady=10)
-    username_entry = tk.Entry(add_user_window, font=("Comic Sans MS", 12))
-    username_entry.pack(pady=5)
+        tk.Label(add_user_window, text="Имя пользователя", bg=BACKGROUND_COLOR, fg=TEXT_COLOR).pack(pady=10)
+        username_entry = tk.Entry(add_user_window, font=("Comic Sans MS", 12))
+        username_entry.pack(pady=5)
 
-    def save_user():
-        user_data = {
-            'login': login_entry.get(),
-            'password': password_entry.get(),
-            'username': username_entry.get()
-        }
-        add_user_to_db(user_data)
-        add_user_window.destroy()
+        def save_user():
+            user_data = {
+                'login': login_entry.get(),
+                'password': password_entry.get(),
+                'username': username_entry.get(),
+            }
+            try:
+                add_user_to_db(user_data)
+                messagebox.showinfo("Успех", "Пользователь успешно добавлен.")
+                add_user_window.destroy()
+                self.manage_users()  # Обновить список пользователей
+            except Exception as e:
+                messagebox.showerror("Ошибка", f"Не удалось добавить пользователя: {e}")
 
-    def cancel_add():
-        add_user_window.destroy()
+        def cancel_add():
+            add_user_window.destroy()
 
-    save_button = tk.Button(add_user_window, text="Сохранить", command=save_user, bg=BUTTON_COLOR, fg=TEXT_COLOR)
-    save_button.pack(pady=20)
+        save_button = tk.Button(add_user_window, text="Сохранить", command=save_user, bg=BUTTON_COLOR, fg=TEXT_COLOR)
+        save_button.pack(pady=20)
 
-    cancel_button = tk.Button(add_user_window, text="Отменить", command=cancel_add, bg=BUTTON_COLOR, fg=TEXT_COLOR)
-    cancel_button.pack(pady=10)
+        cancel_button = tk.Button(add_user_window, text="Отменить", command=cancel_add, bg=BUTTON_COLOR, fg=TEXT_COLOR)
+        cancel_button.pack(pady=10)
 
-def open_add_question_window(self):
-    """Открыть окно для добавления нового вопроса."""
-    add_question_window = tk.Toplevel(self.root)
-    add_question_window.title("Добавить новый вопрос")
-    add_question_window.geometry("400x300")
-    add_question_window.configure(bg=BACKGROUND_COLOR)
+    def open_add_question_window(self):
+        """Открыть окно для добавления нового вопроса."""
+        add_question_window = tk.Toplevel(self.root)
+        add_question_window.title("Добавить новый вопрос")
+        add_question_window.geometry("400x300")
+        add_question_window.configure(bg=BACKGROUND_COLOR)
 
-    tk.Label(add_question_window, text="ID собаки", bg=BACKGROUND_COLOR, fg=TEXT_COLOR).pack(pady=10)
-    dog_id_entry = tk.Entry(add_question_window, font=("Comic Sans MS", 12))
-    dog_id_entry.pack(pady=5)
+        tk.Label(add_question_window, text="ID собаки", bg=BACKGROUND_COLOR, fg=TEXT_COLOR).pack(pady=10)
+        dog_id_entry = tk.Entry(add_question_window, font=("Comic Sans MS", 12))
+        dog_id_entry.pack(pady=5)
 
-    tk.Label(add_question_window, text="Вопрос", bg=BACKGROUND_COLOR, fg=TEXT_COLOR).pack(pady=10)
-    question_text_entry = tk.Entry(add_question_window, font=("Comic Sans MS", 12))
-    question_text_entry.pack(pady=5)
+        tk.Label(add_question_window, text="Вопрос", bg=BACKGROUND_COLOR, fg=TEXT_COLOR).pack(pady=10)
+        question_text_entry = tk.Entry(add_question_window, font=("Comic Sans MS", 12))
+        question_text_entry.pack(pady=5)
 
-    tk.Label(add_question_window, text="Изображение URL", bg=BACKGROUND_COLOR, fg=TEXT_COLOR).pack(pady=10)
-    image_url_entry = tk.Entry(add_question_window, font=("Comic Sans MS", 12))
-    image_url_entry.pack(pady=5)
+        tk.Label(add_question_window, text="Изображение URL", bg=BACKGROUND_COLOR, fg=TEXT_COLOR).pack(pady=10)
+        image_url_entry = tk.Entry(add_question_window, font=("Comic Sans MS", 12))
+        image_url_entry.pack(pady=5)
 
-    tk.Label(add_question_window, text="Полезная информация", bg=BACKGROUND_COLOR, fg=TEXT_COLOR).pack(pady=10)
-    helpful_info_entry = tk.Entry(add_question_window, font=("Comic Sans MS", 12))
-    helpful_info_entry.pack(pady=5)
+        tk.Label(add_question_window, text="Полезная информация", bg=BACKGROUND_COLOR, fg=TEXT_COLOR).pack(pady=10)
+        helpful_info_entry = tk.Entry(add_question_window, font=("Comic Sans MS", 12))
+        helpful_info_entry.pack(pady=5)
 
-    def save_question():
-        question_data = {
-            'dog_id': int(dog_id_entry.get()),
-            'question_text': question_text_entry.get(),
-            'image_url': image_url_entry.get(),
-            'helpful_info': helpful_info_entry.get()
-        }
-        add_question_to_db(question_data)
-        add_question_window.destroy()
+        def save_question():
+            question_data = {
+                'dog_id': int(dog_id_entry.get()),
+                'question_text': question_text_entry.get(),
+                'image_url': image_url_entry.get(),
+                'helpful_info': helpful_info_entry.get()
+            }
+            add_question_to_db(question_data)
+            add_question_window.destroy()
 
-    def cancel_add():
-        add_question_window.destroy()
+        def cancel_add():
+            add_question_window.destroy()
 
-    save_button = tk.Button(add_question_window, text="Сохранить", command=save_question, bg=BUTTON_COLOR, fg=TEXT_COLOR)
-    save_button.pack(pady=20)
+        save_button = tk.Button(add_question_window, text="Сохранить", command=save_question, bg=BUTTON_COLOR, fg=TEXT_COLOR)
+        save_button.pack(pady=20)
 
-    cancel_button = tk.Button(add_question_window, text="Отменить", command=cancel_add, bg=BUTTON_COLOR, fg=TEXT_COLOR)
-    cancel_button.pack(pady=10)
+        cancel_button = tk.Button(add_question_window, text="Отменить", command=cancel_add, bg=BUTTON_COLOR, fg=TEXT_COLOR)
+        cancel_button.pack(pady=10)
 
-def open_add_dog_window(self):
-    """Открыть окно для добавления новой собаки."""
-    add_dog_window = tk.Toplevel(self.root)
-    add_dog_window.title("Добавить новую собаку")
-    add_dog_window.geometry("400x300")
-    add_dog_window.configure(bg=BACKGROUND_COLOR)
-
-    tk.Label(add_dog_window, text="Порода", bg=BACKGROUND_COLOR, fg=TEXT_COLOR).pack(pady=10)
-    breed_entry = tk.Entry(add_dog_window, font=("Comic Sans MS", 12))
-    breed_entry.pack(pady=5)
-
-    tk.Label(add_dog_window, text="Характеристики", bg=BACKGROUND_COLOR, fg=TEXT_COLOR).pack(pady=10)
-    characteristics_entry = tk.Entry(add_dog_window, font=("Comic Sans MS", 12))
-    characteristics_entry.pack(pady=5)
-
-    tk.Label(add_dog_window, text="Поведение", bg=BACKGROUND_COLOR, fg=TEXT_COLOR).pack(pady=10)
-    behavior_entry = tk.Entry(add_dog_window, font=("Comic Sans MS", 12))
-    behavior_entry.pack(pady=5)
-
-    tk.Label(add_dog_window, text="Уход", bg=BACKGROUND_COLOR, fg=TEXT_COLOR).pack(pady=10)
-    care_info_entry = tk.Entry(add_dog_window, font=("Comic Sans MS", 12))
-    care_info_entry.pack(pady=5)
-
-    tk.Label(add_dog_window, text="Комментарии администратора", bg=BACKGROUND_COLOR, fg=TEXT_COLOR).pack(pady=10)
-    admin_comments_entry = tk.Entry(add_dog_window, font=("Comic Sans MS", 12))
-    admin_comments_entry.pack(pady=5)
-
-    def save_dog():
-        dog_data = {
-            'breed': breed_entry.get(),
-            'characteristics': characteristics_entry.get(),
-            'behavior': behavior_entry.get(),
-            'care_info': care_info_entry.get(),
-            'admin_comments': admin_comments_entry.get()
-        }
-        add_dog_to_db(dog_data)
-        add_dog_window.destroy()
-
-    def cancel_add():
-        add_dog_window.destroy()
-
-    save_button = tk.Button(add_dog_window, text="Сохранить", command=save_dog, bg=BUTTON_COLOR, fg=TEXT_COLOR)
-    save_button.pack(pady=20)
-
-    cancel_button = tk.Button(add_dog_window, text="Отменить", command=cancel_add, bg=BUTTON_COLOR, fg=TEXT_COLOR)
-    cancel_button.pack(pady=10)
-
-def add_user_to_db(user_data):
-    session = get_session()
-    try:
-        new_user = Users(**user_data)
-        session.add(new_user)
-        session.commit()
-        print(f"Пользователь {user_data['username']} успешно добавлен.")
-    except SQLAlchemyError as e:
-        print(f"Ошибка при добавлении пользователя: {e}")
-        session.rollback()
-    finally:
-        session.close()
-
-def add_question_to_db(question_data):
-    session = get_session()
-    try:
-        new_question = Questions(**question_data)
-        session.add(new_question)
-        session.commit()
-        print(f"Вопрос успешно добавлен: {question_data['question_text']}")
-    except SQLAlchemyError as e:
-        print(f"Ошибка при добавлении вопроса: {e}")
-        session.rollback()
-    finally:
-        session.close()
-
-def add_dog_to_db(dog_data):
-    session = get_session()
-    try:
-        new_dog = Dogs(**dog_data)
-        session.add(new_dog)
-        session.commit()
-        print(f"Собака успешно добавлена: {dog_data['breed']}")
-    except SQLAlchemyError as e:
-        print(f"Ошибка при добавлении собаки: {e}")
-        session.rollback()
-    finally:
-        session.close()
