@@ -5,20 +5,20 @@ from tkinter import messagebox, Canvas
 from PIL import Image, ImageTk
 import math
 
-from config import BUTTON_COLOR_EXIT
+from config import BUTTON_COLOR_EXIT, CHIHUAHUA, CORGI, RETRIEVER, HUSKY, POMERANIAN, PUG, YORKSHIRE
 from src.ui.user_ui.game_ui import GameUI
 from src.ui.user_ui.knowledge_ui import knowledge_ui
 from src.ui.user_ui.profile_ui import profile_ui
 
 # Пути к изображениям собак
 DOG_IMAGES = [
-    "F:/Projects/Dog_Academy/assets/dogs/Chihuahua.png",
-    "F:/Projects/Dog_Academy/assets/dogs/Corgi.png",
-    "F:/Projects/Dog_Academy/assets/dogs/Golden_Retriever.png",
-    "F:/Projects/Dog_Academy/assets/dogs/Husky.png",
-    "F:/Projects/Dog_Academy/assets/dogs/Pomeranian.png",
-    "F:/Projects/Dog_Academy/assets/dogs/Pug.png",
-    "F:/Projects/Dog_Academy/assets/dogs/Yorkshire_Terrier.png"
+    CHIHUAHUA,
+    CORGI,
+    RETRIEVER,
+    HUSKY,
+    POMERANIAN,
+    PUG,
+    YORKSHIRE
 ]
 
 # Настройки
