@@ -1,19 +1,32 @@
+import os
+import sys
 import tkinter as tk
 from tkinter import ttk
 import csv
 from src.utils import clear_frame
 import logging
 from datetime import datetime
+
 BACKGROUND_COLOR = "#403d49"
 TEXT_COLOR = "#b2acc0"
 HEADER_COLOR = "#2f2b38"
 BUTTON_COLOR = "#444444"
 
+if getattr(sys, 'frozen', False):
+    # Путь для PyInstaller
+    base_path = sys._MEIPASS
+else:
+    # Путь для исходного кода
+    base_path = os.path.dirname(__file__)
+
+log_dir = os.path.join(os.path.dirname(__file__), '../logs')
+log_file = os.path.join(log_dir, 'logfile.log')
+
+os.makedirs(log_dir, exist_ok=True)
 logging.basicConfig(
-    filename="logs/logfile.log",
+    filename=log_file,
     level=logging.INFO,
-    format="%(asctime)s - %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S"
+    format='%(asctime)s - %(levelname)s - %(message)s'
 )
 
 
