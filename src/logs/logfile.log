@@ -1,0 +1,18 @@
+2024-12-11 20:11:54,023 - INFO - Логирование игры начато.
+2024-12-11 20:11:54,040 - INFO - BEGIN (implicit)
+2024-12-11 20:11:54,045 - INFO - SELECT anon_1.users_user_id AS anon_1_users_user_id, anon_1.users_dog_id AS anon_1_users_dog_id, anon_1.users_username AS anon_1_users_username, anon_1.users_level AS anon_1_users_level, anon_1.users_achievement AS anon_1_users_achievement, game_sessions_1.session_id AS game_sessions_1_session_id, game_sessions_1.user_id AS game_sessions_1_user_id, game_sessions_1.level AS game_sessions_1_level, game_sessions_1.score AS game_sessions_1_score, game_sessions_1.duration AS game_sessions_1_duration, game_sessions_1.steps AS game_sessions_1_steps, game_sessions_1.start_time AS game_sessions_1_start_time, game_sessions_1.end_time AS game_sessions_1_end_time, game_sessions_1.health AS game_sessions_1_health, game_sessions_1.hunger AS game_sessions_1_hunger, game_sessions_1.sleepiness AS game_sessions_1_sleepiness 
+FROM (SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users 
+WHERE users.user_id = ?
+ LIMIT ? OFFSET ?) AS anon_1 LEFT OUTER JOIN game_sessions AS game_sessions_1 ON anon_1.users_user_id = game_sessions_1.user_id
+2024-12-11 20:11:54,045 - INFO - [generated in 0.00030s] (1, 1, 0)
+2024-12-11 20:11:54,048 - INFO - ROLLBACK
+2024-12-11 20:12:10,273 - INFO - Логирование игры начато.
+2024-12-11 20:12:10,287 - INFO - BEGIN (implicit)
+2024-12-11 20:12:10,294 - INFO - SELECT anon_1.users_user_id AS anon_1_users_user_id, anon_1.users_dog_id AS anon_1_users_dog_id, anon_1.users_username AS anon_1_users_username, anon_1.users_level AS anon_1_users_level, anon_1.users_achievement AS anon_1_users_achievement, game_sessions_1.session_id AS game_sessions_1_session_id, game_sessions_1.user_id AS game_sessions_1_user_id, game_sessions_1.level AS game_sessions_1_level, game_sessions_1.score AS game_sessions_1_score, game_sessions_1.duration AS game_sessions_1_duration, game_sessions_1.steps AS game_sessions_1_steps, game_sessions_1.start_time AS game_sessions_1_start_time, game_sessions_1.end_time AS game_sessions_1_end_time, game_sessions_1.health AS game_sessions_1_health, game_sessions_1.hunger AS game_sessions_1_hunger, game_sessions_1.sleepiness AS game_sessions_1_sleepiness 
+FROM (SELECT users.user_id AS users_user_id, users.dog_id AS users_dog_id, users.username AS users_username, users.level AS users_level, users.achievement AS users_achievement 
+FROM users 
+WHERE users.user_id = ?
+ LIMIT ? OFFSET ?) AS anon_1 LEFT OUTER JOIN game_sessions AS game_sessions_1 ON anon_1.users_user_id = game_sessions_1.user_id
+2024-12-11 20:12:10,294 - INFO - [generated in 0.00040s] (1, 1, 0)
+2024-12-11 20:12:10,296 - INFO - ROLLBACK
