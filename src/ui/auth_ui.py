@@ -30,7 +30,7 @@ class DogAcademyApp:
 
         title = tk.Label(
             self.current_frame,
-            text="Dog Academy Game",
+            text="Собачья академия",
             bg=BACKGROUND_COLOR,
             fg=PRIMARY_COLOR,
             font=BIG_FONT,
